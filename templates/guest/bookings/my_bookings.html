@@ -1,0 +1,130 @@
+{% extends 'guest/base_guest.html' %}
+{% load static %}
+
+{% block guest_title %}My Bookings - VETA Hotel{% endblock %}
+
+{% block guest_content %}
+<section class="py-5">
+    <div class="container">
+        <!-- Header -->
+        <div class="d-flex justify-between align-center mb-4">
+            <div>
+                <h2 class="mb-1"><i class="fas fa-calendar-check text-primary"></i> My Bookings</h2>
+                <p class="text-muted">View and manage your bookings</p>
+            </div>
+            <a href="{% url 'rooms:list' %}" class="btn btn-primary">
+                <i class="fas fa-plus-circle"></i> Book New Room
+            </a>
+        </div>
+        
+        <!-- Filter Tabs -->
+        <div class="d-flex gap-1 mb-4" style="overflow-x: auto;">
+            <a href="?status=all" 
+               class="btn btn-sm {% if not status_filter or status_filter == 'all' %}btn-primary{% else %}btn-light{% endif %}">
+                All
+            </a>
+            <a href="?status=pending" 
+               class="btn btn-sm {% if status_filter == 'pending' %}btn-warning{% else %}btn-light{% endif %}">
+                <i class="fas fa-clock"></i> Pending
+            </a>
+            <a href="?status=approved" 
+               class="btn btn-sm {% if status_filter == 'approved' %}btn-info{% else %}btn-light{% endif %}">
+                <i class="fas fa-check"></i> Approved
+            </a>
+            <a href="?status=checked_in" 
+               class="btn btn-sm {% if status_filter == 'checked_in' %}btn-primary{% else %}btn-light{% endif %}">
+                <i class="fas fa-sign-in-alt"></i> Checked In
+            </a>
+            <a href="?status=checked_out" 
+               class="btn btn-sm {% if status_filter == 'checked_out' %}btn-success{% else %}btn-light{% endif %}">
+                <i class="fas fa-sign-out-alt"></i> Checked Out
+            </a>
+            <a href="?status=cancelled" 
+               class="btn btn-sm {% if status_filter == 'cancelled' %}btn-danger{% else %}btn-light{% endif %}">
+                <i class="fas fa-times"></i> Cancelled
+            </a>
+        </div>
+        
+        {% if bookings %}
+        <!-- Bookings List -->
+        <div class="grid" style="gap: 1rem;">
+            {% for booking in bookings %}
+            <div class="card fade-in">
+                <div class="card-body">
+                    <div class="d-flex justify-between align-start mb-3">
+                        <div>
+                            <div class="d-flex align-center gap-2 mb-1">
+                                <span style="font-family: var(--font-mono); font-weight: 600; color: var(--primary); font-size: 1.125rem;">
+                                    {{ booking.reference_id }}
+                                </span>
+                                <span class="badge badge-{{ booking.get_status_badge_class }}">
+                                    {{ booking.get_status_display }}
+                                </span>
+                                <span class="badge badge-{{ booking.get_payment_badge_class }}">
+                                    {{ booking.get_payment_status_display }}
+                                </span>
+                            </div>
+                            <h5 class="mb-1">Room {{ booking.room.room_number }} - {{ booking.room.get_room_type_display }}</h5>
+                        </div>
+                        <div class="text-right">
+                            <strong style="font-size: 1.25rem; color: var(--primary);">
+                                {{ booking.get_total_display }}
+                            </strong>
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-3 mb-3" style="gap: 0.75rem;">
+                        <div>
+                            <small class="text-muted"><i class="fas fa-calendar-alt"></i> Check-in</small>
+                            <p class="mb-0 font-medium">{{ booking.check_in|date:"d M Y" }}</p>
+                        </div>
+                        <div>
+                            <small class="text-muted"><i class="fas fa-calendar-check"></i> Check-out</small>
+                            <p class="mb-0 font-medium">{{ booking.check_out|date:"d M Y" }}</p>
+                        </div>
+                        <div>
+                            <small class="text-muted"><i class="fas fa-moon"></i> Duration</small>
+                            <p class="mb-0 font-medium">{{ booking.get_duration_display }}</p>
+                        </div>
+                    </div>
+                    
+                    <div class="d-flex gap-2">
+                        <a href="{% url 'bookings:detail' booking.reference_id %}" 
+                           class="btn btn-sm btn-outline-primary">
+                            <i class="fas fa-eye"></i> View Details
+                        </a>
+                        {% if booking.can_cancel %}
+                        <a href="{% url 'bookings:cancel' booking.reference_id %}" 
+                           class="btn btn-sm btn-outline-danger">
+                            <i class="fas fa-times-circle"></i> Cancel
+                        </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        
+        <!-- Pagination -->
+        {% include 'includes/pagination.html' with page_obj=bookings %}
+        
+        {% else %}
+        <!-- Empty State -->
+        <div class="empty-state">
+            <i class="fas fa-calendar-times"></i>
+            <h3>No Bookings Found</h3>
+            <p>
+                {% if status_filter %}
+                    No bookings with status "{{ status_filter }}".
+                {% else %}
+                    You haven't made any bookings yet.
+                {% endif %}
+            </p>
+            <a href="{% url 'rooms:list' %}" class="btn btn-primary mt-2">
+                <i class="fas fa-bed"></i> Browse Rooms
+            </a>
+        </div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

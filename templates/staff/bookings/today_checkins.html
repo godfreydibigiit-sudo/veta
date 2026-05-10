@@ -1,0 +1,86 @@
+{% extends 'staff/base_staff.html' %}
+{% load static %}
+
+{% block staff_title %}Today's Check-ins - VETA Hotel{% endblock %}
+
+{% block staff_content %}
+<!-- Header -->
+<div class="d-flex justify-between align-center mb-4">
+    <div>
+        <h2 class="mb-1"><i class="fas fa-sign-in-alt text-primary"></i> Today's Check-ins</h2>
+        <p class="text-muted">{{ today|date:"l, d F Y" }} - Expected Arrivals</p>
+    </div>
+    <a href="{% url 'bookings:staff_list' %}" class="btn btn-light">
+        <i class="fas fa-list"></i> All Bookings
+    </a>
+</div>
+
+{% if checkins %}
+<div class="card bg-white">
+    <!-- Stats -->
+    <div class="card-header d-flex justify-between align-center">
+        <h5 class="mb-0">{{ total_expected }} Guest(s) Expected Today</h5>
+        <span class="badge badge-info">{{ today|date:"d M Y" }}</span>
+    </div>
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Reference</th>
+                        <th>Guest</th>
+                        <th>Room</th>
+                        <th>Check-out</th>
+                        <th>Amount</th>
+                        <th>Status</th>
+                        <th>Payment</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for booking in checkins %}
+                    <tr>
+                        <td>
+                            <a href="{% url 'bookings:staff_detail' booking.reference_id %}" 
+                               style="font-family: var(--font-mono); font-weight: 600; color: var(--primary);">
+                                {{ booking.reference_id }}
+                            </a>
+                        </td>
+                        <td>
+                            <strong>{{ booking.guest.get_full_name }}</strong><br>
+                            <small class="text-muted">{{ booking.guest.phone }}</small>
+                        </td>
+                        <td><strong>Room {{ booking.room.room_number }}</strong></td>
+                        <td>{{ booking.check_out|date:"d M Y" }}</td>
+                        <td><strong>TZS {{ booking.total_amount|floatformat:0 }}</strong></td>
+                        <td>
+                            <span class="badge badge-{{ booking.get_status_badge_class }}">
+                                {{ booking.get_status_display }}
+                            </span>
+                        </td>
+                        <td>
+                            <span class="badge badge-{{ booking.get_payment_badge_class }}">
+                                {{ booking.get_payment_status_display }}
+                            </span>
+                        </td>
+                        <td>
+                            <a href="{% url 'bookings:staff_detail' booking.reference_id %}" 
+                               class="btn btn-sm btn-primary">
+                                <i class="fas fa-sign-in-alt"></i> Process
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% else %}
+<div class="empty-state">
+    <i class="fas fa-calendar-check"></i>
+    <h3>No Check-ins Today</h3>
+    <p>There are no guests expected to check in today.</p>
+</div>
+{% endif %}
+{% endblock %}

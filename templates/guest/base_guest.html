@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{% block guest_title %}VETA Hotel - Guest{% endblock %}{% endblock %}
+
+{% block content %}
+<div class="guest-wrapper">
+    {% block guest_content %}{% endblock %}
+</div>
+{% endblock %}

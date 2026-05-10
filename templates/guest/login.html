@@ -1,0 +1,177 @@
+{% extends 'guest/base_guest.html' %}
+{% load static %}
+
+{% block guest_title %}Sign In - VETA Hotel{% endblock %}
+
+{% block guest_content %}
+<section class="py-5">
+    <div class="container">
+        <div class="login-wrapper" style="max-width: 450px; margin: 0 auto;">
+            
+            <!-- Logo & Header -->
+            <div class="text-center mb-4">
+                <div class="mb-3">
+                    <i class="fas fa-hotel" style="font-size: 2.5rem; color: var(--primary);"></i>
+                </div>
+                <h2 style="font-size: 1.75rem; margin-bottom: 0.25rem;">Welcome Back</h2>
+                
+            </div>
+            
+            <!-- Login Form Card -->
+            <div class="card">
+                <div class="card-body" style="padding: 2rem;">
+                    <form method="POST" novalidate>
+                        {% csrf_token %}
+                        
+                        {% if form.non_field_errors %}
+                        <div class="alert alert-danger">
+                            <i class="fas fa-exclamation-circle"></i>
+                            {{ form.non_field_errors.0 }}
+                        </div>
+                        {% endif %}
+                        
+                        <!-- Email or Phone -->
+                        <div class="form-group">
+                            <label for="{{ form.username.id_for_label }}" class="form-label required">
+                                Email or Phone Number
+                            </label>
+                            <div style="position: relative;">
+                                <i class="fas fa-envelope" style="position: absolute; left: 0.875rem; top: 50%; transform: translateY(-50%); color: var(--gray-400); font-size: 0.875rem; z-index: 1;"></i>
+                                {{ form.username }}
+                            </div>
+                            {% if form.username.errors %}
+                            <div class="form-error">{{ form.username.errors.0 }}</div>
+                            {% endif %}
+                            
+                        </div>
+                        
+                        <!-- Password -->
+                        <div class="form-group">
+                            <div class="d-flex justify-between align-center mb-1">
+                                <label for="{{ form.password.id_for_label }}" class="form-label required" style="margin-bottom: 0;">
+                                    Password
+                                </label>
+                                <!-- <a href="#" style="font-size: 0.75rem; color: var(--primary); font-weight: 500;">Forgot Password?</a> -->
+                            </div>
+                            <div style="position: relative;">
+                                <i class="fas fa-lock" style="position: absolute; left: 0.875rem; top: 50%; transform: translateY(-50%); color: var(--gray-400); font-size: 0.875rem; z-index: 1;"></i>
+                                {{ form.password }}
+                            </div>
+                            {% if form.password.errors %}
+                            <div class="form-error">{{ form.password.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                        
+                        <!-- Remember Me -->
+                        <div class="d-flex justify-between align-center mb-4">
+                            <label class="form-check" style="font-size: 0.8125rem; margin-bottom: 0;">
+                                <input type="checkbox" class="form-check-input" name="remember">
+                                <span>Remember me</span>
+                            </label>
+                        </div>
+                        
+                        <!-- Submit Button -->
+                        <button type="submit" class="btn btn-primary btn-block btn-lg mb-3">
+                            <i class="fas fa-sign-in-alt"></i> Sign In
+                        </button>
+                        
+                        <!-- Divider -->
+                        <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+                            <hr style="flex: 1; border: none; border-top: 1px solid var(--gray-200);">
+                            <span style="color: var(--gray-400); font-size: 0.75rem;">OR</span>
+                            <hr style="flex: 1; border: none; border-top: 1px solid var(--gray-200);">
+                        </div>
+                        
+                        <!-- Register Link -->
+                        <p class="text-center mb-2" style="font-size: 0.875rem;">
+                            Don't have an account? 
+                            <a href="{% url 'users:register' %}" class="text-primary font-semibold">
+                                Create Account <i class="fas fa-arrow-right" style="font-size: 0.75rem;"></i>
+                            </a>
+                        </p>
+                        
+                        <!-- Staff Login Link -->
+                        <p class="text-center mb-0">
+                            <a href="{% url 'users:staff_login' %}" style="font-size: 0.8125rem; color: var(--gray-500);">
+                                <i class="fas fa-user-tie"></i> Staff Login
+                            </a>
+                        </p>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- Quick Info Cards -->
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem; margin-top: 1.5rem; text-align: center;">
+                <div style="background: var(--white); padding: 0.875rem 0.5rem; border-radius: var(--radius-md); border: 1px solid var(--gray-200);">
+                    <i class="fas fa-calendar-check" style="font-size: 1.125rem; color: var(--primary); margin-bottom: 0.25rem; display: block;"></i>
+                    <span style="font-size: 0.6875rem; color: var(--gray-600); font-weight: 500;">View Bookings</span>
+                </div>
+                <div style="background: var(--white); padding: 0.875rem 0.5rem; border-radius: var(--radius-md); border: 1px solid var(--gray-200);">
+                    <i class="fas fa-bed" style="font-size: 1.125rem; color: var(--warm); margin-bottom: 0.25rem; display: block;"></i>
+                    <span style="font-size: 0.6875rem; color: var(--gray-600); font-weight: 500;">Browse Rooms</span>
+                </div>
+                <div style="background: var(--white); padding: 0.875rem 0.5rem; border-radius: var(--radius-md); border: 1px solid var(--gray-200);">
+                    <i class="fas fa-tag" style="font-size: 1.125rem; color: var(--success); margin-bottom: 0.25rem; display: block;"></i>
+                    <span style="font-size: 0.6875rem; color: var(--gray-600); font-weight: 500;">Best Prices</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    /* Style form inputs with icons */
+    #{{ form.username.id_for_label }} {
+        padding-left: 2.5rem;
+    }
+    
+    #{{ form.password.id_for_label }} {
+        padding-left: 2.5rem;
+    }
+    
+    /* Make inputs full width */
+    .login-wrapper input[type="text"],
+    .login-wrapper input[type="email"],
+    .login-wrapper input[type="password"] {
+        width: 100%;
+        padding: 0.75rem 0.875rem;
+        font-size: 0.9375rem;
+        border: 2px solid var(--gray-300);
+        border-radius: var(--radius-md);
+        transition: all var(--transition-fast);
+    }
+    
+    .login-wrapper input:focus {
+        outline: none;
+        border-color: var(--primary);
+        box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.1);
+    }
+    
+    /* Responsive */
+    @media (max-width: 576px) {
+        .card-body {
+            padding: 1.5rem !important;
+        }
+        
+        .login-wrapper div[style*="grid-template-columns: repeat(3, 1fr)"] {
+            grid-template-columns: repeat(3, 1fr) !important;
+            gap: 0.5rem !important;
+        }
+    }
+
+    /* Checkbox styling */
+    .form-check-input {
+        width: 1rem;
+        height: 1rem;
+        accent-color: var(--primary);
+        cursor: pointer;
+    }
+    
+    .form-check {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        cursor: pointer;
+    }
+</style>
+{% endblock %}

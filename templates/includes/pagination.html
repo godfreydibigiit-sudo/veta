@@ -1,0 +1,48 @@
+{% if page_obj.has_other_pages %}
+<nav aria-label="Page navigation" class="pagination">
+    {% if page_obj.has_previous %}
+    <a href="?page=1{% if request.GET %}&{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}{% endif %}" 
+       class="page-link" aria-label="First">
+        <i class="fas fa-angle-double-left"></i>
+    </a>
+    <a href="?page={{ page_obj.previous_page_number }}{% if request.GET %}&{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}{% endif %}" 
+       class="page-link" aria-label="Previous">
+        <i class="fas fa-angle-left"></i>
+    </a>
+    {% else %}
+    <span class="page-link disabled">
+        <i class="fas fa-angle-double-left"></i>
+    </span>
+    <span class="page-link disabled">
+        <i class="fas fa-angle-left"></i>
+    </span>
+    {% endif %}
+    
+    {% for num in page_obj.paginator.page_range %}
+        {% if page_obj.number == num %}
+        <span class="page-link active">{{ num }}</span>
+        {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+        <a href="?page={{ num }}{% if request.GET %}&{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}{% endif %}" 
+           class="page-link">{{ num }}</a>
+        {% endif %}
+    {% endfor %}
+    
+    {% if page_obj.has_next %}
+    <a href="?page={{ page_obj.next_page_number }}{% if request.GET %}&{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}{% endif %}" 
+       class="page-link" aria-label="Next">
+        <i class="fas fa-angle-right"></i>
+    </a>
+    <a href="?page={{ page_obj.paginator.num_pages }}{% if request.GET %}&{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}{% endif %}" 
+       class="page-link" aria-label="Last">
+        <i class="fas fa-angle-double-right"></i>
+    </a>
+    {% else %}
+    <span class="page-link disabled">
+        <i class="fas fa-angle-right"></i>
+    </span>
+    <span class="page-link disabled">
+        <i class="fas fa-angle-double-right"></i>
+    </span>
+    {% endif %}
+</nav>
+{% endif %}

@@ -1,0 +1,177 @@
+{% extends 'guest/base_guest.html' %}
+{% load static %}
+
+{% block guest_title %}Booking {{ booking.reference_id }} - VETA Hotel{% endblock %}
+
+{% block guest_content %}
+<section class="py-5">
+    <div class="container">
+        <div class="container-sm">
+            
+            <!-- Back Link -->
+            <a href="{% url 'bookings:my_bookings' %}" class="btn btn-ghost mb-3">
+                <i class="fas fa-arrow-left"></i> Back to My Bookings
+            </a>
+            
+            <!-- Reference Header -->
+            <div class="booking-header mb-4">
+                <div class="d-flex justify-between align-center">
+                    <div>
+                        <p class="mb-1" style="opacity: 0.9;">Booking Reference</p>
+                        <div class="booking-reference" style="font-size: 1.25rem;">{{ booking.reference_id }}</div>
+                    </div>
+                    <div>
+                        <span class="badge badge-lg badge-{{ booking.get_status_badge_class }}" style="font-size: 0.875rem;">
+                            {{ booking.get_status_display }}
+                        </span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Status Flow -->
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h6 class="mb-3"><i class="fas fa-tasks text-primary"></i> Booking Progress</h6>
+                    <div class="booking-status-flow">
+                        <div class="status-step">
+                            <div class="status-dot {% if booking.status != 'cancelled' %}completed{% endif %}">
+                                <i class="fas fa-check"></i>
+                            </div>
+                            <div>
+                                <strong>Created</strong>
+                                <br><small>{{ booking.created_at|date:"d M H:i" }}</small>
+                            </div>
+                        </div>
+                        
+                        <div class="status-step">
+                            <div class="status-dot {% if booking.status in 'approved,checked_in,checked_out' %}completed{% elif booking.status == 'pending' %}active{% else %}inactive{% endif %}">
+                                {% if booking.status in 'approved,checked_in,checked_out' %}
+                                <i class="fas fa-check"></i>
+                                {% else %}
+                                <span>2</span>
+                                {% endif %}
+                            </div>
+                            <div>
+                                <strong>Approved</strong>
+                                {% if booking.approved_at %}
+                                <br><small>{{ booking.approved_at|date:"d M H:i" }}</small>
+                                {% endif %}
+                            </div>
+                        </div>
+                        
+                        <div class="status-step">
+                            <div class="status-dot {% if booking.status == 'checked_in' %}active{% elif booking.status == 'checked_out' %}completed{% else %}inactive{% endif %}">
+                                {% if booking.status == 'checked_out' %}
+                                <i class="fas fa-check"></i>
+                                {% else %}
+                                <span>3</span>
+                                {% endif %}
+                            </div>
+                            <div>
+                                <strong>Checked In</strong>
+                                {% if booking.checked_in_at %}
+                                <br><small>{{ booking.checked_in_at|date:"d M H:i" }}</small>
+                                {% endif %}
+                            </div>
+                        </div>
+                        
+                        <div class="status-step">
+                            <div class="status-dot {% if booking.status == 'checked_out' %}completed{% else %}inactive{% endif %}">
+                                {% if booking.status == 'checked_out' %}
+                                <i class="fas fa-check"></i>
+                                {% else %}
+                                <span>4</span>
+                                {% endif %}
+                            </div>
+                            <div>
+                                <strong>Checked Out</strong>
+                                {% if booking.checked_out_at %}
+                                <br><small>{{ booking.checked_out_at|date:"d M H:i" }}</small>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Booking Details -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0"><i class="fas fa-info-circle text-primary"></i> Booking Details</h5>
+                </div>
+                <div class="card-body">
+                    <div class="grid grid-2" style="gap: 1.5rem;">
+                        <div>
+                            <label class="text-muted" style="font-size: 0.75rem;">Room</label>
+                            <p class="font-semibold">Room {{ booking.room.room_number }} - {{ booking.room.get_room_type_display }}</p>
+                        </div>
+                        <div>
+                            <label class="text-muted" style="font-size: 0.75rem;">Guests</label>
+                            <p class="font-semibold">{{ booking.guest_count }} Guest(s)</p>
+                        </div>
+                        <div>
+                            <label class="text-muted" style="font-size: 0.75rem;">Check-in</label>
+                            <p class="font-semibold">{{ booking.check_in|date:"l, d F Y" }}</p>
+                        </div>
+                        <div>
+                            <label class="text-muted" style="font-size: 0.75rem;">Check-out</label>
+                            <p class="font-semibold">{{ booking.check_out|date:"l, d F Y" }}</p>
+                        </div>
+                        <div>
+                            <label class="text-muted" style="font-size: 0.75rem;">Duration</label>
+                            <p class="font-semibold">{{ booking.get_duration_display }}</p>
+                        </div>
+                        <div>
+                            <label class="text-muted" style="font-size: 0.75rem;">Total Amount</label>
+                            <p class="font-semibold" style="color: var(--primary); font-size: 1.125rem;">
+                                {{ booking.get_total_display }}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Timeline -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0"><i class="fas fa-history text-primary"></i> Timeline</h5>
+                </div>
+                <div class="card-body">
+                    <div class="timeline">
+                        {% for event in timeline %}
+                        <div class="timeline-item">
+                            <div class="timeline-time">{{ event.time|date:"d M Y H:i" }}</div>
+                            <div class="font-medium">
+                                {% if event.icon == 'plus-circle' %}
+                                <i class="fas fa-plus-circle text-primary"></i>
+                                {% elif event.icon == 'check-circle' %}
+                                <i class="fas fa-check-circle text-info"></i>
+                                {% elif event.icon == 'dollar-sign' %}
+                                <i class="fas fa-dollar-sign text-success"></i>
+                                {% elif event.icon == 'sign-in' %}
+                                <i class="fas fa-sign-in-alt text-primary"></i>
+                                {% elif event.icon == 'sign-out' %}
+                                <i class="fas fa-sign-out-alt text-success"></i>
+                                {% elif event.icon == 'times-circle' %}
+                                <i class="fas fa-times-circle text-danger"></i>
+                                {% endif %}
+                                {{ event.event }}
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Actions -->
+            {% if booking.can_cancel %}
+            <div class="text-center">
+                <a href="{% url 'bookings:cancel' booking.reference_id %}" class="btn btn-danger">
+                    <i class="fas fa-times-circle"></i> Cancel Booking
+                </a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</section>
+{% endblock %}

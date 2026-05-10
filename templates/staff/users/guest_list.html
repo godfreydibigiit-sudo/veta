@@ -1,0 +1,115 @@
+{% extends 'staff/base_staff.html' %}
+{% load static %}
+
+{% block staff_title %}Registered Guests - VETA Hotel{% endblock %}
+
+{% block staff_content %}
+<!-- Header -->
+<div class="d-flex justify-between align-center mb-4">
+    <div>
+        <h2 class="mb-1"><i class="fas fa-user-friends text-primary"></i> Registered Guests</h2>
+        <p class="text-muted">View all registered guest accounts</p>
+    </div>
+</div>
+
+<!-- Stats -->
+<div class="stats-grid mb-4">
+    <div class="stat-card">
+        <div class="stat-icon">
+            <i class="fas fa-user-friends"></i>
+        </div>
+        <div class="stat-value">{{ total_guests }}</div>
+        <div class="stat-label">Total Guests</div>
+    </div>
+</div>
+
+<!-- Guest List -->
+<div class="card">
+    <div class="card-header">
+        <div class="d-flex justify-between align-center">
+            <h5 class="mb-0">All Guests</h5>
+            <div>
+                <input type="text" 
+                       class="form-control" 
+                       placeholder="Search guests..." 
+                       style="width: 250px;"
+                       onkeyup="searchTable(this.value)">
+            </div>
+        </div>
+    </div>
+    
+    <div class="card-body p-0">
+        {% if guests %}
+        <div class="table-responsive">
+            <table class="table" id="guestTable">
+                <thead>
+                    <tr>
+                        <th>Guest</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Registered</th>
+                        <th>Bookings</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for guest in guests %}
+                    <tr>
+                        <td>
+                            <div class="d-flex align-center gap-2">
+                                <div style="width: 40px; height: 40px; background: var(--primary-bg); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 600; color: var(--primary);">
+                                    {{ guest.first_name|first }}{{ guest.last_name|first }}
+                                </div>
+                                <strong>{{ guest.get_full_name }}</strong>
+                            </div>
+                        </td>
+                        <td>
+                            <i class="fas fa-envelope text-muted"></i> {{ guest.email }}
+                        </td>
+                        <td>
+                            <i class="fas fa-phone text-muted"></i> {{ guest.phone }}
+                        </td>
+                        <td>{{ guest.date_joined|date:"d M Y" }}</td>
+                        <td>
+                            <span class="badge badge-primary">{{ guest.bookings.count }} booking(s)</span>
+                        </td>
+                        <td>
+                            <a href="{% url 'dashboard:user_detail' guest.pk %}" 
+                               class="btn btn-sm btn-outline-primary">
+                                <i class="fas fa-eye"></i> View
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div class="empty-state">
+            <i class="fas fa-user-friends"></i>
+            <h3>No Guests Registered</h3>
+            <p>Guests will appear here after registration.</p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    function searchTable(query) {
+        const table = document.getElementById('guestTable');
+        const rows = table.getElementsByTagName('tr');
+        
+        for (let i = 1; i < rows.length; i++) {
+            const row = rows[i];
+            const text = row.textContent.toLowerCase();
+            if (text.includes(query.toLowerCase())) {
+                row.style.display = '';
+            } else {
+                row.style.display = 'none';
+            }
+        }
+    }
+</script>
+{% endblock %}

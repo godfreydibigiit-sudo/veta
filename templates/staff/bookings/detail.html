@@ -1,0 +1,285 @@
+{% extends 'staff/base_staff.html' %}
+{% load static %}
+
+{% block staff_title %}Booking {{ booking.reference_id }} - VETA Hotel{% endblock %}
+
+{% block staff_content %}
+<div class="container-sm">
+    <!-- Back -->
+    <a href="{% url 'bookings:staff_list' %}" class="btn btn-ghost mb-3">
+        <i class="fas fa-arrow-left"></i> Back to Bookings
+    </a>
+    
+    <!-- Reference Header -->
+    <div class="booking-header mb-4">
+        <div class="d-flex justify-between align-start">
+            <div>
+                <p class="mb-1" style="opacity: 0.9;">Booking Reference</p>
+                <div class="booking-reference" style="font-size: 1.5rem;">{{ booking.reference_id }}</div>
+            </div>
+            <div class="d-flex gap-2">
+                <span class="badge badge-lg badge-{{ booking.get_status_badge_class }}" style="font-size: 0.875rem; padding: 0.5rem 1rem;">
+                    {{ booking.get_status_display }}
+                </span>
+                <span class="badge badge-lg badge-{{ booking.get_payment_badge_class }}" style="font-size: 0.875rem; padding: 0.5rem 1rem;">
+                    {{ booking.get_payment_status_display }}
+                </span>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Quick Actions -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <h6 class="mb-3"><i class="fas fa-bolt text-warm"></i> Quick Actions</h6>
+            <form method="POST" action="{% url 'bookings:staff_process' booking.reference_id %}" class="d-flex gap-2 flex-wrap">
+                {% csrf_token %}
+                
+                {% if booking.can_approve %}
+                <button type="submit" name="action" value="approve" class="btn btn-info">
+                    <i class="fas fa-check-circle"></i> Approve Booking
+                </button>
+                {% endif %}
+                
+                {% if booking.payment_status == 'unpaid' %}
+                <button type="submit" name="action" value="mark_paid" class="btn btn-success">
+                    <i class="fas fa-dollar-sign"></i> Mark as Paid
+                </button>
+                {% endif %}
+                
+                {% if booking.can_check_in and booking.payment_status == 'paid' %}
+                <button type="submit" name="action" value="check_in" class="btn btn-primary">
+                    <i class="fas fa-sign-in-alt"></i> Check In Guest
+                </button>
+                {% endif %}
+                
+                {% if booking.can_check_out %}
+                <button type="submit" name="action" value="check_out" class="btn btn-warm">
+                    <i class="fas fa-sign-out-alt"></i> Check Out Guest
+                </button>
+                {% endif %}
+                
+                {% if booking.can_cancel %}
+                <button type="button" class="btn btn-danger" onclick="showCancelModal()">
+                    <i class="fas fa-times-circle"></i> Cancel Booking
+                </button>
+                {% endif %}
+            </form>
+        </div>
+    </div>
+    
+    <!-- Main Details Grid -->
+    <div class="grid grid-2 mb-4" style="gap: 1.5rem;">
+        <!-- Guest Information -->
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="fas fa-user text-primary"></i> Guest Information</h5>
+            </div>
+            <div class="card-body">
+                <div class="d-flex align-center gap-3 mb-3">
+                    <div style="width: 60px; height: 60px; background: var(--primary-bg); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; color: var(--primary); font-weight: 700;">
+                        {{ booking.guest.first_name|first }}{{ booking.guest.last_name|first }}
+                    </div>
+                    <div>
+                        <h6 class="mb-1">{{ booking.guest.get_full_name }}</h6>
+                        <small class="text-muted">{{ booking.guest.email }}</small>
+                    </div>
+                </div>
+                <div class="mb-2">
+                    <label class="text-muted" style="font-size: 0.75rem;">Phone</label>
+                    <p class="font-medium">{{ booking.guest.phone }}</p>
+                </div>
+                {% if booking.guest.address %}
+                <div>
+                    <label class="text-muted" style="font-size: 0.75rem;">Address</label>
+                    <p class="font-medium">{{ booking.guest.address }}</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        
+        <!-- Room Information -->
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="fas fa-door-open text-primary"></i> Room Information</h5>
+            </div>
+            <div class="card-body">
+                <div class="mb-2">
+                    <label class="text-muted" style="font-size: 0.75rem;">Room</label>
+                    <p class="font-semibold">Room {{ booking.room.room_number }} - {{ booking.room.get_room_type_display }}</p>
+                </div>
+                <div class="mb-2">
+                    <label class="text-muted" style="font-size: 0.75rem;">Floor</label>
+                    <p class="font-semibold">{{ booking.room.floor }}</p>
+                </div>
+                <div>
+                    <label class="text-muted" style="font-size: 0.75rem;">Capacity</label>
+                    <p class="font-semibold">{{ booking.room.capacity }} Guest(s)</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Booking Details -->
+    <div class="card mb-4">
+        <div class="card-header">
+            <h5 class="mb-0"><i class="fas fa-info-circle text-primary"></i> Booking Details</h5>
+        </div>
+        <div class="card-body">
+            <div class="grid grid-3" style="gap: 1.5rem;">
+                <div>
+                    <label class="text-muted" style="font-size: 0.75rem;">Check-in</label>
+                    <p class="font-semibold">{{ booking.check_in|date:"l, d F Y" }}</p>
+                </div>
+                <div>
+                    <label class="text-muted" style="font-size: 0.75rem;">Check-out</label>
+                    <p class="font-semibold">{{ booking.check_out|date:"l, d F Y" }}</p>
+                </div>
+                <div>
+                    <label class="text-muted" style="font-size: 0.75rem;">Duration</label>
+                    <p class="font-semibold">{{ booking.get_duration_display }}</p>
+                </div>
+                <div>
+                    <label class="text-muted" style="font-size: 0.75rem;">Guests</label>
+                    <p class="font-semibold">{{ booking.guest_count }} Guest(s)</p>
+                </div>
+                <div>
+                    <label class="text-muted" style="font-size: 0.75rem;">Price per Night</label>
+                    <p class="font-semibold">{{ booking.get_price_per_night_display }}</p>
+                </div>
+                <div>
+                    <label class="text-muted" style="font-size: 0.75rem;">Total Amount</label>
+                    <p class="font-semibold" style="font-size: 1.25rem; color: var(--primary);">
+                        {{ booking.get_total_display }}
+                    </p>
+                </div>
+            </div>
+            
+            {% if booking.special_requests %}
+            <div class="mt-3 p-3" style="background: var(--warm-light); border-radius: var(--radius-md);">
+                <label class="text-muted" style="font-size: 0.75rem;">
+                    <i class="fas fa-star text-warm"></i> Special Requests
+                </label>
+                <p class="mb-0">{{ booking.special_requests }}</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    
+    <!-- Timeline -->
+    <div class="card mb-4">
+        <div class="card-header">
+            <h5 class="mb-0"><i class="fas fa-history text-primary"></i> Timeline</h5>
+        </div>
+        <div class="card-body">
+            <div class="timeline">
+                {% for event in timeline %}
+                <div class="timeline-item">
+                    <div class="timeline-time">{{ event.time|date:"d M Y H:i" }}</div>
+                    <div>
+                        {% if event.event == 'Booking Created' %}
+                            <i class="fas fa-plus-circle text-primary"></i>
+                        {% elif event.event == 'Booking Approved' %}
+                            <i class="fas fa-check-circle text-info"></i>
+                        {% elif event.event == 'Payment Received' %}
+                            <i class="fas fa-dollar-sign text-success"></i>
+                        {% elif event.event == 'Guest Checked In' %}
+                            <i class="fas fa-sign-in-alt text-primary"></i>
+                        {% elif event.event == 'Guest Checked Out' %}
+                            <i class="fas fa-sign-out-alt text-success"></i>
+                        {% elif event.event == 'Booking Cancelled' %}
+                            <i class="fas fa-times-circle text-danger"></i>
+                        {% endif %}
+                        {{ event.event }}
+                        {% if booking.processed_by %}
+                        <small class="text-muted">by {{ booking.processed_by.get_full_name }}</small>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    
+    <!-- Guest Booking History -->
+    {% if guest_bookings %}
+    <div class="card">
+        <div class="card-header">
+            <h5 class="mb-0"><i class="fas fa-history text-primary"></i> Previous Bookings by This Guest</h5>
+        </div>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Reference</th>
+                            <th>Room</th>
+                            <th>Dates</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for prev_booking in guest_bookings %}
+                        <tr>
+                            <td>
+                                <a href="{% url 'bookings:staff_detail' prev_booking.reference_id %}" 
+                                   style="font-family: var(--font-mono); color: var(--primary);">
+                                    {{ prev_booking.reference_id }}
+                                </a>
+                            </td>
+                            <td>Room {{ prev_booking.room.room_number }}</td>
+                            <td>{{ prev_booking.get_dates_display }}</td>
+                            <td>
+                                <span class="badge badge-{{ prev_booking.get_status_badge_class }}">
+                                    {{ prev_booking.get_status_display }}
+                                </span>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+<!-- Cancel Modal -->
+<div class="modal-overlay" id="cancelModal">
+    <div class="modal">
+        <div class="modal-header">
+            <h5 class="text-danger"><i class="fas fa-exclamation-triangle"></i> Cancel Booking</h5>
+            <button type="button" data-modal-close>
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <form method="POST" action="{% url 'bookings:staff_process' booking.reference_id %}">
+            {% csrf_token %}
+            <input type="hidden" name="action" value="cancel">
+            <div class="modal-body">
+                <p>Are you sure you want to cancel booking <strong>{{ booking.reference_id }}</strong>?</p>
+                <div class="form-group">
+                    <label class="form-label required">Cancellation Reason</label>
+                    <textarea name="reason" class="form-control" rows="3" required 
+                              placeholder="Provide a reason for cancellation..."></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light" data-modal-close>Keep Booking</button>
+                <button type="submit" class="btn btn-danger">
+                    <i class="fas fa-times-circle"></i> Cancel Booking
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    function showCancelModal() {
+        document.getElementById('cancelModal').classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+</script>
+{% endblock %}

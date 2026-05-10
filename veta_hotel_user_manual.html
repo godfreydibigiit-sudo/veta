@@ -1,0 +1,1170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VETA Hotel Booking System - User Manual</title>
+    <style>
+        :root {
+            --primary: #0d9488;
+            --primary-dark: #0f766e;
+            --warm: #f59e0b;
+            --white: #ffffff;
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-600: #4b5563;
+            --gray-700: #374151;
+            --gray-800: #1f2937;
+            --gray-900: #111827;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 11pt;
+            line-height: 1.7;
+            color: var(--gray-800);
+            background: var(--gray-50);
+        }
+
+        /* Cover Page */
+        .cover-page {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: var(--white);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 3rem;
+            page-break-after: always;
+        }
+
+        .cover-logo {
+            font-size: 5rem;
+            margin-bottom: 2rem;
+        }
+
+        .cover-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            letter-spacing: -0.02em;
+        }
+
+        .cover-subtitle {
+            font-size: 1.25rem;
+            opacity: 0.9;
+            margin-bottom: 3rem;
+            font-weight: 300;
+        }
+
+        .cover-line {
+            width: 100px;
+            height: 3px;
+            background: var(--warm);
+            margin: 0 auto 2rem;
+            border-radius: 2px;
+        }
+
+        .cover-info {
+            font-size: 0.9375rem;
+            opacity: 0.8;
+        }
+
+        .cover-info p {
+            margin-bottom: 0.5rem;
+        }
+
+        .cover-version {
+            margin-top: 2rem;
+            font-size: 0.75rem;
+            opacity: 0.6;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+
+        /* Page Layout */
+        .page {
+            background: var(--white);
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 3rem 2.5rem;
+            page-break-after: always;
+            box-shadow: 0 0 20px rgba(0,0,0,0.05);
+        }
+
+        .page:last-child {
+            page-break-after: avoid;
+        }
+
+        /* Typography */
+        h1 {
+            font-size: 1.75rem;
+            color: var(--primary-dark);
+            margin-bottom: 0.75rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid var(--primary);
+        }
+
+        h2 {
+            font-size: 1.375rem;
+            color: var(--primary-dark);
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        h3 {
+            font-size: 1.125rem;
+            color: var(--gray-700);
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+        }
+
+        p {
+            margin-bottom: 0.75rem;
+            color: var(--gray-600);
+        }
+
+        ul, ol {
+            margin-bottom: 1rem;
+            padding-left: 1.5rem;
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+            color: var(--gray-600);
+        }
+
+        /* Info Box */
+        .info-box {
+            background: #f0fdfa;
+            border-left: 4px solid var(--primary);
+            padding: 1rem 1.25rem;
+            margin: 1.25rem 0;
+            border-radius: 0 4px 4px 0;
+        }
+
+        .info-box.warning {
+            background: #fef3c7;
+            border-left-color: var(--warm);
+        }
+
+        .info-box.tip {
+            background: #f0f9ff;
+            border-left-color: #3b82f6;
+        }
+
+        .info-box strong {
+            color: var(--primary-dark);
+        }
+
+        .info-box.warning strong {
+            color: #92400e;
+        }
+
+        .info-box.tip strong {
+            color: #1e40af;
+        }
+
+        /* Steps */
+        .step {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .step-number {
+            width: 36px;
+            height: 36px;
+            background: var(--primary);
+            color: var(--white);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.875rem;
+            flex-shrink: 0;
+        }
+
+        .step-content h4 {
+            margin-bottom: 0.25rem;
+            color: var(--gray-800);
+        }
+
+        .step-content p {
+            font-size: 0.9375rem;
+        }
+
+        /* Table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.25rem 0;
+            font-size: 0.875rem;
+        }
+
+        th {
+            background: var(--primary);
+            color: var(--white);
+            padding: 0.625rem 0.875rem;
+            text-align: left;
+            font-weight: 600;
+            font-size: 0.8125rem;
+        }
+
+        td {
+            padding: 0.625rem 0.875rem;
+            border-bottom: 1px solid var(--gray-200);
+        }
+
+        tr:nth-child(even) td {
+            background: var(--gray-50);
+        }
+
+        /* Badge */
+        .badge {
+            display: inline-block;
+            padding: 0.125rem 0.5rem;
+            border-radius: 3px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .badge-green { background: #d1fae5; color: #065f46; }
+        .badge-yellow { background: #fef3c7; color: #92400e; }
+        .badge-red { background: #fee2e2; color: #991b1b; }
+        .badge-blue { background: #dbeafe; color: #1e40af; }
+
+        /* Table of Contents */
+        .toc {
+            margin: 2rem 0;
+        }
+
+        .toc-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            border-bottom: 1px dotted var(--gray-200);
+            color: var(--gray-600);
+        }
+
+        .toc-item strong {
+            color: var(--primary-dark);
+        }
+
+        /* Page Number */
+        .page-footer {
+            text-align: center;
+            margin-top: 3rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--gray-200);
+            font-size: 0.75rem;
+            color: var(--gray-400);
+        }
+
+        /* Print Styles */
+        @media print {
+            body {
+                background: white;
+            }
+
+            .page {
+                box-shadow: none;
+                max-width: 100%;
+                padding: 1.5rem;
+                page-break-after: always;
+            }
+
+            .cover-page {
+                min-height: 100vh;
+            }
+
+            @page {
+                margin: 1.5cm;
+                size: A4;
+            }
+
+            h1 {
+                break-after: avoid;
+            }
+
+            h2 {
+                break-after: avoid;
+            }
+
+            table {
+                break-inside: avoid;
+            }
+
+            .step {
+                break-inside: avoid;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ============================================ -->
+    <!-- COVER PAGE -->
+    <!-- ============================================ -->
+    
+
+    <!-- ============================================ -->
+    <!-- TABLE OF CONTENTS -->
+    <!-- ============================================ -->
+    <div class="page">
+        <h1>Table of Contents</h1>
+        
+        <h3>1. Introduction</h3>
+        <div class="toc">
+            <div class="toc-item"><span>1.1 About the System</span><span>3</span></div>
+            <div class="toc-item"><span>1.2 Who Should Use This Manual</span><span>3</span></div>
+            <div class="toc-item"><span>1.3 System Requirements</span><span>3</span></div>
+            <div class="toc-item"><span>1.4 Accessing the System</span><span>3</span></div>
+        </div>
+
+        <h3>2. Guest (Customer) Guide</h3>
+        <div class="toc">
+            <div class="toc-item"><span>2.1 Creating an Account</span><span>4</span></div>
+            <div class="toc-item"><span>2.2 Logging In</span><span>4</span></div>
+            <div class="toc-item"><span>2.3 Browsing Available Rooms</span><span>5</span></div>
+            <div class="toc-item"><span>2.4 Making a Booking</span><span>5</span></div>
+            <div class="toc-item"><span>2.5 Understanding Your Reference ID</span><span>6</span></div>
+            <div class="toc-item"><span>2.6 Viewing & Managing Bookings</span><span>6</span></div>
+            <div class="toc-item"><span>2.7 Cancelling a Booking</span><span>7</span></div>
+            <div class="toc-item"><span>2.8 Checking In at the Hotel</span><span>7</span></div>
+        </div>
+
+        <h3>3. Staff (Administrator) Guide</h3>
+        <div class="toc">
+            <div class="toc-item"><span>3.1 Staff Login</span><span>8</span></div>
+            <div class="toc-item"><span>3.2 Dashboard Overview</span><span>8</span></div>
+            <div class="toc-item"><span>3.3 Managing Rooms</span><span>9</span></div>
+            <div class="toc-item"><span>3.4 Managing Bookings</span><span>10</span></div>
+            <div class="toc-item"><span>3.5 Processing Payments</span><span>11</span></div>
+            <div class="toc-item"><span>3.6 Guest Check-In Process</span><span>11</span></div>
+            <div class="toc-item"><span>3.7 Guest Check-Out Process</span><span>12</span></div>
+            <div class="toc-item"><span>3.8 Searching for Guests</span><span>12</span></div>
+            <div class="toc-item"><span>3.9 Adding New Staff Members</span><span>13</span></div>
+        </div>
+
+        <h3>4. Reference</h3>
+        <div class="toc">
+            <div class="toc-item"><span>4.1 Booking Statuses Explained</span><span>14</span></div>
+            <div class="toc-item"><span>4.2 Payment Statuses Explained</span><span>14</span></div>
+            <div class="toc-item"><span>4.3 Room Statuses Explained</span><span>14</span></div>
+            <div class="toc-item"><span>4.4 Troubleshooting Common Issues</span><span>15</span></div>
+        </div>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- SECTION 1: INTRODUCTION -->
+    <!-- ============================================ -->
+    <div class="page">
+        <h1>1. Introduction</h1>
+
+        <h2>1.1 About the System</h2>
+        <p>The <strong>VETA Hotel Booking System</strong> is a web-based application designed to streamline hotel operations. It allows <strong>guests</strong> to browse rooms, make bookings online, and receive a unique reference ID for their reservation. <strong>Hotel staff</strong> can manage rooms, process bookings, handle payments, and track guest check-ins and check-outs from a centralized dashboard.</p>
+
+        <h2>1.2 Who Should Use This Manual</h2>
+        <ul>
+            <li><strong>Hotel Guests:</strong> Anyone who wants to browse rooms and make a booking.</li>
+            <li><strong>Front Desk Staff:</strong> Staff who process check-ins, check-outs, and payments.</li>
+            <li><strong>Hotel Managers:</strong> Administrators who manage rooms and staff accounts.</li>
+        </ul>
+
+        <h2>1.3 System Requirements</h2>
+        <ul>
+            <li>A computer, tablet, or smartphone with internet access</li>
+            <li>A modern web browser (Google Chrome, Mozilla Firefox, Microsoft Edge, or Safari)</li>
+            <li>JavaScript enabled in your browser</li>
+        </ul>
+
+        <h2>1.4 Accessing the System</h2>
+        <p>Open your web browser and navigate to the system URL provided by your hotel administrator. The homepage will display with options to browse rooms, register, or log in.</p>
+
+        <div class="info-box">
+            <strong>📌 Note:</strong> Staff accounts are created by the system administrator. If you are a staff member, you will receive your login credentials via email.
+        </div>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- SECTION 2: GUEST GUIDE -->
+    <!-- ============================================ -->
+    <div class="page">
+        <h1>2. Guest (Customer) Guide</h1>
+
+        <h2>2.1 Creating an Account</h2>
+        <p>To make a booking, you need to create a guest account:</p>
+        
+        <div class="step">
+            <div class="step-number">1</div>
+            <div class="step-content">
+                <h4>Click "Register"</h4>
+                <p>On the homepage, click the <strong>Register Now</strong> button or navigate to the Register page.</p>
+            </div>
+        </div>
+        
+        <div class="step">
+            <div class="step-number">2</div>
+            <div class="step-content">
+                <h4>Fill in Your Details</h4>
+                <p>Enter your first name, last name, email address, phone number (e.g., +255712345678), and password. Address is optional.</p>
+            </div>
+        </div>
+        
+        <div class="step">
+            <div class="step-number">3</div>
+            <div class="step-content">
+                <h4>Submit</h4>
+                <p>Agree to the terms and conditions and click <strong>Create Account</strong>. You will be automatically logged in.</p>
+            </div>
+        </div>
+
+        <div class="info-box tip">
+            <strong>💡 Tip:</strong> Use a valid phone number. You'll need it when checking in at the hotel.
+        </div>
+
+        <h2>2.2 Logging In</h2>
+        <div class="step">
+            <div class="step-number">1</div>
+            <div class="step-content">
+                <h4>Go to Login Page</h4>
+                <p>Click the <strong>Login</strong> link in the navigation menu.</p>
+            </div>
+        </div>
+        
+        <div class="step">
+            <div class="step-number">2</div>
+            <div class="step-content">
+                <h4>Enter Credentials</h4>
+                <p>Type your <strong>email address or phone number</strong> and your <strong>password</strong>.</p>
+            </div>
+        </div>
+        
+        <div class="step">
+            <div class="step-number">3</div>
+            <div class="step-content">
+                <h4>Sign In</h4>
+                <p>Click <strong>Sign In</strong>. You will be redirected to the homepage.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- GUEST GUIDE CONTINUED -->
+    <!-- ============================================ -->
+    <div class="page">
+        <h2>2.3 Browsing Available Rooms</h2>
+        <p>You can browse rooms with or without an account:</p>
+        
+        <div class="step">
+            <div class="step-number">1</div>
+            <div class="step-content">
+                <h4>Navigate to Rooms</h4>
+                <p>Click <strong>Browse Rooms</strong> from the homepage or navigation menu.</p>
+            </div>
+        </div>
+        
+        <div class="step">
+            <div class="step-number">2</div>
+            <div class="step-content">
+                <h4>Use Search Filters (Optional)</h4>
+                <p>Select your <strong>Check-in</strong> and <strong>Check-out</strong> dates, choose a room type, or set a maximum price to filter results.</p>
+            </div>
+        </div>
+        
+        <div class="step">
+            <div class="step-number">3</div>
+            <div class="step-content">
+                <h4>View Room Details</h4>
+                <p>Click <strong>View Details</strong> on any room card to see full information including images, features, and pricing.</p>
+            </div>
+        </div>
+
+        <h2>2.4 Making a Booking</h2>
+        <div class="step">
+            <div class="step-number">1</div>
+            <div class="step-content">
+                <h4>Select a Room</h4>
+                <p>From the room list or room detail page, click <strong>Book Now</strong> (you must be logged in).</p>
+            </div>
+        </div>
+        
+        <div class="step">
+            <div class="step-number">2</div>
+            <div class="step-content">
+                <h4>Fill Booking Form</h4>
+                <p>Confirm or change your <strong>check-in date</strong>, <strong>check-out date</strong>, and <strong>number of guests</strong>. Add any special requests if needed.</p>
+            </div>
+        </div>
+        
+        <div class="step">
+            <div class="step-number">3</div>
+            <div class="step-content">
+                <h4>Confirm Booking</h4>
+                <p>Review the price summary and click <strong>Confirm Booking</strong>.</p>
+            </div>
+        </div>
+        
+        <div class="step">
+            <div class="step-number">4</div>
+            <div class="step-content">
+                <h4>Save Your Reference ID</h4>
+                <p>You will receive a unique <strong>Reference ID</strong> (e.g., VETA-2026-0042). Save this number — you'll need it when you arrive at the hotel.</p>
+            </div>
+        </div>
+
+        <div class="info-box warning">
+            <strong>⚠️ Important:</strong> Your booking is initially marked as <span class="badge badge-yellow">Pending</span>. The hotel staff will approve it. Payment is processed at the hotel when you arrive.
+        </div>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- GUEST GUIDE CONTINUED -->
+    <!-- ============================================ -->
+    <div class="page">
+        <h2>2.5 Understanding Your Reference ID</h2>
+        <p>Your booking reference ID follows this format:</p>
+        
+        <div style="text-align: center; font-size: 1.5rem; font-weight: 700; font-family: monospace; color: var(--primary); margin: 1.5rem 0; padding: 1.5rem; background: #f0fdfa; border-radius: 8px; letter-spacing: 0.05em;">
+            VETA-2026-0042
+        </div>
+        
+        <table>
+            <tr>
+                <th>Part</th>
+                <th>Meaning</th>
+                <th>Example</th>
+            </tr>
+            <tr>
+                <td><strong>VETA</strong></td>
+                <td>Hotel identifier</td>
+                <td>VETA Hotel</td>
+            </tr>
+            <tr>
+                <td><strong>2026</strong></td>
+                <td>Year of booking</td>
+                <td>2026</td>
+            </tr>
+            <tr>
+                <td><strong>0042</strong></td>
+                <td>Unique sequence number</td>
+                <td>42nd booking of the year</td>
+            </tr>
+        </table>
+
+        <div class="info-box">
+            <strong>📌 Remember:</strong> You can provide either this reference ID <strong>OR</strong> your registered phone number when you arrive at the hotel.
+        </div>
+
+        <h2>2.6 Viewing & Managing Bookings</h2>
+        <div class="step">
+            <div class="step-number">1</div>
+            <div class="step-content">
+                <h4>Go to My Bookings</h4>
+                <p>Click <strong>My Bookings</strong> from the navigation menu (you must be logged in).</p>
+            </div>
+        </div>
+        
+        <div class="step">
+            <div class="step-number">2</div>
+            <div class="step-content">
+                <h4>Filter by Status (Optional)</h4>
+                <p>Use the filter tabs at the top to show only <strong>Pending</strong>, <strong>Approved</strong>, <strong>Checked In</strong>, or other statuses.</p>
+            </div>
+        </div>
+        
+        <div class="step">
+            <div class="step-number">3</div>
+            <div class="step-content">
+                <h4>View Details</h4>
+                <p>Click <strong>View Details</strong> on any booking to see the full timeline and status flow.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- GUEST GUIDE CONTINUED -->
+    <!-- ============================================ -->
+    <div class="page">
+        <h2>2.7 Cancelling a Booking</h2>
+        <p>You can cancel a booking as long as it hasn't been checked in yet:</p>
+        
+        <div class="step">
+            <div class="step-number">1</div>
+            <div class="step-content">
+                <h4>Open the Booking</h4>
+                <p>Go to <strong>My Bookings</strong> and find the booking you want to cancel.</p>
+            </div>
+        </div>
+        
+        <div class="step">
+            <div class="step-number">2</div>
+            <div class="step-content">
+                <h4>Click Cancel</h4>
+                <p>Click the <strong>Cancel</strong> button (only visible for bookings that can be cancelled).</p>
+            </div>
+        </div>
+        
+        <div class="step">
+            <div class="step-number">3</div>
+            <div class="step-content">
+                <h4>Provide Reason</h4>
+                <p>Type a brief reason for cancellation and click <strong>Yes, Cancel Booking</strong>.</p>
+            </div>
+        </div>
+
+        <div class="info-box warning">
+            <strong>⚠️ Note:</strong> Bookings that are already <span class="badge badge-blue">Checked In</span> cannot be cancelled online.
+        </div>
+
+        <h2>2.8 Checking In at the Hotel</h2>
+        <p>When you arrive at VETA Hotel, follow these steps:</p>
+        
+        <div class="step">
+            <div class="step-number">1</div>
+            <div class="step-content">
+                <h4>Visit Reception</h4>
+                <p>Go to the front desk with your identification.</p>
+            </div>
+        </div>
+        
+        <div class="step">
+            <div class="step-number">2</div>
+            <div class="step-content">
+                <h4>Provide Booking Information</h4>
+                <p>Give the staff your <strong>Reference ID</strong> (e.g., VETA-2026-0042) or your <strong>registered phone number</strong>.</p>
+            </div>
+        </div>
+        
+        <div class="step">
+            <div class="step-number">3</div>
+            <div class="step-content">
+                <h4>Make Payment</h4>
+                <p>Pay the booking amount at the reception. The staff will update your payment status in the system.</p>
+            </div>
+        </div>
+        
+        <div class="step">
+            <div class="step-number">4</div>
+            <div class="step-content">
+                <h4>Get Your Room Key</h4>
+                <p>Once payment is confirmed, the staff will check you in and provide your room key.</p>
+            </div>
+        </div>
+
+        <p><strong>Check-in time: 2:00 PM | Check-out time: 11:00 AM</strong></p>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- SECTION 3: STAFF GUIDE -->
+    <!-- ============================================ -->
+    <div class="page">
+        <h1>3. Staff (Administrator) Guide</h1>
+
+        <h2>3.1 Staff Login</h2>
+        <div class="step">
+            <div class="step-number">1</div>
+            <div class="step-content">
+                <h4>Access Staff Login</h4>
+                <p>On the guest login page, click the <strong>"Staff member?"</strong> link at the bottom. Alternatively, navigate to <code>/account/staff-login/</code>.</p>
+            </div>
+        </div>
+        
+        <div class="step">
+            <div class="step-number">2</div>
+            <div class="step-content">
+                <h4>Enter Credentials</h4>
+                <p>Type your <strong>staff email</strong> and <strong>password</strong> provided by your administrator.</p>
+            </div>
+        </div>
+        
+        <div class="step">
+            <div class="step-number">3</div>
+            <div class="step-content">
+                <h4>Access Dashboard</h4>
+                <p>After successful login, you will be redirected to the staff dashboard.</p>
+            </div>
+        </div>
+
+        <div class="info-box">
+            <strong>📌 Note:</strong> Staff accounts are created by the system administrator. Contact your manager if you need an account.
+        </div>
+
+        <h2>3.2 Dashboard Overview</h2>
+        <p>The dashboard provides a <strong>live overview</strong> of hotel operations:</p>
+        
+        <table>
+            <tr>
+                <th>Section</th>
+                <th>What It Shows</th>
+            </tr>
+            <tr>
+                <td><strong>Available Rooms</strong></td>
+                <td>Number of rooms currently available for booking</td>
+            </tr>
+            <tr>
+                <td><strong>Occupied Rooms</strong></td>
+                <td>Number of rooms currently occupied by guests</td>
+            </tr>
+            <tr>
+                <td><strong>Checked In Today</strong></td>
+                <td>Guests who checked in today</td>
+            </tr>
+            <tr>
+                <td><strong>Today's Revenue</strong></td>
+                <td>Total payments received today (TZS)</td>
+            </tr>
+            <tr>
+                <td><strong>Pending Bookings</strong></td>
+                <td>New bookings awaiting approval</td>
+            </tr>
+            <tr>
+                <td><strong>Currently In-house</strong></td>
+                <td>List of guests currently checked in</td>
+            </tr>
+            <tr>
+                <td><strong>Upcoming Check-ins</strong></td>
+                <td>Guests expected to arrive tomorrow</td>
+            </tr>
+            <tr>
+                <td><strong>Quick Search</strong></td>
+                <td>Find a guest by phone number or reference ID</td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- STAFF GUIDE CONTINUED -->
+    <!-- ============================================ -->
+    <div class="page">
+        <h2>3.3 Managing Rooms</h2>
+        <p>From the sidebar, click <strong>Manage Rooms</strong> to view all rooms.</p>
+
+        <h3>Adding a New Room</h3>
+        <div class="step">
+            <div class="step-number">1</div>
+            <div class="step-content">
+                <h4>Click "Add New Room"</h4>
+                <p>On the Rooms page, click the <strong>Add New Room</strong> button.</p>
+            </div>
+        </div>
+        
+        <div class="step">
+            <div class="step-number">2</div>
+            <div class="step-content">
+                <h4>Fill Room Details</h4>
+                <p>Enter the <strong>room number</strong>, select <strong>room type</strong>, set <strong>floor</strong>, <strong>price per night (TZS)</strong>, and <strong>capacity</strong>.</p>
+            </div>
+        </div>
+        
+        <div class="step">
+            <div class="step-number">3</div>
+            <div class="step-content">
+                <h4>Upload Image (Optional)</h4>
+                <p>Add a photo of the room (recommended for better guest experience).</p>
+            </div>
+        </div>
+        
+        <div class="step">
+            <div class="step-number">4</div>
+            <div class="step-content">
+                <h4>Set Status & Save</h4>
+                <p>Set the room status to <strong>Available</strong> and click <strong>Add Room</strong>.</p>
+            </div>
+        </div>
+
+        <h3>Updating Room Status</h3>
+        <table>
+            <tr>
+                <th>Status</th>
+                <th>When to Use</th>
+            </tr>
+            <tr>
+                <td><span class="badge badge-green">Available</span></td>
+                <td>Room is ready for booking</td>
+            </tr>
+            <tr>
+                <td><span class="badge badge-red">Occupied</span></td>
+                <td>Guest is currently staying in the room (auto-set during check-in)</td>
+            </tr>
+            <tr>
+                <td><span class="badge badge-yellow">Maintenance</span></td>
+                <td>Room is under repair or cleaning (not bookable)</td>
+            </tr>
+            <tr>
+                <td><span class="badge badge-blue">Reserved</span></td>
+                <td>Room is held for an approved booking (auto-set during approval)</td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- STAFF GUIDE CONTINUED -->
+    <!-- ============================================ -->
+    <div class="page">
+        <h2>3.4 Managing Bookings</h2>
+        <p>From the sidebar, click <strong>All Bookings</strong> to view and manage all bookings.</p>
+
+        <p>You can filter bookings by:</p>
+        <ul>
+            <li><strong>Search:</strong> By reference ID, guest name, or phone number</li>
+            <li><strong>Status:</strong> Pending, Approved, Checked In, Checked Out, Cancelled</li>
+            <li><strong>Date Range:</strong> Filter by check-in/check-out dates</li>
+        </ul>
+
+        <h3>Approving a Booking</h3>
+        <div class="step">
+            <div class="step-number">1</div>
+            <div class="step-content">
+                <h4>Open the Booking</h4>
+                <p>Click on a booking from the list to view its details.</p>
+            </div>
+        </div>
+        
+        <div class="step">
+            <div class="step-number">2</div>
+            <div class="step-content">
+                <h4>Click "Approve Booking"</h4>
+                <p>In the Quick Actions section, click the <strong>Approve Booking</strong> button.</p>
+            </div>
+        </div>
+        
+        <div class="step">
+            <div class="step-number">3</div>
+            <div class="step-content">
+                <h4>Status Changes</h4>
+                <p>The booking status changes to <span class="badge badge-blue">Approved</span> and the room is marked as <span class="badge badge-blue">Reserved</span>.</p>
+            </div>
+        </div>
+
+        <h3>Booking Status Flow</h3>
+        <div style="text-align: center; font-size: 0.9375rem; margin: 1.5rem 0; padding: 1.5rem; background: #f0fdfa; border-radius: 8px;">
+            <strong>Pending</strong> → <strong>Approved</strong> → <strong>Paid</strong> → <strong>Checked In</strong> → <strong>Checked Out</strong>
+        </div>
+        <p style="text-align: center; font-size: 0.8125rem; color: var(--gray-600);">(Cancellation is possible at Pending or Approved stages)</p>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- STAFF GUIDE CONTINUED -->
+    <!-- ============================================ -->
+    <div class="page">
+        <h2>3.5 Processing Payments</h2>
+        <p>Payments are processed when the guest arrives at the hotel:</p>
+
+        <div class="step">
+            <div class="step-number">1</div>
+            <div class="step-content">
+                <h4>Find the Booking</h4>
+                <p>Search for the guest using their <strong>Reference ID</strong> or <strong>phone number</strong>.</p>
+            </div>
+        </div>
+        
+        <div class="step">
+            <div class="step-number">2</div>
+            <div class="step-content">
+                <h4>Open Booking Details</h4>
+                <p>Click on the booking to view full details including the total amount.</p>
+            </div>
+        </div>
+        
+        <div class="step">
+            <div class="step-number">3</div>
+            <div class="step-content">
+                <h4>Collect Payment</h4>
+                <p>Receive payment from the guest (cash, card, mobile money, etc.).</p>
+            </div>
+        </div>
+        
+        <div class="step">
+            <div class="step-number">4</div>
+            <div class="step-content">
+                <h4>Mark as Paid</h4>
+                <p>Click the <strong>Mark as Paid</strong> button. The payment status changes to <span class="badge badge-green">Paid</span>.</p>
+            </div>
+        </div>
+
+        <div class="info-box warning">
+            <strong>⚠️ Important:</strong> The <strong>Check In</strong> option only becomes available after the payment has been marked as Paid.
+        </div>
+
+        <h2>3.6 Guest Check-In Process</h2>
+        <div class="step">
+            <div class="step-number">1</div>
+            <div class="step-content">
+                <h4>Verify Payment</h4>
+                <p>Ensure the booking payment status is <span class="badge badge-green">Paid</span>.</p>
+            </div>
+        </div>
+        
+        <div class="step">
+            <div class="step-number">2</div>
+            <div class="step-content">
+                <h4>Click "Check In Guest"</h4>
+                <p>In the Quick Actions section, click <strong>Check In Guest</strong>.</p>
+            </div>
+        </div>
+        
+        <div class="step">
+            <div class="step-number">3</div>
+            <div class="step-content">
+                <h4>Confirm</h4>
+                <p>The booking status changes to <span class="badge badge-green">Checked In</span> and the room status becomes <span class="badge badge-red">Occupied</span>.</p>
+            </div>
+        </div>
+        
+        <div class="step">
+            <div class="step-number">4</div>
+            <div class="step-content">
+                <h4>Give Room Key</h4>
+                <p>Provide the guest with their room key and direct them to their room.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- STAFF GUIDE CONTINUED -->
+    <!-- ============================================ -->
+    <div class="page">
+        <h2>3.7 Guest Check-Out Process</h2>
+        <div class="step">
+            <div class="step-number">1</div>
+            <div class="step-content">
+                <h4>Find the Guest</h4>
+                <p>Search for the guest or find them in the <strong>Currently In-house</strong> list on the dashboard.</p>
+            </div>
+        </div>
+        
+        <div class="step">
+            <div class="step-number">2</div>
+            <div class="step-content">
+                <h4>Open Booking</h4>
+                <p>Click on the booking to view details.</p>
+            </div>
+        </div>
+        
+        <div class="step">
+            <div class="step-number">3</div>
+            <div class="step-content">
+                <h4>Click "Check Out Guest"</h4>
+                <p>Click the <strong>Check Out Guest</strong> button (warm/golden color).</p>
+            </div>
+        </div>
+        
+        <div class="step">
+            <div class="step-number">4</div>
+            <div class="step-content">
+                <h4>Confirmation</h4>
+                <p>The booking status changes to <span class="badge badge-green">Checked Out</span> and the room becomes <span class="badge badge-green">Available</span> again.</p>
+            </div>
+        </div>
+        
+        <div class="step">
+            <div class="step-number">5</div>
+            <div class="step-content">
+                <h4>Collect Key</h4>
+                <p>Collect the room key from the guest before they leave.</p>
+            </div>
+        </div>
+
+        <h2>3.8 Searching for Guests</h2>
+        <p>You can search for guests in two ways:</p>
+        
+        <h3>Method 1: Quick Search (Dashboard)</h3>
+        <p>Use the search box at the bottom of the dashboard page. Enter a <strong>phone number</strong> or <strong>reference ID</strong>.</p>
+        
+        <h3>Method 2: Advanced Search</h3>
+        <p>Click <strong>Search Guest</strong> in the sidebar. Enter a phone number or reference ID and click <strong>Search</strong>. The system will display the guest's information and all their bookings.</p>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- STAFF GUIDE CONTINUED -->
+    <!-- ============================================ -->
+    <div class="page">
+        <h2>3.9 Adding New Staff Members</h2>
+        <p>Only administrators can add new staff accounts:</p>
+
+        <div class="step">
+            <div class="step-number">1</div>
+            <div class="step-content">
+                <h4>Navigate to Staff List</h4>
+                <p>From the sidebar, click <strong>Staff List</strong> (available to admins only).</p>
+            </div>
+        </div>
+        
+        <div class="step">
+            <div class="step-number">2</div>
+            <div class="step-content">
+                <h4>Click "Add Staff"</h4>
+                <p>Click the <strong>Add Staff</strong> button at the top.</p>
+            </div>
+        </div>
+        
+        <div class="step">
+            <div class="step-number">3</div>
+            <div class="step-content">
+                <h4>Enter Staff Details</h4>
+                <p>Fill in the staff member's name, email, phone, position, and set a password.</p>
+            </div>
+        </div>
+        
+        <div class="step">
+            <div class="step-number">4</div>
+            <div class="step-content">
+                <h4>Create Account</h4>
+                <p>Click <strong>Create Staff Account</strong>. The staff member can now log in using their email and the password you set.</p>
+            </div>
+        </div>
+
+        <div class="info-box tip">
+            <strong>💡 Best Practice:</strong> Create individual accounts for each staff member. Set unique passwords and ask staff to change them on first login. Deactivate staff accounts when employees leave.
+        </div>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- SECTION 4: REFERENCE -->
+    <!-- ============================================ -->
+    <div class="page">
+        <h1>4. Reference</h1>
+
+        <h2>4.1 Booking Statuses Explained</h2>
+        <table>
+            <tr>
+                <th>Status</th>
+                <th>Meaning</th>
+                <th>Next Step</th>
+            </tr>
+            <tr>
+                <td><span class="badge badge-yellow">Pending</span></td>
+                <td>Booking created, awaiting staff approval</td>
+                <td>Staff needs to approve</td>
+            </tr>
+            <tr>
+                <td><span class="badge badge-blue">Approved</span></td>
+                <td>Booking confirmed by staff</td>
+                <td>Guest arrives and pays</td>
+            </tr>
+            <tr>
+                <td><span class="badge badge-green">Checked In</span></td>
+                <td>Guest is currently in the room</td>
+                <td>Guest checks out</td>
+            </tr>
+            <tr>
+                <td><span class="badge badge-green">Checked Out</span></td>
+                <td>Guest has left, booking complete</td>
+                <td>No further action</td>
+            </tr>
+            <tr>
+                <td><span class="badge badge-red">Cancelled</span></td>
+                <td>Booking was cancelled</td>
+                <td>No further action</td>
+            </tr>
+        </table>
+
+        <h2>4.2 Payment Statuses Explained</h2>
+        <table>
+            <tr>
+                <th>Status</th>
+                <th>Meaning</th>
+            </tr>
+            <tr>
+                <td><span class="badge badge-red">Unpaid</span></td>
+                <td>Payment not yet received from guest</td>
+            </tr>
+            <tr>
+                <td><span class="badge badge-green">Paid</span></td>
+                <td>Payment received and confirmed by staff</td>
+            </tr>
+            <tr>
+                <td><span class="badge badge-yellow">Partial</span></td>
+                <td>Partial payment received</td>
+            </tr>
+            <tr>
+                <td><span class="badge badge-blue">Refunded</span></td>
+                <td>Payment has been returned to guest</td>
+            </tr>
+        </table>
+
+        <h2>4.3 Room Statuses Explained</h2>
+        <table>
+            <tr>
+                <th>Status</th>
+                <th>Meaning</th>
+            </tr>
+            <tr>
+                <td><span class="badge badge-green">Available</span></td>
+                <td>Room is ready and can be booked</td>
+            </tr>
+            <tr>
+                <td><span class="badge badge-red">Occupied</span></td>
+                <td>Guest is currently staying in the room</td>
+            </tr>
+            <tr>
+                <td><span class="badge badge-yellow">Maintenance</span></td>
+                <td>Room is under repair, not bookable</td>
+            </tr>
+            <tr>
+                <td><span class="badge badge-blue">Reserved</span></td>
+                <td>Room is set aside for an approved booking</td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- TROUBLESHOOTING -->
+    <!-- ============================================ -->
+    <div class="page">
+        <h2>4.4 Troubleshooting Common Issues</h2>
+
+        <h3>Issue: "Cannot check in guest"</h3>
+        <div class="info-box warning">
+            <strong>Solution:</strong> Ensure the booking is <span class="badge badge-blue">Approved</span> AND has <span class="badge badge-green">Paid</span> payment status. The Check In button only appears when both conditions are met.
+        </div>
+
+        <h3>Issue: "Room is not available for selected dates"</h3>
+        <div class="info-box">
+            <strong>Solution:</strong> The room is already booked for these dates. Try different dates or select a different room. The system prevents double-booking automatically.
+        </div>
+
+        <h3>Issue: "Cannot find a guest"</h3>
+        <div class="info-box">
+            <strong>Solution:</strong> Try searching with the guest's <strong>phone number</strong> instead of the reference ID, or vice versa. Ensure the number matches what the guest used during registration.
+        </div>
+
+        <h3>Issue: "Forgot password"</h3>
+        <div class="info-box">
+            <strong>Solution:</strong> Staff members should contact the system administrator to reset their password. Guest users should contact hotel reception for assistance.
+        </div>
+
+        <h3>Issue: "Page not loading properly"</h3>
+        <div class="info-box">
+            <strong>Solution:</strong> Clear your browser cache and cookies, then refresh the page. Ensure you have a stable internet connection. If the problem persists, try using a different browser (Chrome is recommended).
+        </div>
+
+        <h3>Issue: "Room image not displaying"</h3>
+        <div class="info-box">
+            <strong>Solution:</strong> This is usually a temporary loading issue. Refresh the page. If the problem continues, the image file may not have been uploaded correctly. Re-upload the room image from the Staff Room Management page.
+        </div>
+
+        <div style="margin-top: 3rem; padding-top: 1.5rem; border-top: 2px solid var(--gray-200); text-align: center;">
+            <h3 style="color: var(--primary-dark);">Need Further Assistance?</h3>
+            <p style="margin-top: 0.5rem;">Contact your system administrator or hotel management for support.</p>
+        </div>
+
+        <div class="page-footer">
+            VETA Hotel Booking System - User Manual v1.0 | May 2026 | Confidential Document
+        </div>
+    </div>
+
+</body>
+</html>

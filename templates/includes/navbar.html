@@ -1,0 +1,165 @@
+{% load static %}
+
+<nav class="navbar" role="navigation" aria-label="Main navigation">
+    <div class="navbar-container">
+        <!-- Brand -->
+        <a href="{% url 'home' %}" class="navbar-brand">
+            <i class="fas fa-hotel"></i>
+            <span class="hide-mobile">VETA Hotel</span>
+        </a>
+        
+        <button class="navbar-toggle" aria-label="Toggle menu">
+            <i class="fas fa-bars"></i>
+        </button>
+        
+        <!-- Navigation Links -->
+        <ul class="navbar-nav">
+            {% if user.is_authenticated %}
+                {% if user.is_staff_user %}
+                    <!-- Staff Navigation -->
+                    <li>
+                        <a href="{% url 'dashboard:index' %}" class="nav-link">
+                            <i class="fas fa-tachometer-alt"></i> Dashboard
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{% url 'bookings:staff_list' %}" class="nav-link">
+                            <i class="fas fa-calendar-check"></i> Bookings
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{% url 'rooms:staff_list' %}" class="nav-link">
+                            <i class="fas fa-door-open"></i> Rooms
+                        </a>
+                    </li>
+                    
+                    <!-- User Dropdown -->
+                    <li class="nav-item dropdown">
+                        <a href="#" class="nav-link" id="userDropdown">
+                            <i class="fas fa-user-circle"></i>
+                            {{ user.first_name }}
+                            <i class="fas fa-chevron-down" style="font-size: 0.625rem; margin-left: 0.25rem;"></i>
+                        </a>
+                        <div class="dropdown-menu">
+                            <a href="{% url 'users:profile' %}" class="dropdown-item">
+                                <i class="fas fa-user"></i> Profile
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <a href="{% url 'users:logout' %}" class="dropdown-item text-danger">
+                                <i class="fas fa-sign-out-alt"></i> Logout
+                            </a>
+                        </div>
+                    </li>
+                {% else %}
+                    <!-- Guest Navigation -->
+                    <li>
+                        <a href="{% url 'rooms:list' %}" class="nav-link">
+                            <i class="fas fa-bed"></i> Browse Rooms
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{% url 'bookings:my_bookings' %}" class="nav-link">
+                            <i class="fas fa-list"></i> My Bookings
+                        </a>
+                    </li>
+                    
+                    <!-- User Dropdown -->
+                    <li class="nav-item dropdown">
+                        <a href="#" class="nav-link" id="userDropdown">
+                            <i class="fas fa-user-circle"></i>
+                            {{ user.first_name }}
+                            <i class="fas fa-chevron-down" style="font-size: 0.625rem; margin-left: 0.25rem;"></i>
+                        </a>
+                        <div class="dropdown-menu">
+                            <a href="{% url 'users:profile' %}" class="dropdown-item">
+                                <i class="fas fa-user"></i> Profile
+                            </a>
+                            <a href="{% url 'bookings:my_bookings' %}" class="dropdown-item">
+                                <i class="fas fa-list"></i> My Bookings
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <a href="{% url 'users:logout' %}" class="dropdown-item text-danger">
+                                <i class="fas fa-sign-out-alt"></i> Logout
+                            </a>
+                        </div>
+                    </li>
+                {% endif %}
+            {% else %}
+                <!-- Not Authenticated -->
+                <li>
+                    <a href="{% url 'rooms:list' %}" class="nav-link">
+                        <i class="fas fa-bed"></i> Rooms
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'users:login' %}" class="nav-link">
+                        <i class="fas fa-sign-in-alt"></i> Login
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'users:register' %}" class="btn btn-primary btn-sm">
+                        <i class="fas fa-user-plus"></i> Register
+                    </a>
+                </li>
+            {% endif %}
+        </ul>
+    </div>
+</nav>
+
+<!-- Dropdown Styles -->
+<style>
+    .nav-item.dropdown {
+        position: relative;
+    }
+    
+    .dropdown-menu {
+        display: none;
+        position: absolute;
+        top: 100%;
+        right: 0;
+        background: white;
+        min-width: 200px;
+        border-radius: var(--radius-md);
+        box-shadow: var(--shadow-lg);
+        border: 1px solid var(--gray-200);
+        padding: 0.5rem 0;
+        z-index: 1000;
+        animation: dropdownFade 0.2s ease;
+    }
+    
+    @keyframes dropdownFade {
+        from {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    .nav-item.dropdown:hover .dropdown-menu {
+        display: block;
+    }
+    
+    .dropdown-item {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 0.625rem 1.25rem;
+        color: var(--gray-600);
+        font-size: 0.875rem;
+        text-decoration: none;
+        transition: all var(--transition-fast);
+    }
+    
+    .dropdown-item:hover {
+        background: var(--gray-50);
+        color: var(--primary);
+    }
+    
+    .dropdown-divider {
+        border-top: 1px solid var(--gray-200);
+        margin: 0.25rem 0;
+    }
+</style>

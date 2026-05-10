@@ -1,0 +1,116 @@
+{% extends 'staff/base_staff.html' %}
+{% load static %}
+
+{% block staff_title %}Create Staff Account - VETA Hotel{% endblock %}
+
+{% block staff_content %}
+<div class="container-sm">
+    <!-- Header -->
+    <div class="mb-4">
+        <a href="{% url 'dashboard:staff_list' %}" class="btn btn-ghost mb-3">
+            <i class="fas fa-arrow-left"></i> Back to Staff List
+        </a>
+        <h2 class="mb-1"><i class="fas fa-user-plus text-primary"></i> Create Staff Account</h2>
+        <p class="text-muted">Add a new staff member to the system</p>
+    </div>
+    
+    <!-- Form Card -->
+    <div class="card">
+        <div class="card-body">
+            <form method="POST" novalidate>
+                {% csrf_token %}
+                
+                <div class="row mb-3">
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="{{ form.first_name.id_for_label }}" class="form-label required">
+                                <i class="fas fa-user"></i> First Name
+                            </label>
+                            {{ form.first_name }}
+                            {% if form.first_name.errors %}
+                            <div class="form-error">{{ form.first_name.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="{{ form.last_name.id_for_label }}" class="form-label required">
+                                <i class="fas fa-user"></i> Last Name
+                            </label>
+                            {{ form.last_name }}
+                            {% if form.last_name.errors %}
+                            <div class="form-error">{{ form.last_name.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group mb-3">
+                    <label for="{{ form.email.id_for_label }}" class="form-label required">
+                        <i class="fas fa-envelope"></i> Email Address
+                    </label>
+                    {{ form.email }}
+                    {% if form.email.errors %}
+                    <div class="form-error">{{ form.email.errors.0 }}</div>
+                    {% endif %}
+                    <div class="form-text">Staff login credentials will be sent to this email</div>
+                </div>
+                
+                <div class="form-group mb-3">
+                    <label for="{{ form.phone.id_for_label }}" class="form-label required">
+                        <i class="fas fa-phone"></i> Phone Number
+                    </label>
+                    {{ form.phone }}
+                    {% if form.phone.errors %}
+                    <div class="form-error">{{ form.phone.errors.0 }}</div>
+                    {% endif %}
+                </div>
+                
+                <div class="form-group mb-3">
+                    <label for="{{ form.position.id_for_label }}" class="form-label">
+                        <i class="fas fa-briefcase"></i> Position
+                    </label>
+                    {{ form.position }}
+                    {% if form.position.errors %}
+                    <div class="form-error">{{ form.position.errors.0 }}</div>
+                    {% endif %}
+                </div>
+                
+                <div class="row mb-4">
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="{{ form.password1.id_for_label }}" class="form-label required">
+                                <i class="fas fa-lock"></i> Password
+                            </label>
+                            {{ form.password1 }}
+                            {% if form.password1.errors %}
+                            <div class="form-error">{{ form.password1.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="{{ form.password2.id_for_label }}" class="form-label required">
+                                <i class="fas fa-lock"></i> Confirm Password
+                            </label>
+                            {{ form.password2 }}
+                            {% if form.password2.errors %}
+                            <div class="form-error">{{ form.password2.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="d-flex gap-2 justify-end">
+                    <a href="{% url 'dashboard:staff_list' %}" class="btn btn-light">
+                        <i class="fas fa-times"></i> Cancel
+                    </a>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-user-plus"></i> Create Staff Account
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

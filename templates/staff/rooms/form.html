@@ -1,0 +1,171 @@
+{% extends 'staff/base_staff.html' %}
+{% load static %}
+
+{% block staff_title %}{{ title }} - VETA Hotel{% endblock %}
+
+{% block staff_content %}
+<div class="container-sm">
+    <!-- Header -->
+    <div class="mb-4">
+        <a href="{% url 'rooms:staff_list' %}" class="btn btn-ghost mb-3">
+            <i class="fas fa-arrow-left"></i> Back to Rooms
+        </a>
+        <h2 class="mb-1"> {{ title }}</h2>
+       
+    </div>
+    
+    <!-- Form Card -->
+    <div class="card">
+        <div class="card-body">
+            <form method="POST" enctype="multipart/form-data" class="room-form">
+                {% csrf_token %}
+                
+                <!-- Room Number & Floor -->
+                <div class="row mb-3">
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="{{ form.room_number.id_for_label }}" class="form-label required">
+                                <i class="fas fa-hashtag"></i> Room Number
+                            </label>
+                            {{ form.room_number }}
+                            {% if form.room_number.errors %}
+                            <div class="form-error">{{ form.room_number.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="{{ form.floor.id_for_label }}" class="form-label required">
+                                <i class="fas fa-building"></i> Floor
+                            </label>
+                            {{ form.floor }}
+                            {% if form.floor.errors %}
+                            <div class="form-error">{{ form.floor.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Room Type & Capacity -->
+                <div class="row mb-3">
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="{{ form.room_type.id_for_label }}" class="form-label required">
+                                <i class="fas fa-tag"></i> Room Type
+                            </label>
+                            {{ form.room_type }}
+                            {% if form.room_type.errors %}
+                            <div class="form-error">{{ form.room_type.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="{{ form.capacity.id_for_label }}" class="form-label required">
+                                <i class="fas fa-user"></i> Capacity
+                            </label>
+                            {{ form.capacity }}
+                            {% if form.capacity.errors %}
+                            <div class="form-error">{{ form.capacity.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Price -->
+                <div class="form-group mb-3">
+                    <label for="{{ form.price_per_night.id_for_label }}" class="form-label required">
+                        <i class="fas fa-tag"></i> Price per Night (TZS)
+                    </label>
+                    <div class="input-group">
+                        <span class="input-group-text" style="background: var(--gray-100); padding: 0.625rem 0.875rem; border: 2px solid var(--gray-300); border-right: none; border-radius: var(--radius-md) 0 0 var(--radius-md); color: var(--gray-600); font-size: 0.875rem;">
+                            TZS
+                        </span>
+                        {{ form.price_per_night }}
+                    </div>
+                    {% if form.price_per_night.errors %}
+                    <div class="form-error">{{ form.price_per_night.errors.0 }}</div>
+                    {% endif %}
+                </div>
+                
+                <!-- Description -->
+                <div class="form-group mb-3">
+                    <label for="{{ form.description.id_for_label }}" class="form-label">
+                        <i class="fas fa-align-left"></i> Description
+                    </label>
+                    {{ form.description }}
+                    {% if form.description.errors %}
+                    <div class="form-error">{{ form.description.errors.0 }}</div>
+                    {% endif %}
+                </div>
+                
+                <!-- Image Upload -->
+                <div class="form-group mb-3">
+                    <label for="{{ form.image.id_for_label }}" class="form-label">
+                        <i class="fas fa-image"></i> Room Image
+                    </label>
+                    {% if room and room.image %}
+                    <div class="mb-2">
+                        <img src="{{ room.image.url }}" 
+                             alt="Current room image" 
+                             style="width: 200px; height: 150px; object-fit: cover; border-radius: var(--radius-md);">
+                        <p class="form-text">Current image</p>
+                    </div>
+                    {% endif %}
+                    {{ form.image }}
+                    {% if form.image.errors %}
+                    <div class="form-error">{{ form.image.errors.0 }}</div>
+                    {% endif %}
+                    <div class="form-text">Upload a clear image of the room (optional)</div>
+                </div>
+                
+                <!-- Status -->
+                <div class="form-group mb-4">
+                    <label for="{{ form.status.id_for_label }}" class="form-label required">
+                        <i class="fas fa-circle"></i> Status
+                    </label>
+                    {{ form.status }}
+                    {% if form.status.errors %}
+                    <div class="form-error">{{ form.status.errors.0 }}</div>
+                    {% endif %}
+                </div>
+                
+                <!-- Submit Buttons -->
+                <div class="d-flex gap-2 justify-end">
+                    <a href="{% url 'rooms:staff_list' %}" class="btn btn-light">
+                        <i class="fas fa-times"></i> Cancel
+                    </a>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i> {{ action }}
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<style>
+    .room-form input[type="file"] {
+        padding: 0.5rem;
+        font-size: 0.875rem;
+    }
+    
+    .room-form input[type="file"]::file-selector-button {
+        padding: 0.375rem 0.75rem;
+        border-radius: var(--radius-sm);
+        border: 1px solid var(--gray-300);
+        background: var(--white);
+        color: var(--gray-600);
+        cursor: pointer;
+        margin-right: 1rem;
+        font-size: 0.75rem;
+        transition: all var(--transition-fast);
+    }
+    
+    .room-form input[type="file"]::file-selector-button:hover {
+        background: var(--gray-100);
+        border-color: var(--primary);
+        color: var(--primary);
+    }
+</style>
+{% endblock %}

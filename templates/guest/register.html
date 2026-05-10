@@ -1,0 +1,240 @@
+{% extends 'guest/base_guest.html' %}
+{% load static %}
+
+{% block guest_title %}Create Account - VETA Hotel{% endblock %}
+
+{% block guest_content %}
+<section class="py-5">
+    <div class="container">
+        <div class="register-wrapper" style="max-width: 500px; margin: 0 auto;">
+            
+            <!-- Logo & Header -->
+            <div class="text-center mb-4">
+                <div class="mb-3">
+                    <i class="fas fa-hotel" style="font-size: 2.5rem; color: var(--primary);"></i>
+                </div>
+                <h2 style="font-size: 1.75rem; margin-bottom: 0.25rem;">Create Your Account</h2>
+               
+            </div>
+            
+            <!-- Registration Form Card -->
+            <div class="card">
+                <div class="card-body" style="padding: 2rem;">
+                    <form method="POST" novalidate>
+                        {% csrf_token %}
+                        
+                        {% if form.non_field_errors %}
+                        <div class="alert alert-danger">
+                            <i class="fas fa-exclamation-circle"></i>
+                            {{ form.non_field_errors.0 }}
+                        </div>
+                        {% endif %}
+                        
+                        <!-- First Name & Last Name -->
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                            <div class="form-group">
+                                <label for="{{ form.first_name.id_for_label }}" class="form-label required">
+                                    First Name
+                                </label>
+                                {{ form.first_name }}
+                                {% if form.first_name.errors %}
+                                <div class="form-error">{{ form.first_name.errors.0 }}</div>
+                                {% endif %}
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="{{ form.last_name.id_for_label }}" class="form-label required">
+                                    Last Name
+                                </label>
+                                {{ form.last_name }}
+                                {% if form.last_name.errors %}
+                                <div class="form-error">{{ form.last_name.errors.0 }}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        
+                        <!-- Email -->
+                        <div class="form-group">
+                            <label for="{{ form.email.id_for_label }}" class="form-label required">
+                                Email Address
+                            </label>
+                            <div style="position: relative;">
+                                <i class="fas fa-envelope" style="position: absolute; left: 0.875rem; top: 50%; transform: translateY(-50%); color: var(--gray-400); font-size: 0.875rem;"></i>
+                                {{ form.email }}
+                            </div>
+                            {% if form.email.errors %}
+                            <div class="form-error">{{ form.email.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                        
+                        <!-- Phone -->
+                        <div class="form-group">
+                            <label for="{{ form.phone.id_for_label }}" class="form-label required">
+                                Phone Number
+                            </label>
+                            <div style="position: relative;">
+                                <i class="fas fa-phone" style="position: absolute; left: 0.875rem; top: 50%; transform: translateY(-50%); color: var(--gray-400); font-size: 0.875rem;"></i>
+                                {{ form.phone }}
+                            </div>
+                            {% if form.phone.errors %}
+                            <div class="form-error">{{ form.phone.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                        
+                        <!-- Address -->
+                        <div class="form-group">
+                            <label for="{{ form.address.id_for_label }}" class="form-label">
+                                Address <span class="text-muted">(Optional)</span>
+                            </label>
+                            {{ form.address }}
+                            {% if form.address.errors %}
+                            <div class="form-error">{{ form.address.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                        
+                        <!-- Password -->
+                        <div class="form-group">
+                            <label for="{{ form.password1.id_for_label }}" class="form-label required">
+                                Password
+                            </label>
+                            <div style="position: relative;">
+                                <i class="fas fa-lock" style="position: absolute; left: 0.875rem; top: 0.875rem; color: var(--gray-400); font-size: 0.875rem;"></i>
+                                {{ form.password1 }}
+                            </div>
+                            {% if form.password1.errors %}
+                            <div class="form-error">{{ form.password1.errors.0 }}</div>
+                            {% endif %}
+                            <div class="form-text">At least 6 characters</div>
+                        </div>
+                        
+                        <!-- Confirm Password -->
+                        <div class="form-group">
+                            <label for="{{ form.password2.id_for_label }}" class="form-label required">
+                                Confirm Password
+                            </label>
+                            <div style="position: relative;">
+                                <i class="fas fa-lock" style="position: absolute; left: 0.875rem; top: 0.875rem; color: var(--gray-400); font-size: 0.875rem;"></i>
+                                {{ form.password2 }}
+                            </div>
+                            {% if form.password2.errors %}
+                            <div class="form-error">{{ form.password2.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                        
+                        <!-- Terms -->
+                        <div class="form-group mb-4">
+                            <label class="form-check" style="font-size: 0.8125rem;">
+                                <input type="checkbox" class="form-check-input" required>
+                                <span>I agree to the <a href="#" class="text-primary">Terms & Conditions</a> and <a href="#" class="text-primary">Privacy Policy</a></span>
+                            </label>
+                        </div>
+                        
+                        <!-- Submit Button -->
+                        <button type="submit" class="btn btn-primary btn-block btn-lg mb-3">
+                            <i class="fas fa-user-plus"></i> Create Account
+                        </button>
+                        
+                        <!-- Divider -->
+                        <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+                            <hr style="flex: 1; border: none; border-top: 1px solid var(--gray-200);">
+                            <span style="color: var(--gray-400); font-size: 0.75rem;">OR</span>
+                            <hr style="flex: 1; border: none; border-top: 1px solid var(--gray-200);">
+                        </div>
+                        
+                        <!-- Login Link -->
+                        <p class="text-center mb-0" style="font-size: 0.875rem;">
+                            Already have an account? 
+                            <a href="{% url 'users:login' %}" class="text-primary font-semibold">
+                                Sign In <i class="fas fa-arrow-right" style="font-size: 0.75rem;"></i>
+                            </a>
+                        </p>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- Benefits Badges -->
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem; margin-top: 1.5rem; text-align: center;">
+                <div style="background: var(--white); padding: 1rem 0.5rem; border-radius: var(--radius-md); border: 1px solid var(--gray-200);">
+                    <i class="fas fa-shield-alt" style="font-size: 1.25rem; color: var(--primary); margin-bottom: 0.375rem; display: block;"></i>
+                    <span style="font-size: 0.6875rem; color: var(--gray-600); font-weight: 500;">Secure Booking</span>
+                </div>
+                <div style="background: var(--white); padding: 1rem 0.5rem; border-radius: var(--radius-md); border: 1px solid var(--gray-200);">
+                    <i class="fas fa-tag" style="font-size: 1.25rem; color: var(--warm); margin-bottom: 0.375rem; display: block;"></i>
+                    <span style="font-size: 0.6875rem; color: var(--gray-600); font-weight: 500;">Best Prices</span>
+                </div>
+                <div style="background: var(--white); padding: 1rem 0.5rem; border-radius: var(--radius-md); border: 1px solid var(--gray-200);">
+                    <i class="fas fa-headset" style="font-size: 1.25rem; color: var(--success); margin-bottom: 0.375rem; display: block;"></i>
+                    <span style="font-size: 0.6875rem; color: var(--gray-600); font-weight: 500;">24/7 Support</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    /* Style form inputs with icons */
+    #{{ form.email.id_for_label }},
+    #{{ form.phone.id_for_label }} {
+        padding-left: 2.5rem;
+    }
+    
+    #{{ form.password1.id_for_label }},
+    #{{ form.password2.id_for_label }} {
+        padding-left: 2.5rem;
+    }
+    
+    /* Make inputs full width */
+    .register-wrapper input[type="text"],
+    .register-wrapper input[type="email"],
+    .register-wrapper input[type="password"],
+    .register-wrapper input[type="number"],
+    .register-wrapper textarea,
+    .register-wrapper select {
+        width: 100%;
+        padding: 0.75rem 0.875rem;
+        font-size: 0.9375rem;
+        border: 2px solid var(--gray-300);
+        border-radius: var(--radius-md);
+        transition: all var(--transition-fast);
+    }
+    
+    .register-wrapper input:focus,
+    .register-wrapper textarea:focus,
+    .register-wrapper select:focus {
+        outline: none;
+        border-color: var(--primary);
+        box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.1);
+    }
+    
+    .register-wrapper textarea {
+        resize: vertical;
+        min-height: 80px;
+    }
+    
+    /* Responsive */
+    @media (max-width: 576px) {
+        .card-body {
+            padding: 1.25rem !important;
+        }
+        
+        div[style*="grid-template-columns: 1fr 1fr"] {
+            grid-template-columns: 1fr !important;
+        }
+    }
+
+    /* Checkbox styling */
+    .form-check-input {
+        width: 1rem;
+        height: 1rem;
+        accent-color: var(--primary);
+        cursor: pointer;
+    }
+    
+    .form-check {
+        display: flex;
+        align-items: flex-start;
+        gap: 0.5rem;
+        cursor: pointer;
+    }
+</style>
+{% endblock %}

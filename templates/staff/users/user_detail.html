@@ -1,0 +1,143 @@
+{% extends 'staff/base_staff.html' %}
+{% load static %}
+
+{% block staff_title %}{{ user_profile.get_full_name }} - VETA Hotel{% endblock %}
+
+{% block staff_content %}
+<div class="container-sm">
+    <!-- Header -->
+    <div class="mb-4">
+        <a href="{% url 'dashboard:guest_list' %}" class="btn btn-ghost mb-3">
+            <i class="fas fa-arrow-left"></i> Back to Guests
+        </a>
+    </div>
+    
+    <!-- Profile Header -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <div class="d-flex align-center gap-3">
+                <div style="width: 80px; height: 80px; background: var(--primary-bg); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2rem; color: var(--primary); font-weight: 700;">
+                    {{ user_profile.first_name|first }}{{ user_profile.last_name|first }}
+                </div>
+                <div>
+                    <h3 class="mb-1">{{ user_profile.get_full_name }}</h3>
+                    <div class="d-flex gap-2">
+                        <span class="badge badge-primary">{{ user_profile.get_role_display }}</span>
+                        {% if user_profile.is_active %}
+                        <span class="badge badge-success">Active</span>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Profile Details -->
+    <div class="card mb-4">
+        <div class="card-header">
+            <h5 class="mb-0"><i class="fas fa-info-circle text-primary"></i> Contact Information</h5>
+        </div>
+        <div class="card-body">
+            <div class="grid grid-2" style="gap: 1rem;">
+                <div>
+                    <label class="text-muted" style="font-size: 0.75rem;">Email</label>
+                    <p class="font-medium">
+                        <i class="fas fa-envelope text-muted"></i> {{ user_profile.email }}
+                    </p>
+                </div>
+                <div>
+                    <label class="text-muted" style="font-size: 0.75rem;">Phone</label>
+                    <p class="font-medium">
+                        <i class="fas fa-phone text-muted"></i> {{ user_profile.phone }}
+                    </p>
+                </div>
+                <div>
+                    <label class="text-muted" style="font-size: 0.75rem;">Registered</label>
+                    <p class="font-medium">
+                        <i class="fas fa-calendar text-muted"></i> {{ user_profile.date_joined|date:"d M Y" }}
+                    </p>
+                </div>
+                <div>
+                    <label class="text-muted" style="font-size: 0.75rem;">Last Login</label>
+                    <p class="font-medium">
+                        <i class="fas fa-sign-in-alt text-muted"></i> 
+                        {% if user_profile.last_login %}
+                            {{ user_profile.last_login|date:"d M Y H:i" }}
+                        {% else %}
+                            Never
+                        {% endif %}
+                    </p>
+                </div>
+            </div>
+            
+            {% if user_profile.address %}
+            <div class="mt-3">
+                <label class="text-muted" style="font-size: 0.75rem;">Address</label>
+                <p class="font-medium">{{ user_profile.address }}</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    
+    <!-- Booking History -->
+    <div class="card">
+        <div class="card-header d-flex justify-between align-center">
+            <h5 class="mb-0"><i class="fas fa-calendar-check text-primary"></i> Booking History</h5>
+            <span class="badge badge-info">{{ total_bookings }} total</span>
+        </div>
+        <div class="card-body p-0">
+            {% if bookings %}
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Reference</th>
+                            <th>Room</th>
+                            <th>Dates</th>
+                            <th>Amount</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for booking in bookings %}
+                        <tr>
+                            <td>
+                                <a href="{% url 'bookings:staff_detail' booking.reference_id %}" 
+                                   class="text-primary" style="font-family: var(--font-mono); font-weight: 600;">
+                                    {{ booking.reference_id }}
+                                </a>
+                            </td>
+                            <td>Room {{ booking.room.room_number }}</td>
+                            <td>
+                                <small>{{ booking.check_in|date:"d M" }} → {{ booking.check_out|date:"d M Y" }}</small>
+                            </td>
+                            <td><strong>TZS {{ booking.total_amount|floatformat:0 }}</strong></td>
+                            <td>
+                                {% if booking.status == 'checked_in' %}
+                                <span class="badge badge-primary">Checked In</span>
+                                {% elif booking.status == 'checked_out' %}
+                                <span class="badge badge-success">Checked Out</span>
+                                {% elif booking.status == 'approved' %}
+                                <span class="badge badge-info">Approved</span>
+                                {% elif booking.status == 'pending' %}
+                                <span class="badge badge-warning">Pending</span>
+                                {% elif booking.status == 'cancelled' %}
+                                <span class="badge badge-danger">Cancelled</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <div class="empty-state">
+                <i class="fas fa-calendar-times"></i>
+                <h3>No Bookings</h3>
+                <p>This guest hasn't made any bookings yet.</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

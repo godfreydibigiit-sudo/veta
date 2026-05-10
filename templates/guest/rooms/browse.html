@@ -1,0 +1,226 @@
+{% extends 'guest/base_guest.html' %}
+{% load static %}
+
+{% block guest_title %}Browse Rooms - VETA Hotel{% endblock %}
+
+{% block guest_content %}
+<!-- Hero Section -->
+<section class="hero" style="padding: 3rem 0;">
+    <div class="container">
+        <div class="hero-content">
+            <h1 style="font-size: 2rem;">Find Your Perfect Room</h1>
+            <p>Browse our available rooms and book your stay</p>
+        </div>
+    </div>
+</section>
+
+<!-- Search Section -->
+<section>
+    <div class="container">
+        <div class="search-section">
+            <form method="GET" action="{% url 'rooms:list' %}" class="search-form">
+                <div class="form-group">
+                    <label class="form-label required">
+                        <i class="fas fa-calendar-alt"></i> Check-in Date
+                    </label>
+                    <input type="date" 
+                           name="check_in" 
+                           class="form-control" 
+                           value="{{ form.check_in.value|default:'' }}"
+                           min="{{ today|date:'Y-m-d' }}"
+                           required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label required">
+                        <i class="fas fa-calendar-check"></i> Check-out Date
+                    </label>
+                    <input type="date" 
+                           name="check_out" 
+                           class="form-control" 
+                           value="{{ form.check_out.value|default:'' }}"
+                           required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">
+                        <i class="fas fa-door-open"></i> Room Type
+                    </label>
+                    <select name="room_type" class="form-control">
+                        <option value="">All Room Types</option>
+                        <option value="single" {% if form.room_type.value == 'single' %}selected{% endif %}>Single Room</option>
+                        <option value="double" {% if form.room_type.value == 'double' %}selected{% endif %}>Double Room</option>
+                        <option value="twin" {% if form.room_type.value == 'twin' %}selected{% endif %}>Twin Room</option>
+                        <option value="suite" {% if form.room_type.value == 'suite' %}selected{% endif %}>Suite</option>
+                        <option value="family" {% if form.room_type.value == 'family' %}selected{% endif %}>Family Room</option>
+                        <option value="deluxe" {% if form.room_type.value == 'deluxe' %}selected{% endif %}>Deluxe Room</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">
+                        <i class="fas fa-tag"></i> Max Price (TZS)
+                    </label>
+                    <input type="number" 
+                           name="max_price" 
+                           class="form-control" 
+                           placeholder="e.g., 100000"
+                           value="{{ form.max_price.value|default:'' }}">
+                </div>
+                
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary btn-block">
+                        <i class="fas fa-search"></i> Search Rooms
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+
+<!-- Room Listing -->
+<section class="py-5">
+    <div class="container">
+        <!-- Header -->
+        <div class="d-flex justify-between align-center mb-4">
+            <div>
+                <h2 class="mb-1">
+                    {% if rooms %}
+                        {{ total_rooms }} Room(s) Found
+                    {% else %}
+                        Available Rooms
+                    {% endif %}
+                </h2>
+                {% if request.GET.check_in and request.GET.check_out %}
+                <p class="text-muted">
+                    <i class="fas fa-calendar"></i>
+                    {{ request.GET.check_in }} → {{ request.GET.check_out }}
+                </p>
+                {% endif %}
+            </div>
+            
+            <!-- Sort Options -->
+            <div class="d-flex align-center gap-2">
+                <span class="text-muted" style="font-size: 0.875rem;">Sort by:</span>
+                <select class="form-control" style="width: auto;" onchange="window.location.href=this.value">
+                    <option value="?{% for key, value in request.GET.items %}{% if key != 'sort' %}{{ key }}={{ value }}&{% endif %}{% endfor %}sort=price_asc"
+                            {% if current_sort == 'price_asc' %}selected{% endif %}>
+                        Price: Low to High
+                    </option>
+                    <option value="?{% for key, value in request.GET.items %}{% if key != 'sort' %}{{ key }}={{ value }}&{% endif %}{% endfor %}sort=price_desc"
+                            {% if current_sort == 'price_desc' %}selected{% endif %}>
+                        Price: High to Low
+                    </option>
+                    <option value="?{% for key, value in request.GET.items %}{% if key != 'sort' %}{{ key }}={{ value }}&{% endif %}{% endfor %}sort=capacity"
+                            {% if current_sort == 'capacity' %}selected{% endif %}>
+                        Capacity
+                    </option>
+                </select>
+            </div>
+        </div>
+        
+        {% if rooms %}
+        <!-- Rooms Grid -->
+        <div class="grid grid-3">
+            {% for room in rooms %}
+            <div class="room-card fade-in">
+                <div class="room-card-image">
+                    {% if room.image %}
+                    <img src="{{ room.image.url }}" alt="Room {{ room.room_number }}" loading="lazy">
+                    {% else %}
+                    <div style="background: linear-gradient(135deg, var(--primary-bg), #ccfbf1); height: 100%; display: flex; align-items: center; justify-content: center;">
+                        <i class="fas fa-door-open" style="font-size: 4rem; color: var(--primary); opacity: 0.5;"></i>
+                    </div>
+                    {% endif %}
+                    
+                    <!-- Badges -->
+                    <span class="room-card-badge">
+                        {% if room.status == 'available' %}
+                        <i class="fas fa-check-circle"></i> Available
+                        {% endif %}
+                    </span>
+                    
+                    {% if room.room_type == 'suite' or room.room_type == 'deluxe' %}
+                    <span style="position: absolute; top: 1rem; left: 1rem; background: var(--warm); color: white; padding: 0.25rem 0.75rem; border-radius: var(--radius-full); font-size: 0.625rem; font-weight: 600; text-transform: uppercase;">
+                        Premium
+                    </span>
+                    {% endif %}
+                </div>
+                
+                <div class="room-card-body">
+                    <div class="d-flex justify-between align-start mb-2">
+                        <div>
+                            <h3 class="room-card-title">Room {{ room.room_number }}</h3>
+                            <span class="badge badge-primary">{{ room.get_room_type_display }}</span>
+                        </div>
+                        <span style="font-size: 0.75rem; color: var(--gray-500);">
+                            Floor {{ room.floor }}
+                        </span>
+                    </div>
+                    
+                    {% if room.description %}
+                    <p class="text-muted" style="font-size: 0.875rem; margin-bottom: 1rem;">
+                        {{ room.description|truncatechars:100 }}
+                    </p>
+                    {% endif %}
+                    
+                    <div class="room-card-price mb-3">
+                        TZS {{ room.price_per_night|floatformat:0 }}
+                        <span>/ night</span>
+                    </div>
+                    
+                    <div class="room-card-features mb-3">
+                        <span class="room-card-feature">
+                            <i class="fas fa-user"></i> {{ room.capacity }} Guest(s)
+                        </span>
+                        <span class="room-card-feature">
+                            <i class="fas fa-expand"></i> {{ room.get_room_type_display }}
+                        </span>
+                        <span class="room-card-feature">
+                            <i class="fas fa-wifi"></i> Free WiFi
+                        </span>
+                    </div>
+                    
+                    <div class="d-flex gap-2">
+                        <a href="{% url 'rooms:detail' room.pk %}" class="btn btn-outline-primary flex-1">
+                            <i class="fas fa-info-circle"></i> Details
+                        </a>
+                        {% if user.is_authenticated and user.is_guest_user %}
+                        <a href="{% url 'bookings:create' room.pk %}{% if request.GET.check_in %}&check_in={{ request.GET.check_in }}{% endif %}{% if request.GET.check_out %}&check_out={{ request.GET.check_out }}{% endif %}" 
+                           class="btn btn-primary flex-1">
+                            <i class="fas fa-calendar-plus"></i> Book Now
+                        </a>
+                        {% elif not user.is_authenticated %}
+                        <a href="{% url 'users:login' %}?next={% url 'rooms:detail' room.pk %}" class="btn btn-primary flex-1">
+                            <i class="fas fa-sign-in-alt"></i> Login to Book
+                        </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        
+        <!-- Pagination -->
+        {% include 'includes/pagination.html' with page_obj=rooms %}
+        
+        {% else %}
+        <!-- Empty State -->
+        <div class="empty-state">
+            <div style="font-size: 5rem; margin-bottom: 1rem;">🏨</div>
+            <h3>No Rooms Available</h3>
+            <p class="mb-3">
+                {% if request.GET.check_in %}
+                    No rooms available for the selected dates. Please try different dates.
+                {% else %}
+                    All rooms are currently occupied. Please check back later.
+                {% endif %}
+            </p>
+            <a href="{% url 'rooms:list' %}" class="btn btn-primary">
+                <i class="fas fa-sync-alt"></i> Clear Filters
+            </a>
+        </div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

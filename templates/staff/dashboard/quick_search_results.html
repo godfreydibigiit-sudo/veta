@@ -1,0 +1,103 @@
+{% extends 'staff/base_staff.html' %}
+{% load static %}
+
+{% block staff_title %}Search Results - VETA Hotel{% endblock %}
+
+{% block staff_content %}
+<div class="container-sm">
+    <!-- Header -->
+    <div class="mb-4">
+        <a href="{% url 'dashboard:index' %}" class="btn btn-ghost mb-3">
+            <i class="fas fa-arrow-left"></i> Back to Dashboard
+        </a>
+        <h2 class="mb-1"><i class="fas fa-search text-primary"></i> Search Results</h2>
+        <p class="text-muted">Results for: <strong>"{{ query }}"</strong></p>
+    </div>
+    
+    {% if error %}
+    <div class="empty-state">
+        <i class="fas fa-user-slash"></i>
+        <h3>{{ error }}</h3>
+        <p>Try a different search term.</p>
+        <a href="{% url 'dashboard:index' %}" class="btn btn-primary mt-2">
+            <i class="fas fa-arrow-left"></i> Back to Dashboard
+        </a>
+    </div>
+    {% else %}
+        {% if guest %}
+        <!-- Guest Card -->
+        <div class="card card-teal mb-4">
+            <div class="card-body">
+                <div class="d-flex align-center gap-3">
+                    <div style="width: 80px; height: 80px; background: var(--primary-bg); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2rem; color: var(--primary); font-weight: 700;">
+                        {{ guest.first_name|first }}{{ guest.last_name|first }}
+                    </div>
+                    <div>
+                        <h4 class="mb-1">{{ guest.get_full_name }}</h4>
+                        <p class="mb-1"><i class="fas fa-envelope text-muted"></i> {{ guest.email }}</p>
+                        <p class="mb-0"><i class="fas fa-phone text-muted"></i> {{ guest.phone }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        
+        {% if results %}
+        <!-- Booking Results -->
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="fas fa-calendar-check text-primary"></i> Bookings</h5>
+            </div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Reference</th>
+                                <th>Guest</th>
+                                <th>Room</th>
+                                <th>Dates</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for booking in results %}
+                            <tr>
+                                <td>
+                                    <a href="{% url 'bookings:staff_detail' booking.reference_id %}" 
+                                       style="font-family: var(--font-mono); font-weight: 600; color: var(--primary);">
+                                        {{ booking.reference_id }}
+                                    </a>
+                                </td>
+                                <td>{{ booking.guest.get_full_name }}</td>
+                                <td>Room {{ booking.room.room_number }}</td>
+                                <td>{{ booking.get_dates_display }}</td>
+                                <td>
+                                    <span class="badge badge-{{ booking.get_status_badge_class }}">
+                                        {{ booking.get_status_display }}
+                                    </span>
+                                </td>
+                                <td>
+                                    <a href="{% url 'bookings:staff_detail' booking.reference_id %}" 
+                                       class="btn btn-sm btn-outline-primary">
+                                        <i class="fas fa-eye"></i> View
+                                    </a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <div class="empty-state">
+            <i class="fas fa-calendar-times"></i>
+            <h3>No Bookings Found</h3>
+            <p>No bookings match your search.</p>
+        </div>
+        {% endif %}
+    {% endif %}
+</div>
+{% endblock %}

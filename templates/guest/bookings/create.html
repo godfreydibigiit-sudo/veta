@@ -4,78 +4,157 @@
 {% block guest_title %}Book Room {{ room.room_number }} - VETA Hotel{% endblock %}
 
 {% block guest_content %}
+
 <!-- Breadcrumb -->
 <div class="container mt-3">
-    <nav aria-label="breadcrumb" style="font-size: 0.875rem;">
-        <a href="{% url 'home' %}" class="text-muted">Home</a>
-        <span class="text-muted mx-2">/</span>
-        <a href="{% url 'rooms:list' %}" class="text-muted">Rooms</a>
-        <span class="text-muted mx-2">/</span>
-        <a href="{% url 'rooms:detail' room.pk %}" class="text-muted">Room {{ room.room_number }}</a>
-        <span class="text-muted mx-2">/</span>
-        <span class="text-primary">Book Now</span>
+    <nav aria-label="breadcrumb" class="breadcrumb-nav">
+        <a href="{% url 'home' %}" class="breadcrumb-link">
+            <i class="fas fa-home"></i> Home
+        </a>
+        <i class="fas fa-chevron-right breadcrumb-sep"></i>
+        <a href="{% url 'rooms:list' %}" class="breadcrumb-link">Rooms</a>
+        <i class="fas fa-chevron-right breadcrumb-sep"></i>
+        <a href="{% url 'rooms:detail' room.pk %}" class="breadcrumb-link">Room {{ room.room_number }}</a>
+        <i class="fas fa-chevron-right breadcrumb-sep"></i>
+        <span class="breadcrumb-current">Book Now</span>
     </nav>
 </div>
 
-<section class="py-4">
+<!-- Booking Section -->
+<section class="booking-section">
     <div class="container">
-        <div class="row" style="max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1.5fr; gap: 2rem; align-items: start;">
+        
+        <!-- Page Header -->
+        <div class="booking-page-header text-center mb-4">
+            <h1 class="booking-page-title">
+                <i class="fas fa-calendar-plus"></i> 
+                Complete Your Booking
+            </h1>
+            <p class="booking-page-subtitle">Fill in the details below to reserve Room {{ room.room_number }}</p>
+        </div>
+        
+        <div class="booking-layout">
             
-            <!-- Left Side - Room Summary -->
-            <div>
-                <div class="card card-teal">
-                    <div class="room-card-image" style="height: 250px;">
+            <!-- Left Column: Room Summary Card -->
+            <div class="booking-summary-column">
+                
+                <!-- Room Image Card -->
+                <div class="room-summary-card">
+                    <div class="room-summary-image">
                         {% if room.image %}
-                        <img src="{{ room.image.url }}" alt="Room {{ room.room_number }}" style="width: 100%; height: 100%; object-fit: cover;">
+                        <img src="{{ room.image.url }}" 
+                             alt="Room {{ room.room_number }}" 
+                             loading="eager"
+                             onerror="this.onerror=null; this.parentElement.innerHTML='<div class=\'room-summary-placeholder\'><i class=\'fas fa-door-open\'></i></div>';">
                         {% else %}
-                        <div style="height: 100%; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, var(--primary-bg), #ccfbf1);">
-                            <i class="fas fa-door-open" style="font-size: 5rem; color: var(--primary); opacity: 0.4;"></i>
+                        <div class="room-summary-placeholder">
+                            <i class="fas fa-door-open"></i>
                         </div>
                         {% endif %}
+                        <div class="room-summary-badge">
+                            <i class="fas fa-check-circle"></i> Available
+                        </div>
                     </div>
-                    <div class="card-body">
-                        <h4 class="mb-2">Room {{ room.room_number }}</h4>
-                        <div class="d-flex gap-2 mb-3">
+                    
+                    <div class="room-summary-body">
+                        <div class="room-summary-header">
+                            <h3>Room {{ room.room_number }}</h3>
                             <span class="badge badge-primary">{{ room.get_room_type_display }}</span>
-                            <span class="badge badge-success">Available</span>
                         </div>
                         
-                        <div class="mb-3">
-                            <div class="d-flex justify-between mb-2">
-                                <span class="text-muted"><i class="fas fa-tag"></i> Price per night</span>
-                                <strong>TZS {{ room.price_per_night|floatformat:0 }}</strong>
+                        <div class="room-summary-details">
+                            <div class="summary-detail-item">
+                                <div class="detail-icon">
+                                    <i class="fas fa-tag"></i>
+                                </div>
+                                <div class="detail-info">
+                                    <span class="detail-label">Price per night</span>
+                                    <span class="detail-value">TZS {{ room.price_per_night|floatformat:0 }}</span>
+                                </div>
                             </div>
-                            <div class="d-flex justify-between mb-2">
-                                <span class="text-muted"><i class="fas fa-user"></i> Capacity</span>
-                                <strong>{{ room.capacity }} Guest(s)</strong>
+                            
+                            <div class="summary-detail-item">
+                                <div class="detail-icon">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                                <div class="detail-info">
+                                    <span class="detail-label">Capacity</span>
+                                    <span class="detail-value">{{ room.capacity }} Guest(s)</span>
+                                </div>
                             </div>
-                            <div class="d-flex justify-between mb-2">
-                                <span class="text-muted"><i class="fas fa-building"></i> Floor</span>
-                                <strong>{{ room.floor }}</strong>
+                            
+                            <div class="summary-detail-item">
+                                <div class="detail-icon">
+                                    <i class="fas fa-building"></i>
+                                </div>
+                                <div class="detail-info">
+                                    <span class="detail-label">Floor</span>
+                                    <span class="detail-value">Floor {{ room.floor }}</span>
+                                </div>
+                            </div>
+                            
+                            <div class="summary-detail-item">
+                                <div class="detail-icon">
+                                    <i class="fas fa-moon"></i>
+                                </div>
+                                <div class="detail-info">
+                                    <span class="detail-label">Check-in Time</span>
+                                    <span class="detail-value">2:00 PM</span>
+                                </div>
+                            </div>
+                            
+                            <div class="summary-detail-item">
+                                <div class="detail-icon">
+                                    <i class="fas fa-sun"></i>
+                                </div>
+                                <div class="detail-info">
+                                    <span class="detail-label">Check-out Time</span>
+                                    <span class="detail-value">11:00 AM</span>
+                                </div>
                             </div>
                         </div>
                         
                         {% if room.description %}
-                        <div class="p-3" style="background: var(--gray-50); border-radius: var(--radius-md);">
-                            <small class="text-muted">{{ room.description|truncatechars:150 }}</small>
+                        <div class="room-summary-description">
+                            <p>{{ room.description|truncatechars:120 }}</p>
                         </div>
                         {% endif %}
                     </div>
                 </div>
                 
+                <!-- Need Help Card -->
+                <div class="help-card">
+                    <div class="help-icon">
+                        <i class="fas fa-headset"></i>
+                    </div>
+                    <div class="help-content">
+                        <h4>Need Help?</h4>
+                        <p>Our staff is available 24/7 to assist you with your booking.</p>
+                    </div>
+                </div>
+                
                 <!-- Back Link -->
-                <a href="{% url 'rooms:detail' room.pk %}" class="btn btn-ghost mt-3">
+                <a href="{% url 'rooms:detail' room.pk %}" class="back-link">
                     <i class="fas fa-arrow-left"></i> Back to Room Details
                 </a>
             </div>
             
-            <!-- Right Side - Booking Form -->
-            <div>
-                <div class="card">
-                    <div class="card-header">
-                        <h4 class="mb-0"><i class="fas fa-calendar-plus text-primary"></i> Create Booking</h4>
+            <!-- Right Column: Booking Form -->
+            <div class="booking-form-column">
+                
+                <!-- Form Card -->
+                <div class="form-card">
+                    <div class="form-card-header">
+                        <div class="form-header-icon">
+                            <i class="fas fa-calendar-plus"></i>
+                        </div>
+                        <div>
+                            <h3>Booking Details</h3>
+                            <p>Select your dates and preferences</p>
+                        </div>
                     </div>
-                    <div class="card-body">
+                    
+                    <div class="form-card-body">
                         <form method="POST" novalidate id="bookingForm">
                             {% csrf_token %}
                             
@@ -86,84 +165,135 @@
                             </div>
                             {% endif %}
                             
-                            <!-- Dates -->
-                            <div class="row mb-3">
-                                <div class="col">
+                            <!-- Date Selection -->
+                            <div class="form-section">
+                                <h4 class="form-section-title">
+                                    <i class="fas fa-calendar-alt"></i> Stay Dates
+                                </h4>
+                                
+                                <div class="date-inputs-grid">
                                     <div class="form-group">
                                         <label for="{{ form.check_in.id_for_label }}" class="form-label required">
-                                            <i class="fas fa-calendar-alt"></i> Check-in Date
+                                            Check-in Date
                                         </label>
-                                        {{ form.check_in }}
+                                        <div class="input-with-icon">
+                                            <i class="fas fa-calendar-alt input-icon"></i>
+                                            {{ form.check_in }}
+                                        </div>
                                         {% if form.check_in.errors %}
                                         <div class="form-error">{{ form.check_in.errors.0 }}</div>
                                         {% endif %}
                                     </div>
-                                </div>
-                                <div class="col">
+                                    
                                     <div class="form-group">
                                         <label for="{{ form.check_out.id_for_label }}" class="form-label required">
-                                            <i class="fas fa-calendar-check"></i> Check-out Date
+                                            Check-out Date
                                         </label>
-                                        {{ form.check_out }}
+                                        <div class="input-with-icon">
+                                            <i class="fas fa-calendar-check input-icon"></i>
+                                            {{ form.check_out }}
+                                        </div>
                                         {% if form.check_out.errors %}
                                         <div class="form-error">{{ form.check_out.errors.0 }}</div>
                                         {% endif %}
                                     </div>
                                 </div>
+                                
+                                <div class="stay-info-badge" id="stayInfo" style="display: none;">
+                                    <i class="fas fa-moon"></i>
+                                    <span id="stayInfoText">1 Night Stay</span>
+                                </div>
                             </div>
                             
-                            <!-- Guest Count -->
-                            <div class="form-group mb-3">
-                                <label for="{{ form.guest_count.id_for_label }}" class="form-label required">
-                                    <i class="fas fa-users"></i> Number of Guests
-                                </label>
-                                {{ form.guest_count }}
-                                {% if form.guest_count.errors %}
-                                <div class="form-error">{{ form.guest_count.errors.0 }}</div>
-                                {% endif %}
-                                <div class="form-text">Maximum {{ room.capacity }} guest(s) for this room</div>
+                            <!-- Guest Details -->
+                            <div class="form-section">
+                                <h4 class="form-section-title">
+                                    <i class="fas fa-users"></i> Guest Details
+                                </h4>
+                                
+                                <div class="form-group">
+                                    <label for="{{ form.guest_count.id_for_label }}" class="form-label required">
+                                        Number of Guests
+                                    </label>
+                                    <div class="guest-counter">
+                                        <button type="button" class="counter-btn" onclick="changeGuestCount(-1)" aria-label="Decrease guests">
+                                            <i class="fas fa-minus"></i>
+                                        </button>
+                                        {{ form.guest_count }}
+                                        <button type="button" class="counter-btn" onclick="changeGuestCount(1)" aria-label="Increase guests">
+                                            <i class="fas fa-plus"></i>
+                                        </button>
+                                    </div>
+                                    {% if form.guest_count.errors %}
+                                    <div class="form-error">{{ form.guest_count.errors.0 }}</div>
+                                    {% endif %}
+                                    <div class="form-text">
+                                        <i class="fas fa-info-circle"></i> 
+                                        Maximum {{ room.capacity }} guest(s) for this room
+                                    </div>
+                                </div>
                             </div>
                             
                             <!-- Special Requests -->
-                            <div class="form-group mb-4">
-                                <label for="{{ form.special_requests.id_for_label }}" class="form-label">
-                                    <i class="fas fa-comment-alt"></i> Special Requests (Optional)
-                                </label>
-                                {{ form.special_requests }}
-                                {% if form.special_requests.errors %}
-                                <div class="form-error">{{ form.special_requests.errors.0 }}</div>
-                                {% endif %}
+                            <div class="form-section">
+                                <h4 class="form-section-title">
+                                    <i class="fas fa-comment-alt"></i> Additional Information
+                                </h4>
+                                
+                                <div class="form-group mb-0">
+                                    <label for="{{ form.special_requests.id_for_label }}" class="form-label">
+                                        Special Requests <span class="optional-tag">Optional</span>
+                                    </label>
+                                    {{ form.special_requests }}
+                                    {% if form.special_requests.errors %}
+                                    <div class="form-error">{{ form.special_requests.errors.0 }}</div>
+                                    {% endif %}
+                                </div>
                             </div>
                             
                             <!-- Price Summary -->
-                            <div class="card" style="background: var(--primary-bg); border: 1px solid var(--primary-lighter); margin-bottom: 1.5rem;">
-                                <div class="card-body">
-                                    <h6 class="mb-3"><i class="fas fa-calculator text-primary"></i> Price Summary</h6>
-                                    <div id="priceSummary">
-                                        <div class="d-flex justify-between mb-2">
-                                            <span class="text-muted">Price per night</span>
-                                            <strong>TZS {{ room.price_per_night|floatformat:0 }}</strong>
-                                        </div>
-                                        <div class="d-flex justify-between mb-2" id="nightsRow" style="display: none;">
-                                            <span class="text-muted">Number of nights</span>
-                                            <strong id="nightsCount">0</strong>
-                                        </div>
-                                        <hr>
-                                        <div class="d-flex justify-between">
-                                            <span class="font-semibold">Total Amount</span>
-                                            <strong style="font-size: 1.25rem; color: var(--primary);" id="totalAmount">TZS 0</strong>
-                                        </div>
+                            <div class="price-summary-card">
+                                <div class="price-summary-header">
+                                    <i class="fas fa-calculator"></i>
+                                    <span>Price Summary</span>
+                                </div>
+                                
+                                <div class="price-summary-body">
+                                    <div class="price-row">
+                                        <span class="price-row-label">
+                                            <i class="fas fa-tag"></i> Price per night
+                                        </span>
+                                        <span class="price-row-value">TZS {{ room.price_per_night|floatformat:0 }}</span>
+                                    </div>
+                                    
+                                    <div class="price-row" id="nightsRow" style="display: none;">
+                                        <span class="price-row-label">
+                                            <i class="fas fa-times"></i> 
+                                            <span id="nightsCount">0</span> night(s)
+                                        </span>
+                                        <span class="price-row-value" id="nightsSubtotal">TZS 0</span>
+                                    </div>
+                                    
+                                    <div class="price-divider"></div>
+                                    
+                                    <div class="price-row price-total-row">
+                                        <span class="price-total-label">Total Amount</span>
+                                        <span class="price-total-value" id="totalAmount">TZS 0</span>
+                                    </div>
+                                    
+                                    <div class="price-note">
+                                        <i class="fas fa-check-circle"></i> All taxes & fees included
                                     </div>
                                 </div>
                             </div>
                             
                             <!-- Submit -->
-                            <button type="submit" class="btn btn-primary btn-block btn-lg">
+                            <button type="submit" class="btn btn-primary btn-block btn-lg submit-btn">
                                 <i class="fas fa-check-circle"></i> Confirm Booking
                             </button>
                             
-                            <p class="text-center text-muted mt-3" style="font-size: 0.75rem;">
-                                <i class="fas fa-info-circle"></i> 
+                            <p class="terms-text">
+                                <i class="fas fa-lock"></i> 
                                 By confirming, you agree to our booking terms and conditions.
                             </p>
                         </form>
@@ -173,21 +303,719 @@
         </div>
     </div>
 </section>
+
+<style>
+    /* ============================================
+       BREADCRUMB
+       ============================================ */
+    .breadcrumb-nav {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+        font-size: 0.8125rem;
+        padding: 0.5rem 0;
+    }
+    
+    .breadcrumb-link {
+        color: var(--gray-500);
+        text-decoration: none;
+        transition: color 0.2s;
+        white-space: nowrap;
+    }
+    
+    .breadcrumb-link:hover {
+        color: var(--primary);
+    }
+    
+    .breadcrumb-sep {
+        font-size: 0.5rem;
+        color: var(--gray-400);
+    }
+    
+    .breadcrumb-current {
+        color: var(--primary);
+        font-weight: 600;
+        white-space: nowrap;
+    }
+    
+    /* ============================================
+       BOOKING SECTION
+       ============================================ */
+    .booking-section {
+        padding: 1.5rem 0 4rem;
+    }
+    
+    .booking-page-header {
+        margin-bottom: 2rem;
+    }
+    
+    .booking-page-title {
+        font-size: 1.75rem;
+        font-weight: 700;
+        color: var(--gray-900);
+        margin-bottom: 0.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.75rem;
+    }
+    
+    .booking-page-title i {
+        color: var(--primary);
+    }
+    
+    .booking-page-subtitle {
+        color: var(--gray-500);
+        font-size: 0.9375rem;
+    }
+    
+    /* ============================================
+       MAIN LAYOUT
+       ============================================ */
+    .booking-layout {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+        max-width: 1100px;
+        margin: 0 auto;
+    }
+    
+    @media (min-width: 768px) {
+        .booking-layout {
+            grid-template-columns: 1fr 1.5fr;
+            align-items: start;
+        }
+    }
+    
+    @media (min-width: 992px) {
+        .booking-layout {
+            gap: 2.5rem;
+        }
+    }
+    
+    /* ============================================
+       ROOM SUMMARY CARD
+       ============================================ */
+    .room-summary-card {
+        background: var(--white);
+        border-radius: var(--radius-lg);
+        overflow: hidden;
+        border: 1px solid var(--gray-200);
+        box-shadow: var(--shadow-sm);
+        position: sticky;
+        top: 80px;
+    }
+    
+    @media (max-width: 767px) {
+        .room-summary-card {
+            position: static;
+        }
+    }
+    
+    .room-summary-image {
+        position: relative;
+        height: 220px;
+        overflow: hidden;
+        background: var(--gray-100);
+    }
+    
+    .room-summary-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+    }
+    
+    .room-summary-placeholder {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, var(--primary-bg), #ccfbf1);
+    }
+    
+    .room-summary-placeholder i {
+        font-size: 4rem;
+        color: var(--primary);
+        opacity: 0.4;
+    }
+    
+    .room-summary-badge {
+        position: absolute;
+        top: 0.75rem;
+        right: 0.75rem;
+        background: var(--success);
+        color: var(--white);
+        padding: 0.375rem 0.75rem;
+        border-radius: 50px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 0.375rem;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    }
+    
+    .room-summary-body {
+        padding: 1.25rem;
+    }
+    
+    .room-summary-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 1.25rem;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+    
+    .room-summary-header h3 {
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: var(--gray-900);
+    }
+    
+    .room-summary-details {
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+        margin-bottom: 1rem;
+    }
+    
+    .summary-detail-item {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+    }
+    
+    .detail-icon {
+        width: 36px;
+        height: 36px;
+        background: var(--primary-bg);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+    }
+    
+    .detail-icon i {
+        color: var(--primary);
+        font-size: 0.8125rem;
+    }
+    
+    .detail-info {
+        display: flex;
+        justify-content: space-between;
+        flex: 1;
+    }
+    
+    .detail-label {
+        font-size: 0.8125rem;
+        color: var(--gray-500);
+    }
+    
+    .detail-value {
+        font-size: 0.8125rem;
+        font-weight: 600;
+        color: var(--gray-700);
+    }
+    
+    .room-summary-description {
+        background: var(--gray-50);
+        padding: 0.75rem 1rem;
+        border-radius: var(--radius-md);
+        margin-top: 0.5rem;
+    }
+    
+    .room-summary-description p {
+        font-size: 0.8125rem;
+        color: var(--gray-500);
+        line-height: 1.5;
+        margin: 0;
+    }
+    
+    /* Help Card */
+    .help-card {
+        background: var(--white);
+        border: 1px solid var(--gray-200);
+        border-radius: var(--radius-md);
+        padding: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.875rem;
+        margin-top: 1rem;
+    }
+    
+    .help-icon {
+        width: 40px;
+        height: 40px;
+        background: var(--warm-light);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+    }
+    
+    .help-icon i {
+        color: var(--warm);
+        font-size: 1rem;
+    }
+    
+    .help-content h4 {
+        font-size: 0.8125rem;
+        font-weight: 600;
+        color: var(--gray-800);
+        margin-bottom: 0.125rem;
+    }
+    
+    .help-content p {
+        font-size: 0.75rem;
+        color: var(--gray-500);
+        margin: 0;
+    }
+    
+    .back-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: var(--gray-500);
+        font-size: 0.8125rem;
+        text-decoration: none;
+        margin-top: 1rem;
+        padding: 0.5rem 0;
+        transition: color 0.2s;
+    }
+    
+    .back-link:hover {
+        color: var(--primary);
+    }
+    
+    /* ============================================
+       FORM CARD
+       ============================================ */
+    .form-card {
+        background: var(--white);
+        border-radius: var(--radius-lg);
+        border: 1px solid var(--gray-200);
+        box-shadow: var(--shadow-sm);
+        overflow: hidden;
+    }
+    
+    .form-card-header {
+        background: var(--primary-bg);
+        padding: 1.25rem 1.5rem;
+        border-bottom: 1px solid var(--primary-lighter);
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+    
+    .form-header-icon {
+        width: 44px;
+        height: 44px;
+        background: var(--primary);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+    }
+    
+    .form-header-icon i {
+        color: var(--white);
+        font-size: 1.125rem;
+    }
+    
+    .form-card-header h3 {
+        font-size: 1.125rem;
+        font-weight: 600;
+        color: var(--gray-900);
+        margin-bottom: 0.125rem;
+    }
+    
+    .form-card-header p {
+        font-size: 0.8125rem;
+        color: var(--gray-500);
+        margin: 0;
+    }
+    
+    .form-card-body {
+        padding: 1.5rem;
+    }
+    
+    @media (max-width: 576px) {
+        .form-card-body {
+            padding: 1.25rem;
+        }
+    }
+    
+    /* Form Sections */
+    .form-section {
+        margin-bottom: 1.5rem;
+    }
+    
+    .form-section:last-child {
+        margin-bottom: 0;
+    }
+    
+    .form-section-title {
+        font-size: 0.9375rem;
+        font-weight: 600;
+        color: var(--gray-700);
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    
+    .form-section-title i {
+        color: var(--primary);
+        width: 20px;
+        text-align: center;
+    }
+    
+    /* Date Inputs Grid */
+    .date-inputs-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    @media (min-width: 480px) {
+        .date-inputs-grid {
+            grid-template-columns: 1fr 1fr;
+        }
+    }
+    
+    /* Input with Icon */
+    .input-with-icon {
+        position: relative;
+    }
+    
+    .input-with-icon .input-icon {
+        position: absolute;
+        left: 0.875rem;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--gray-400);
+        font-size: 0.875rem;
+        z-index: 1;
+        pointer-events: none;
+    }
+    
+    .input-with-icon input {
+        width: 100%;
+        padding: 0.75rem 0.875rem 0.75rem 2.5rem;
+        font-size: 0.9375rem;
+        border: 2px solid var(--gray-300);
+        border-radius: var(--radius-md);
+        font-family: var(--font-primary);
+        color: var(--gray-800);
+        transition: all 0.2s ease;
+        background: var(--white);
+    }
+    
+    .input-with-icon input:focus {
+        outline: none;
+        border-color: var(--primary);
+        box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.1);
+    }
+    
+    /* Stay Info Badge */
+    .stay-info-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-top: 0.75rem;
+        padding: 0.5rem 1rem;
+        background: var(--primary-bg);
+        color: var(--primary-dark);
+        border-radius: 50px;
+        font-size: 0.8125rem;
+        font-weight: 600;
+    }
+    
+    /* Guest Counter */
+    .guest-counter {
+        display: flex;
+        align-items: center;
+        gap: 0;
+    }
+    
+    .guest-counter input {
+        width: 60px;
+        text-align: center;
+        font-size: 1rem;
+        font-weight: 600;
+        padding: 0.625rem 0;
+        border: 2px solid var(--gray-300);
+        border-left: none;
+        border-right: none;
+        font-family: var(--font-primary);
+        color: var(--gray-800);
+        -moz-appearance: textfield;
+    }
+    
+    .guest-counter input::-webkit-outer-spin-button,
+    .guest-counter input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+    
+    .counter-btn {
+        width: 40px;
+        height: 42px;
+        border: 2px solid var(--gray-300);
+        background: var(--white);
+        color: var(--gray-600);
+        cursor: pointer;
+        font-size: 0.75rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s;
+    }
+    
+    .counter-btn:first-of-type {
+        border-radius: var(--radius-md) 0 0 var(--radius-md);
+    }
+    
+    .counter-btn:last-of-type {
+        border-radius: 0 var(--radius-md) var(--radius-md) 0;
+    }
+    
+    .counter-btn:hover {
+        background: var(--primary-bg);
+        color: var(--primary);
+        border-color: var(--primary);
+    }
+    
+    .counter-btn:active {
+        transform: scale(0.95);
+    }
+    
+    .optional-tag {
+        font-size: 0.6875rem;
+        font-weight: 400;
+        color: var(--gray-400);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+    
+    /* Price Summary Card */
+    .price-summary-card {
+        background: var(--primary-bg);
+        border: 1px solid var(--primary-lighter);
+        border-radius: var(--radius-lg);
+        overflow: hidden;
+        margin-bottom: 1.5rem;
+    }
+    
+    .price-summary-header {
+        background: var(--primary);
+        color: var(--white);
+        padding: 0.75rem 1.25rem;
+        font-weight: 600;
+        font-size: 0.875rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    
+    .price-summary-body {
+        padding: 1.25rem;
+    }
+    
+    .price-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 0.75rem;
+        font-size: 0.875rem;
+    }
+    
+    .price-row-label {
+        color: var(--gray-600);
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    
+    .price-row-label i {
+        color: var(--primary);
+        width: 16px;
+        text-align: center;
+    }
+    
+    .price-row-value {
+        font-weight: 600;
+        color: var(--gray-700);
+    }
+    
+    .price-divider {
+        border-top: 1px dashed var(--primary-lighter);
+        margin: 0.75rem 0;
+    }
+    
+    .price-total-row {
+        margin-bottom: 0.5rem;
+    }
+    
+    .price-total-label {
+        font-weight: 700;
+        font-size: 1rem;
+        color: var(--gray-900);
+    }
+    
+    .price-total-value {
+        font-weight: 800;
+        font-size: 1.25rem;
+        color: var(--primary-dark);
+    }
+    
+    .price-note {
+        font-size: 0.75rem;
+        color: var(--primary-dark);
+        display: flex;
+        align-items: center;
+        gap: 0.375rem;
+        margin-top: 0.25rem;
+    }
+    
+    .price-note i {
+        color: var(--success);
+    }
+    
+    /* Submit Button */
+    .submit-btn {
+        padding: 0.875rem;
+        font-size: 1rem;
+        font-weight: 600;
+        letter-spacing: 0.02em;
+        transition: all 0.3s ease;
+    }
+    
+    .submit-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(13, 148, 136, 0.3);
+    }
+    
+    .terms-text {
+        text-align: center;
+        font-size: 0.75rem;
+        color: var(--gray-500);
+        margin-top: 1rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.375rem;
+    }
+    
+    .terms-text i {
+        color: var(--gray-400);
+    }
+    
+    /* ============================================
+       FORM FIELD OVERRIDES
+       ============================================ */
+    .form-group textarea {
+        width: 100%;
+        padding: 0.75rem 0.875rem;
+        font-size: 0.9375rem;
+        border: 2px solid var(--gray-300);
+        border-radius: var(--radius-md);
+        font-family: var(--font-primary);
+        color: var(--gray-800);
+        resize: vertical;
+        min-height: 80px;
+        transition: all 0.2s ease;
+    }
+    
+    .form-group textarea:focus {
+        outline: none;
+        border-color: var(--primary);
+        box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.1);
+    }
+    
+    .form-group textarea::placeholder {
+        color: var(--gray-400);
+    }
+    
+    /* ============================================
+       RESPONSIVE FIXES
+       ============================================ */
+    @media (max-width: 767px) {
+        .booking-page-title {
+            font-size: 1.375rem;
+        }
+        
+        .room-summary-image {
+            height: 180px;
+        }
+        
+        .room-summary-badge {
+            font-size: 0.6875rem;
+            padding: 0.25rem 0.625rem;
+        }
+        
+        .form-card-header {
+            padding: 1rem;
+            flex-direction: column;
+            text-align: center;
+        }
+    }
+    
+    @media (max-width: 480px) {
+        .booking-section {
+            padding: 1rem 0 2rem;
+        }
+        
+        .room-summary-image {
+            height: 160px;
+        }
+        
+        .summary-detail-item {
+            flex-wrap: wrap;
+        }
+        
+        .detail-info {
+            flex: 1;
+            min-width: 0;
+        }
+        
+        .price-total-value {
+            font-size: 1.125rem;
+        }
+    }
+</style>
 {% endblock %}
 
 {% block extra_js %}
 <script>
     // Dynamic price calculation
     const pricePerNight = {{ room.price_per_night }};
+    const maxGuests = {{ room.capacity }};
     const checkInInput = document.getElementById('{{ form.check_in.id_for_label }}');
     const checkOutInput = document.getElementById('{{ form.check_out.id_for_label }}');
+    const guestCountInput = document.getElementById('{{ form.guest_count.id_for_label }}');
     const nightsRow = document.getElementById('nightsRow');
     const nightsCount = document.getElementById('nightsCount');
+    const nightsSubtotal = document.getElementById('nightsSubtotal');
     const totalAmount = document.getElementById('totalAmount');
+    const stayInfo = document.getElementById('stayInfo');
+    const stayInfoText = document.getElementById('stayInfoText');
+    
+    function formatCurrency(amount) {
+        return 'TZS ' + amount.toLocaleString('en-US');
+    }
     
     function calculatePrice() {
-        const checkIn = new Date(checkInInput.value);
-        const checkOut = new Date(checkOutInput.value);
+        const checkIn = checkInInput.value ? new Date(checkInInput.value + 'T00:00:00') : null;
+        const checkOut = checkOutInput.value ? new Date(checkOutInput.value + 'T00:00:00') : null;
         
         if (checkIn && checkOut && checkOut > checkIn) {
             const diffTime = Math.abs(checkOut - checkIn);
@@ -196,18 +1024,64 @@
             if (diffDays > 0) {
                 nightsRow.style.display = 'flex';
                 nightsCount.textContent = diffDays;
-                const total = diffDays * pricePerNight;
-                totalAmount.textContent = 'TZS ' + total.toLocaleString('en-US');
+                nightsSubtotal.textContent = formatCurrency(diffDays * pricePerNight);
+                totalAmount.textContent = formatCurrency(diffDays * pricePerNight);
+                
+                // Update stay info
+                stayInfo.style.display = 'inline-flex';
+                stayInfoText.textContent = diffDays + ' Night' + (diffDays > 1 ? 's' : '') + ' Stay';
             }
+        } else {
+            nightsRow.style.display = 'none';
+            stayInfo.style.display = 'none';
+            totalAmount.textContent = 'TZS 0';
         }
     }
     
-    checkInInput.addEventListener('change', calculatePrice);
+    function changeGuestCount(change) {
+        let currentValue = parseInt(guestCountInput.value) || 1;
+        let newValue = currentValue + change;
+        
+        if (newValue < 1) newValue = 1;
+        if (newValue > maxGuests) newValue = maxGuests;
+        
+        guestCountInput.value = newValue;
+    }
+    
+    // Event listeners
+    checkInInput.addEventListener('change', function() {
+        // Update checkout min date
+        if (this.value) {
+            const nextDay = new Date(this.value + 'T00:00:00');
+            nextDay.setDate(nextDay.getDate() + 1);
+            const minCheckout = nextDay.toISOString().split('T')[0];
+            checkOutInput.setAttribute('min', minCheckout);
+            
+            if (checkOutInput.value && checkOutInput.value <= this.value) {
+                checkOutInput.value = minCheckout;
+            }
+        }
+        calculatePrice();
+    });
+    
     checkOutInput.addEventListener('change', calculatePrice);
     
-    // Initial calculation if dates are pre-filled
-    if (checkInInput.value && checkOutInput.value) {
+    // Set minimum dates on load
+    document.addEventListener('DOMContentLoaded', function() {
+        const today = new Date().toISOString().split('T')[0];
+        const tomorrow = new Date();
+        tomorrow.setDate(tomorrow.getDate() + 1);
+        const tomorrowStr = tomorrow.toISOString().split('T')[0];
+        
+        if (!checkInInput.value) {
+            checkInInput.setAttribute('min', today);
+        }
+        if (!checkOutInput.value) {
+            checkOutInput.setAttribute('min', tomorrowStr);
+        }
+        
+        // Initial calculation
         calculatePrice();
-    }
+    });
 </script>
 {% endblock %}

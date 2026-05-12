@@ -1,5 +1,6 @@
 {% extends 'guest/base_guest.html' %}
 {% load static %}
+{% load currency_filters %}
 
 {% block guest_title %}Book Room {{ room.room_number }} - VETA Hotel{% endblock %}
 
@@ -69,7 +70,7 @@
                                 </div>
                                 <div class="detail-info">
                                     <span class="detail-label">Price per night</span>
-                                    <span class="detail-value">TZS {{ room.price_per_night|floatformat:0 }}</span>
+                                    <span class="detail-value">{{ room.price_per_night|tanzanian_shillings }}</span>
                                 </div>
                             </div>
                             
@@ -263,7 +264,8 @@
                                         <span class="price-row-label">
                                             <i class="fas fa-tag"></i> Price per night
                                         </span>
-                                        <span class="price-row-value">TZS {{ room.price_per_night|floatformat:0 }}</span>
+                                        
+<span class="price-row-value">{{ room.price_per_night|tanzanian_shillings }}</span>
                                     </div>
                                     
                                     <div class="price-row" id="nightsRow" style="display: none;">

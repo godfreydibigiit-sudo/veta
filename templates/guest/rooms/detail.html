@@ -1,5 +1,6 @@
 {% extends 'guest/base_guest.html' %}
 {% load static %}
+{% load currency_filters %}
 
 {% block guest_title %}Room {{ room.room_number }} - VETA Hotel{% endblock %}
 
@@ -105,7 +106,7 @@
                             <i class="fas fa-tag"></i> Price per night
                         </div>
                         <div class="price-amount">
-                            TZS {{ room.price_per_night|floatformat:0 }}
+                            {{ room.price_per_night|tanzanian_shillings }}
                         </div>
                         <div class="price-note">
                             <i class="fas fa-check-circle"></i> Inclusive of all taxes & fees

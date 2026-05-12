@@ -26,18 +26,20 @@ class RoomTypeAdmin(admin.ModelAdmin):
 class RoomAdmin(admin.ModelAdmin):
     """Admin for rooms."""
     
+    # Include BOTH 'status' (for editing) AND 'status_display' (for colored badge)
     list_display = [
         'room_number', 'room_type', 'floor', 'price_display',
-        'capacity', 'status_badge', 'is_active'
+        'capacity', 'status', 'status_display', 'is_active'
     ]
     
     list_filter = [
-        'room_type', 'floor', 'status', 'is_active', 'created_at'
+        'room_type', 'floor', 'status', 'is_active'
     ]
     
     search_fields = ['room_number', 'description']
     
-    # list_editable = ['status']
+    # Now 'status' is in list_display, so list_editable works
+    list_editable = ['status', 'is_active']
     
     inlines = [RoomImageInline]
     
@@ -57,15 +59,21 @@ class RoomAdmin(admin.ModelAdmin):
     )
     
     def price_display(self, obj):
-        """Display price with TZS currency."""
-        return format_html(
-            '<strong style="color: #2d7a2a;">TZS {:,.0f}</strong>',
-            obj.price_per_night
-        )
+        """Display price with TZS currency and commas."""
+        try:
+            price = int(obj.price_per_night) if obj.price_per_night else 0
+            return format_html(
+                '<strong style="color: #2d7a2a;">TZS {}</strong>',
+                f"{price:,}"
+            )
+        except (ValueError, TypeError):
+            return format_html(
+                '<strong style="color: #2d7a2a;">TZS 0</strong>'
+            )
     price_display.short_description = 'Price/Night'
     price_display.admin_order_field = 'price_per_night'
     
-    def status_badge(self, obj):
+    def status_display(self, obj):
         """Display status with color coding."""
         colors = {
             'available': 'green',
@@ -74,12 +82,14 @@ class RoomAdmin(admin.ModelAdmin):
             'reserved': 'blue',
         }
         color = colors.get(obj.status, 'gray')
+        status_text = obj.get_status_display()
         return format_html(
             '<span style="color: {}; font-weight: bold;">● {}</span>',
             color,
-            obj.get_status_display()
+            status_text
         )
-    status_badge.short_description = 'Status'
+    status_display.short_description = 'Status Color'
+    status_display.admin_order_field = 'status'
 
 
 @admin.register(RoomImage)

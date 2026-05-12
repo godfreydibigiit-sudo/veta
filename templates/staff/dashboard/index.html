@@ -1,5 +1,6 @@
 {% extends 'staff/base_staff.html' %}
 {% load static %}
+{% load currency_filters %}
 
 {% block staff_title %}Dashboard - VETA Hotel{% endblock %}
 
@@ -63,6 +64,7 @@
         <div class="stat-icon" style="background: var(--success-light); color: var(--success);">
             <i class="fas fa-dollar-sign"></i>
         </div>
+        <!-- Revenue already formatted with commas from backend -->
         <div class="stat-value" id="today-revenue">{{ stats.today_revenue }}</div>
         <div class="stat-label">Today's Revenue</div>
         <small class="text-muted">{{ stats.monthly_revenue }} this month</small>
@@ -195,7 +197,8 @@
                                 </a>
                             </td>
                             <td>{{ booking.guest.get_full_name|truncatechars:20 }}</td>
-                            <td><strong>TZS {{ booking.total_amount|floatformat:0 }}</strong></td>
+                            <!-- FIXED: Proper td tag with currency filter -->
+                            <td><strong>{{ booking.total_amount|tanzanian_shillings }}</strong></td>
                             <td>
                                 <span class="badge badge-sm badge-{{ booking.get_status_badge_class }}">
                                     {{ booking.get_status_display }}
@@ -224,6 +227,7 @@
         <div class="card-body">
             <div class="mb-3">
                 <label class="text-muted" style="font-size: 0.75rem;">Total Revenue</label>
+                <!-- Revenue already formatted with commas from backend -->
                 <div style="font-size: 2rem; font-weight: 700; color: var(--primary);">
                     {{ stats.total_revenue }}
                 </div>
@@ -278,4 +282,48 @@
         </form>
     </div>
 </div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Real-time dashboard updates
+    function updateDashboardStats() {
+        fetch('/staff/api/realtime-stats/', {
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        })
+        .then(response => {
+            if (!response.ok) throw new Error('Network error');
+            return response.json();
+        })
+        .then(data => {
+            updateStatValue('available-rooms', data.available_rooms);
+            updateStatValue('occupied-rooms', data.occupied_rooms);
+            updateStatValue('checked-in-today', data.checked_in_today);
+            // Format currency with commas for real-time updates
+            updateStatValue('today-revenue', 'TZS ' + Number(data.today_revenue).toLocaleString('en-US'));
+            updateStatValue('pending-bookings', data.pending_bookings);
+        })
+        .catch(error => {
+            console.error('Error fetching stats:', error);
+        });
+    }
+    
+    function updateStatValue(id, value) {
+        const element = document.getElementById(id);
+        if (element) {
+            element.style.transform = 'scale(1.1)';
+            element.style.transition = 'transform 0.3s ease';
+            element.textContent = value;
+            
+            setTimeout(() => {
+                element.style.transform = 'scale(1)';
+            }, 300);
+        }
+    }
+    
+    // Update every 30 seconds
+    setInterval(updateDashboardStats, 30000);
+</script>
 {% endblock %}

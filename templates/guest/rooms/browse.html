@@ -1,5 +1,6 @@
 {% extends 'guest/base_guest.html' %}
 {% load static %}
+{% load currency_filters %}
 
 {% block guest_title %}Browse Rooms - VETA Hotel{% endblock %}
 
@@ -165,7 +166,7 @@
                     {% endif %}
                     
                     <div class="room-card-price mb-3">
-                        TZS {{ room.price_per_night|floatformat:0 }}
+                        {{ room.price_per_night|tanzanian_shillings }}
                         <span>/ night</span>
                     </div>
                     

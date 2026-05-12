@@ -39,17 +39,21 @@ def calculate_nights(check_in, check_out):
 
 def format_currency_tzs(amount):
     """
-    Format amount in Tanzanian Shillings.
+    Format amount in Tanzanian Shillings with commas.
     
     Args:
         amount (decimal): Amount in TZS
     
     Returns:
-        str: Formatted currency string
+        str: Formatted currency string (e.g., TZS 25,000)
     """
     if amount is None:
         return "TZS 0"
-    return f"TZS {int(amount):,}"
+    try:
+        amount = int(amount)
+        return f"TZS {amount:,}"
+    except (ValueError, TypeError):
+        return "TZS 0"
 
 
 def get_date_range_display(check_in, check_out):

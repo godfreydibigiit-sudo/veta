@@ -1,5 +1,6 @@
 {% extends 'staff/base_staff.html' %}
 {% load static %}
+{% load currency_filters %}
 
 {% block staff_title %}All Bookings - VETA Hotel{% endblock %}
 
@@ -47,7 +48,8 @@
         <div class="stat-icon" style="background: var(--success-light); color: var(--success);">
             <i class="fas fa-dollar-sign"></i>
         </div>
-        <div class="stat-value">TZS {{ stats.total_revenue|floatformat:0 }}</div>
+        <!-- FIXED: Revenue with commas -->
+        <div class="stat-value">{{ stats.total_revenue }}</div>
         <div class="stat-label">Total Revenue</div>
     </div>
 </div>
@@ -58,30 +60,28 @@
         <form method="GET" class="d-flex gap-2 flex-wrap align-end">
             <div class="form-group mb-0 flex-1">
                 <label class="form-label"><i class="fas fa-search"></i> Search</label>
-                <input type="text" 
-                       name="query" 
-                       class="form-control" 
+                <input type="text" name="query" class="form-control" 
                        placeholder="Reference ID, guest name, or phone..."
-                       value="{{ form.query.value|default:'' }}">
+                       value="{{ request.GET.query }}">
             </div>
             <div class="form-group mb-0">
                 <label class="form-label"><i class="fas fa-filter"></i> Status</label>
                 <select name="status" class="form-control">
                     <option value="">All Statuses</option>
-                    <option value="pending" {% if form.status.value == 'pending' %}selected{% endif %}>Pending</option>
-                    <option value="approved" {% if form.status.value == 'approved' %}selected{% endif %}>Approved</option>
-                    <option value="checked_in" {% if form.status.value == 'checked_in' %}selected{% endif %}>Checked In</option>
-                    <option value="checked_out" {% if form.status.value == 'checked_out' %}selected{% endif %}>Checked Out</option>
-                    <option value="cancelled" {% if form.status.value == 'cancelled' %}selected{% endif %}>Cancelled</option>
+                    <option value="pending" {% if request.GET.status == 'pending' %}selected{% endif %}>Pending</option>
+                    <option value="approved" {% if request.GET.status == 'approved' %}selected{% endif %}>Approved</option>
+                    <option value="checked_in" {% if request.GET.status == 'checked_in' %}selected{% endif %}>Checked In</option>
+                    <option value="checked_out" {% if request.GET.status == 'checked_out' %}selected{% endif %}>Checked Out</option>
+                    <option value="cancelled" {% if request.GET.status == 'cancelled' %}selected{% endif %}>Cancelled</option>
                 </select>
             </div>
             <div class="form-group mb-0">
                 <label class="form-label"><i class="fas fa-calendar"></i> From</label>
-                <input type="date" name="date_from" class="form-control" value="{{ form.date_from.value|default:'' }}">
+                <input type="date" name="date_from" class="form-control" value="{{ request.GET.date_from }}">
             </div>
             <div class="form-group mb-0">
                 <label class="form-label"><i class="fas fa-calendar"></i> To</label>
-                <input type="date" name="date_to" class="form-control" value="{{ form.date_to.value|default:'' }}">
+                <input type="date" name="date_to" class="form-control" value="{{ request.GET.date_to }}">
             </div>
             <div class="form-group mb-0">
                 <label class="form-label">&nbsp;</label>
@@ -131,7 +131,10 @@
                             <small>{{ booking.check_in|date:"d M" }} → {{ booking.check_out|date:"d M Y" }}</small>
                             <br><small class="text-muted">{{ booking.get_duration_display }}</small>
                         </td>
-                        <td><strong>TZS {{ booking.total_amount|floatformat:0 }}</strong></td>
+                        <td>
+                            <!-- FIXED: Using tanzanian_shillings filter -->
+                            <strong>{{ booking.total_amount|tanzanian_shillings }}</strong>
+                        </td>
                         <td>
                             <span class="badge badge-{{ booking.get_status_badge_class }}">
                                 {{ booking.get_status_display }}

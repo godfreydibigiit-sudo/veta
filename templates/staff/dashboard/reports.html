@@ -1,5 +1,6 @@
 {% extends 'staff/base_staff.html' %}
 {% load static %}
+{% load currency_filters %}
 
 {% block staff_title %}Reports - VETA Hotel{% endblock %}
 
@@ -32,7 +33,8 @@
                     {% for day in daily_revenue|slice:":7" %}
                     <tr>
                         <td>{{ day.date }}</td>
-                        <td><strong>TZS {{ day.revenue|floatformat:0 }}</strong></td>
+                        <!-- FIXED: Using tanzanian_shillings filter for comma formatting -->
+                        <td><strong>{{ day.revenue|tanzanian_shillings }}</strong></td>
                         <td>{{ day.bookings }}</td>
                         <td>
                             <div style="background: var(--gray-100); border-radius: var(--radius-full); height: 8px; width: 100%;">
@@ -55,18 +57,24 @@
             <h5 class="mb-0"><i class="fas fa-chart-pie text-primary"></i> Booking Status Distribution</h5>
         </div>
         <div class="card-body">
-            {% for status in status_distribution %}
-            <div class="mb-3">
-                <div class="d-flex justify-between mb-1">
-                    <span class="text-muted">{{ status.status|title }}</span>
-                    <strong>{{ status.count }}</strong>
-                </div>
-                <div style="background: var(--gray-100); border-radius: var(--radius-full); height: 8px;">
-                    <div style="background: {% if status.status == 'checked_in' %}var(--primary){% elif status.status == 'approved' %}var(--info){% elif status.status == 'pending' %}var(--warning){% elif status.status == 'checked_out' %}var(--success){% else %}var(--danger){% endif %}; height: 100%; border-radius: var(--radius-full); width: {% widthratio status.count status_distribution|length 50 %}%;">
+            {% if status_distribution %}
+                {% for status in status_distribution %}
+                <div class="mb-3">
+                    <div class="d-flex justify-between mb-1">
+                        <span class="text-muted">{{ status.status|title }}</span>
+                        <strong>{{ status.count }}</strong>
+                    </div>
+                    <div style="background: var(--gray-100); border-radius: var(--radius-full); height: 8px;">
+                        <div style="background: {% if status.status == 'checked_in' %}var(--primary){% elif status.status == 'approved' %}var(--info){% elif status.status == 'pending' %}var(--warning){% elif status.status == 'checked_out' %}var(--success){% else %}var(--danger){% endif %}; height: 100%; border-radius: var(--radius-full); width: {% widthratio status.count status_distribution|length 50 %}%;">
+                        </div>
                     </div>
                 </div>
-            </div>
-            {% endfor %}
+                {% endfor %}
+            {% else %}
+                <div class="text-center text-muted py-4">
+                    <i class="fas fa-chart-pie"></i> No booking data available
+                </div>
+            {% endif %}
         </div>
     </div>
     
@@ -76,17 +84,82 @@
             <h5 class="mb-0"><i class="fas fa-calendar-alt text-warm"></i> Monthly Summary</h5>
         </div>
         <div class="card-body">
-            {% for month in monthly_stats|slice:":6" %}
-            <div class="d-flex justify-between align-center mb-3 p-2" style="background: var(--gray-50); border-radius: var(--radius-md);">
-                <div>
-                    <strong>{{ month.month }}</strong>
-                    <br><small class="text-muted">{{ month.bookings }} bookings</small>
+            {% if monthly_stats %}
+                {% for month in monthly_stats|slice:":6" %}
+                <div class="d-flex justify-between align-center mb-3 p-2" style="background: var(--gray-50); border-radius: var(--radius-md);">
+                    <div>
+                        <strong>{{ month.month }}</strong>
+                        <br><small class="text-muted">{{ month.bookings }} bookings</small>
+                    </div>
+                    <div class="text-right">
+                        <!-- FIXED: Using tanzanian_shillings filter for comma formatting -->
+                        <strong style="color: var(--primary);">{{ month.revenue|tanzanian_shillings }}</strong>
+                    </div>
                 </div>
-                <div class="text-right">
-                    <strong style="color: var(--primary);">TZS {{ month.revenue|floatformat:0 }}</strong>
+                {% endfor %}
+            {% else %}
+                <div class="text-center text-muted py-4">
+                    <i class="fas fa-calendar-alt"></i> No monthly data available
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<!-- Additional Stats Summary -->
+<div class="card">
+    <div class="card-header">
+        <h5 class="mb-0"><i class="fas fa-info-circle text-primary"></i> Report Summary</h5>
+    </div>
+    <div class="card-body">
+        <div class="grid grid-2" style="gap: 1.5rem;">
+            <div>
+                <h6 class="text-muted mb-3">Revenue Totals</h6>
+                <div class="mb-2 d-flex justify-between">
+                    <span>Total Revenue (All Time):</span>
+                    {% with total_revenue=0 %}
+                        {% for month in monthly_stats %}
+                            {% with total_revenue=total_revenue|add:month.revenue %}{% endwith %}
+                        {% endfor %}
+                    {% endwith %}
+                    <strong>TZS {{ monthly_stats|length }}</strong>
+                </div>
+                <div class="mb-2 d-flex justify-between">
+                    <span>Average Monthly Revenue:</span>
+                    <strong>
+                        {% if monthly_stats %}
+                            {% with total=0 %}
+                                {% for month in monthly_stats|slice:":6" %}
+                                    {% with total=total|add:month.revenue %}{% endwith %}
+                                {% endfor %}
+                            {% endwith %}
+                        {% endif %}
+                        --
+                    </strong>
                 </div>
             </div>
-            {% endfor %}
+            <div>
+                <h6 class="text-muted mb-3">Booking Totals</h6>
+                <div class="mb-2 d-flex justify-between">
+                    <span>Total Bookings (All Time):</span>
+                    <strong>
+                        {% with total_bookings=0 %}
+                            {% for status in status_distribution %}
+                                {% with total_bookings=total_bookings|add:status.count %}{% endwith %}
+                            {% endfor %}
+                            {{ total_bookings }}
+                        {% endwith %}
+                    </strong>
+                </div>
+                <div class="mb-2 d-flex justify-between">
+                    <span>Active Bookings:</span>
+                    <strong>
+                        {% for status in status_distribution %}
+                            {% if status.status == 'checked_in' %}{{ status.count }}{% endif %}
+                        {% endfor %}
+                    </strong>
+                </div>
+            </div>
         </div>
     </div>
 </div>

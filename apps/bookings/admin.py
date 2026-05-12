@@ -12,11 +12,11 @@ class BookingAdmin(admin.ModelAdmin):
     
     list_display = [
         'reference_id', 'guest_info', 'room_info', 'dates_display',
-        'amount_display', 'status_badge', 'payment_badge', 'created_at'
+        'amount_display', 'status_badge', 'payment_badge'
     ]
     
     list_filter = [
-        'status', 'payment_status', 'check_in', 'check_out', 'created_at'
+        'status', 'payment_status', 'check_in', 'check_out'
     ]
     
     search_fields = [
@@ -47,7 +47,8 @@ class BookingAdmin(admin.ModelAdmin):
         ('Timestamps', {
             'fields': (
                 'approved_at', 'paid_at', 'checked_in_at',
-                'checked_out_at', 'cancelled_at'
+                'checked_out_at', 'cancelled_at',
+                'created_at', 'updated_at'
             ),
             'classes': ('collapse',)
         }),
@@ -58,42 +59,51 @@ class BookingAdmin(admin.ModelAdmin):
     
     def guest_info(self, obj):
         """Display guest name and phone."""
+        name = obj.guest.get_full_name() if obj.guest else 'N/A'
+        phone = obj.guest.phone if obj.guest else ''
         return format_html(
             '<strong>{}</strong><br><small>{}</small>',
-            obj.guest.get_full_name(),
-            obj.guest.phone
+            name, phone
         )
     guest_info.short_description = 'Guest'
     guest_info.admin_order_field = 'guest__first_name'
     
     def room_info(self, obj):
         """Display room info."""
-        return format_html(
-            '<strong>Room {}</strong><br><small>{}</small>',
-            obj.room.room_number,
-            obj.room.get_room_type_display()
-        )
+        if obj.room:
+            return format_html(
+                '<strong>Room {}</strong><br><small>{}</small>',
+                obj.room.room_number,
+                obj.room.get_room_type_display()
+            )
+        return 'N/A'
     room_info.short_description = 'Room'
     room_info.admin_order_field = 'room__room_number'
     
     def dates_display(self, obj):
         """Display check-in/out dates."""
+        check_in = obj.check_in.strftime('%d %b %Y') if obj.check_in else ''
+        check_out = obj.check_out.strftime('%d %b %Y') if obj.check_out else ''
         return format_html(
             '<span style="color: green;">In:</span> {}<br>'
             '<span style="color: red;">Out:</span> {}',
-            obj.check_in.strftime('%d %b %Y'),
-            obj.check_out.strftime('%d %b %Y')
+            check_in, check_out
         )
     dates_display.short_description = 'Dates'
     
     def amount_display(self, obj):
-        """Display total amount."""
-        return format_html(
-            '<strong>TZS {:,.0f}</strong><br>'
-            '<small>{} night(s)</small>',
-            obj.total_amount,
-            obj.nights
-        )
+        """Display total amount with commas."""
+        try:
+            amount = int(obj.total_amount) if obj.total_amount else 0
+            nights = obj.nights if obj.nights else 0
+            return format_html(
+                '<strong>TZS {}</strong><br><small>{} night(s)</small>',
+                f"{amount:,}", nights
+            )
+        except (ValueError, TypeError):
+            return format_html(
+                '<strong>TZS 0</strong><br><small>0 night(s)</small>'
+            )
     amount_display.short_description = 'Amount'
     amount_display.admin_order_field = 'total_amount'
     
@@ -106,11 +116,11 @@ class BookingAdmin(admin.ModelAdmin):
             'checked_out': '#5cb85c',
             'cancelled': '#d9534f',
         }
+        color = colors.get(obj.status, '#777')
         return format_html(
             '<span style="background-color: {}; color: white; padding: 4px 8px; '
             'border-radius: 4px; font-size: 12px;">{}</span>',
-            colors.get(obj.status, '#777'),
-            obj.get_status_display()
+            color, obj.get_status_display()
         )
     status_badge.short_description = 'Status'
     status_badge.admin_order_field = 'status'
@@ -123,11 +133,11 @@ class BookingAdmin(admin.ModelAdmin):
             'partial': '#f0ad4e',
             'refunded': '#5bc0de',
         }
+        color = colors.get(obj.payment_status, '#777')
         return format_html(
             '<span style="background-color: {}; color: white; padding: 4px 8px; '
             'border-radius: 4px; font-size: 12px;">{}</span>',
-            colors.get(obj.payment_status, '#777'),
-            obj.get_payment_status_display()
+            color, obj.get_payment_status_display()
         )
     payment_badge.short_description = 'Payment'
     payment_badge.admin_order_field = 'payment_status'

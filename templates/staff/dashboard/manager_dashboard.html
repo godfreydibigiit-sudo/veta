@@ -1,0 +1,103 @@
+{% extends 'staff/base_staff.html' %}
+{% load static %}
+{% load currency_filters %}
+
+{% block staff_title %}Manager Dashboard - VETA Hotel{% endblock %}
+{% block page_title %}Manager Overview{% endblock %}
+
+{% block staff_content %}
+
+<!-- Action Bar -->
+<div class="action-bar">
+    <span class="action-bar-title"><i class="fas fa-crown"></i> Manager Actions:</span>
+    <a href="{% url 'dashboard:staff_create' %}" class="dash-btn dash-btn-primary"><i class="fas fa-user-plus"></i> Add Staff</a>
+    <a href="{% url 'dashboard:staff_list' %}" class="dash-btn dash-btn-outline"><i class="fas fa-users-cog"></i> Manage Staff</a>
+    <a href="{% url 'rooms:staff_add' %}" class="dash-btn dash-btn-outline"><i class="fas fa-plus-circle"></i> Add Room</a>
+    <a href="{% url 'dashboard:reports' %}" class="dash-btn dash-btn-outline"><i class="fas fa-chart-bar"></i> Reports</a>
+</div>
+
+<!-- Stats -->
+<div class="stats-grid">
+    <div class="stat-card teal">
+        <div class="stat-card-top">
+            <div class="stat-card-icon"><i class="fas fa-door-open"></i></div>
+            <span class="stat-trend up">{{ stats.occupancy_rate }}%</span>
+        </div>
+        <div class="stat-card-value">{{ stats.available_rooms }}</div>
+        <div class="stat-card-label">Available Rooms</div>
+        <div class="stat-card-sub">of {{ stats.total_rooms }} total</div>
+    </div>
+    <div class="stat-card warm">
+        <div class="stat-card-top">
+            <div class="stat-card-icon"><i class="fas fa-sign-in-alt"></i></div>
+            <span class="stat-trend up">{{ stats.occupied_rooms }} occupied</span>
+        </div>
+        <div class="stat-card-value">{{ stats.checked_in_today }}</div>
+        <div class="stat-card-label">Checked In Today</div>
+        <div class="stat-card-sub">{{ stats.checked_out_today }} checked out</div>
+    </div>
+    <div class="stat-card success">
+        <div class="stat-card-top">
+            <div class="stat-card-icon"><i class="fas fa-dollar-sign"></i></div>
+            <span class="stat-trend {% if stats.revenue_change >= 0 %}up{% else %}down{% endif %}">
+                {% if stats.revenue_change >= 0 %}+{% endif %}{{ stats.revenue_change }}%
+            </span>
+        </div>
+        <div class="stat-card-value" style="font-size:1.25rem;">{{ stats.today_revenue }}</div>
+        <div class="stat-card-label">Today's Revenue</div>
+        <div class="stat-card-sub">{{ stats.monthly_revenue }} this month</div>
+    </div>
+    <div class="stat-card info">
+        <div class="stat-card-top">
+            <div class="stat-card-icon"><i class="fas fa-users"></i></div>
+            <span class="stat-trend">{{ stats.active_staff }} active</span>
+        </div>
+        <div class="stat-card-value">{{ stats.total_staff }}</div>
+        <div class="stat-card-label">Staff Members</div>
+        <div class="stat-card-sub">{{ stats.total_guests }} guests</div>
+    </div>
+</div>
+
+<!-- Recent Bookings & Check-ins -->
+<div style="display:grid;grid-template-columns:2fr 1fr;gap:16px;margin-bottom:20px;">
+    <div class="dash-card">
+        <div class="dash-card-header">
+            <h3 class="dash-card-title"><i class="fas fa-list"></i> Recent Bookings</h3>
+            <a href="{% url 'bookings:staff_list' %}" class="dash-btn dash-btn-outline dash-btn-xs">View All</a>
+        </div>
+        <div class="dash-card-body no-pad" style="overflow-x:auto;">
+            <table class="dash-table">
+                <thead><tr><th>Reference</th><th>Guest</th><th>Room</th><th>Amount</th><th>Status</th></tr></thead>
+                <tbody>
+                    {% for b in stats.recent_bookings|slice:":8" %}
+                    <tr>
+                        <td><a href="{% url 'bookings:staff_detail' b.reference_id %}" style="font-family:monospace;color:var(--primary);font-weight:600;font-size:0.75rem;">{{ b.reference_id }}</a></td>
+                        <td>{{ b.guest.get_full_name|truncatechars:16 }}</td>
+                        <td>R{{ b.room.room_number }}</td>
+                        <td><strong>{{ b.total_amount|tanzanian_shillings }}</strong></td>
+                        <td><span class="dash-badge dash-badge-{{ b.get_status_badge_class }}">{{ b.get_status_display }}</span></td>
+                    </tr>
+                    {% empty %}
+                    <tr><td colspan="5"><div class="empty-state"><p>No bookings</p></div></td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="dash-card">
+        <div class="dash-card-header"><h3 class="dash-card-title"><i class="fas fa-sign-in-alt"></i> Recent Check-ins</h3></div>
+        <div class="dash-card-body no-pad">
+            {% for b in stats.recent_checkins %}
+            <div style="display:flex;align-items:center;gap:10px;padding:10px 16px;border-bottom:1px solid var(--gray-100);">
+                <div style="width:32px;height:32px;border-radius:50%;background:var(--primary-bg);color:var(--primary);display:flex;align-items:center;justify-content:center;font-weight:600;font-size:0.6875rem;flex-shrink:0;">{{ b.guest.first_name.0 }}{{ b.guest.last_name.0 }}</div>
+                <div style="flex:1;min-width:0;"><p style="font-size:0.75rem;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ b.guest.get_full_name }}</p><span style="font-size:0.625rem;color:var(--gray-500);">Room {{ b.room.room_number }}</span></div>
+                <span class="dash-badge dash-badge-primary">In</span>
+            </div>
+            {% empty %}
+            <div class="empty-state"><p>No check-ins</p></div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+{% endblock %}

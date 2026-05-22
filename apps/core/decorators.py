@@ -67,3 +67,29 @@ def ajax_required(view_func):
             return HttpResponseBadRequest('Invalid request')
         return view_func(request, *args, **kwargs)
     return _wrapped_view
+
+def manager_required(view_func=None, redirect_url='users:staff_login'):
+    """
+    Decorator for views that require manager or admin access.
+    """
+    def decorator(view_func):
+        @wraps(view_func)
+        def _wrapped_view(request, *args, **kwargs):
+            if not request.user.is_authenticated:
+                messages.error(request, 'Please login to access this area.')
+                return redirect(redirect_url)
+            
+            if not request.user.is_staff_user():
+                messages.error(request, 'You do not have permission to access this area.')
+                return redirect('home')
+            
+            if not request.user.can_manage_staff():
+                messages.error(request, 'Only managers can access this area.')
+                return redirect('dashboard:index')
+            
+            return view_func(request, *args, **kwargs)
+        return _wrapped_view
+    
+    if view_func is None:
+        return decorator
+    return decorator(view_func)

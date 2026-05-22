@@ -22,4 +22,8 @@ urlpatterns = [
     # Profile Management
     path('profile/', views.profile_view, name='profile'),
     path('profile/edit/', views.profile_edit, name='profile_edit'),
+    path('staff/create/', views.staff_create, name='staff_create'),
+    path('staff/<int:pk>/', views.staff_detail, name='staff_detail'),
+    path('staff/<int:pk>/edit/', views.staff_edit, name='staff_edit'),
+    path('staff/<int:pk>/toggle/', views.staff_toggle_active, name='staff_toggle'),
 ]

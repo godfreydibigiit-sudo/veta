@@ -2,328 +2,123 @@
 {% load static %}
 {% load currency_filters %}
 
-{% block staff_title %}Dashboard - VETA Hotel{% endblock %}
+{% block staff_title %}Staff Dashboard - VETA Hotel{% endblock %}
+{% block page_title %}Dashboard{% endblock %}
 
 {% block staff_content %}
-<!-- Welcome Section -->
-<div class="d-flex justify-between align-center mb-4">
+
+<!-- Welcome -->
+<div class="page-header">
     <div>
-        <h2 class="mb-1">Welcome back, {{ user.first_name }}!</h2>
-        <p class="text-muted">
-            <i class="fas fa-calendar-alt"></i> 
-            {% now "l, d F Y" %}
-            <span class="mx-2">|</span>
-            <i class="fas fa-clock"></i>
-            {% now "H:i" %}
-        </p>
+        <h1>Welcome back, {{ user.first_name }}!</h1>
+        <p>{% now "l, d F Y" %} | {{ user.get_role_display }}</p>
     </div>
-    <div class="d-flex gap-2">
-        <a href="{% url 'bookings:staff_today_checkins' %}" class="btn btn-primary btn-sm">
-            <i class="fas fa-sign-in-alt"></i> Today's Check-ins
+    <div style="display:flex;gap:8px;">
+        <a href="{% url 'bookings:staff_today_checkins' %}" class="dash-btn dash-btn-primary dash-btn-sm">
+            <i class="fas fa-sign-in-alt"></i> Check-ins
         </a>
-        <a href="{% url 'bookings:staff_today_checkouts' %}" class="btn btn-warm btn-sm">
-            <i class="fas fa-sign-out-alt"></i> Today's Check-outs
+        <a href="{% url 'bookings:staff_today_checkouts' %}" class="dash-btn dash-btn-outline dash-btn-sm">
+            <i class="fas fa-sign-out-alt"></i> Check-outs
         </a>
     </div>
 </div>
 
-<!-- Main Stats Grid -->
-<div class="stats-grid mb-4" id="dashboard-stats">
-    <!-- Available Rooms -->
-    <div class="stat-card">
-        <div class="stat-icon" style="background: var(--success-light); color: var(--success);">
-            <i class="fas fa-door-open"></i>
+<!-- Stats -->
+<div class="stats-grid">
+    <div class="stat-card teal">
+        <div class="stat-card-top">
+            <div class="stat-card-icon"><i class="fas fa-door-open"></i></div>
+            <span class="stat-trend up">{{ stats.occupancy_rate }}%</span>
         </div>
-        <div class="stat-value" id="available-rooms">{{ stats.available_rooms }}</div>
-        <div class="stat-label">Available Rooms</div>
-        <small class="text-success">out of {{ stats.total_rooms }} total</small>
+        <div class="stat-card-value">{{ stats.available_rooms }}</div>
+        <div class="stat-card-label">Available Rooms</div>
+        <div class="stat-card-sub">of {{ stats.total_rooms }} total</div>
     </div>
-    
-    <!-- Occupied Rooms -->
     <div class="stat-card warm">
-        <div class="stat-icon">
-            <i class="fas fa-user-check"></i>
+        <div class="stat-card-top">
+            <div class="stat-card-icon"><i class="fas fa-sign-in-alt"></i></div>
+            <span class="stat-trend up">{{ stats.checked_in_today }} today</span>
         </div>
-        <div class="stat-value" id="occupied-rooms">{{ stats.occupied_rooms }}</div>
-        <div class="stat-label">Occupied Rooms</div>
-        <small class="text-muted">{{ stats.occupancy_rate }}% occupancy</small>
+        <div class="stat-card-value">{{ stats.occupied_rooms }}</div>
+        <div class="stat-card-label">Occupied Rooms</div>
+        <div class="stat-card-sub">{{ stats.checked_out_today }} checked out</div>
     </div>
-    
-    <!-- Checked In Today -->
-    <div class="stat-card">
-        <div class="stat-icon" style="background: var(--primary-bg); color: var(--primary);">
-            <i class="fas fa-sign-in-alt"></i>
+    <div class="stat-card success">
+        <div class="stat-card-top">
+            <div class="stat-card-icon"><i class="fas fa-dollar-sign"></i></div>
         </div>
-        <div class="stat-value" id="checked-in-today">{{ stats.checked_in_today }}</div>
-        <div class="stat-label">Checked In Today</div>
-        <small class="text-muted">{{ stats.checked_out_today }} checked out</small>
+        <div class="stat-card-value" style="font-size:1.25rem;">{{ stats.today_revenue }}</div>
+        <div class="stat-card-label">Today's Revenue</div>
+        <div class="stat-card-sub">{{ stats.monthly_revenue }} this month</div>
     </div>
-    
-    <!-- Today's Revenue -->
-    <div class="stat-card warm">
-        <div class="stat-icon" style="background: var(--success-light); color: var(--success);">
-            <i class="fas fa-dollar-sign"></i>
+    <div class="stat-card info">
+        <div class="stat-card-top">
+            <div class="stat-card-icon"><i class="fas fa-clock"></i></div>
+            <span class="stat-trend">{{ stats.pending_bookings }} pending</span>
         </div>
-        <!-- Revenue already formatted with commas from backend -->
-        <div class="stat-value" id="today-revenue">{{ stats.today_revenue }}</div>
-        <div class="stat-label">Today's Revenue</div>
-        <small class="text-muted">{{ stats.monthly_revenue }} this month</small>
+        <div class="stat-card-value">{{ stats.total_bookings }}</div>
+        <div class="stat-card-label">Total Bookings</div>
+        <div class="stat-card-sub">{{ stats.approved_bookings }} approved</div>
     </div>
 </div>
 
-<!-- Quick Stats Row -->
-<div class="grid grid-4 mb-4" style="gap: 1rem;">
-    <div class="card p-3 text-center">
-        <i class="fas fa-clock text-warning" style="font-size: 1.5rem;"></i>
-        <div class="font-bold mt-1" id="pending-bookings" style="font-size: 1.5rem;">{{ stats.pending_bookings }}</div>
-        <small class="text-muted">Pending Bookings</small>
+<!-- Current & Upcoming -->
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px;">
+    <div class="dash-card">
+        <div class="dash-card-header">
+            <h3 class="dash-card-title"><i class="fas fa-user-check"></i> Currently In-house <span class="dash-badge dash-badge-primary" style="margin-left:8px;">{{ stats.currently_checked_in_count }}</span></h3>
+        </div>
+        <div class="dash-card-body no-pad" style="max-height:350px;overflow-y:auto;">
+            {% for b in stats.currently_checked_in %}
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 16px;border-bottom:1px solid var(--gray-100);">
+                <div><strong style="font-size:0.8125rem;">{{ b.guest.get_full_name }}</strong><br><small style="color:var(--gray-500);">Room {{ b.room.room_number }} | {{ b.room.get_room_type_display }}</small></div>
+                <div style="text-align:right;"><small style="color:var(--gray-500);">Out:</small><br><strong style="font-size:0.8125rem;">{{ b.check_out|date:"d M" }}</strong></div>
+            </div>
+            {% empty %}
+            <div class="empty-state"><i class="fas fa-door-closed"></i><p>No guests in-house</p></div>
+            {% endfor %}
+        </div>
     </div>
-    <div class="card p-3 text-center">
-        <i class="fas fa-check-circle text-info" style="font-size: 1.5rem;"></i>
-        <div class="font-bold mt-1" style="font-size: 1.5rem;">{{ stats.approved_bookings }}</div>
-        <small class="text-muted">Approved</small>
-    </div>
-    <div class="card p-3 text-center">
-        <i class="fas fa-users text-primary" style="font-size: 1.5rem;"></i>
-        <div class="font-bold mt-1" style="font-size: 1.5rem;">{{ stats.currently_checked_in_count }}</div>
-        <small class="text-muted">Currently In-house</small>
-    </div>
-    <div class="card p-3 text-center">
-        <i class="fas fa-user-plus text-success" style="font-size: 1.5rem;"></i>
-        <div class="font-bold mt-1" style="font-size: 1.5rem;">{{ stats.total_guests }}</div>
-        <small class="text-muted">Total Guests</small>
+    <div class="dash-card">
+        <div class="dash-card-header">
+            <h3 class="dash-card-title"><i class="fas fa-calendar-alt"></i> Upcoming Check-ins <span class="dash-badge dash-badge-warm" style="margin-left:8px;">{{ stats.upcoming_checkins_count }}</span></h3>
+        </div>
+        <div class="dash-card-body no-pad" style="max-height:350px;overflow-y:auto;">
+            {% for b in stats.upcoming_checkins %}
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 16px;border-bottom:1px solid var(--gray-100);">
+                <div><strong style="font-size:0.8125rem;">{{ b.guest.get_full_name }}</strong><br><small style="color:var(--gray-500);">Room {{ b.room.room_number }}</small></div>
+                <span class="dash-badge dash-badge-{{ b.get_status_badge_class }}">{{ b.get_status_display }}</span>
+            </div>
+            {% empty %}
+            <div class="empty-state"><i class="fas fa-calendar-check"></i><p>No upcoming check-ins</p></div>
+            {% endfor %}
+        </div>
     </div>
 </div>
 
-<!-- Currently Checked In & Upcoming -->
-<div class="grid grid-2 mb-4" style="gap: 1.5rem;">
-    <!-- Currently Checked In -->
-    <div class="card">
-        <div class="card-header d-flex justify-between align-center">
-            <h5 class="mb-0">
-                <i class="fas fa-user-check text-primary"></i> 
-                Currently In-house
-                <span class="badge badge-primary ml-2">{{ stats.currently_checked_in_count }}</span>
-            </h5>
-        </div>
-        <div class="card-body p-0">
-            {% if stats.currently_checked_in %}
-            <div style="max-height: 400px; overflow-y: auto;">
-                {% for booking in stats.currently_checked_in %}
-                <div class="d-flex justify-between align-center p-3" style="border-bottom: 1px solid var(--gray-100);">
-                    <div>
-                        <strong>{{ booking.guest.get_full_name }}</strong>
-                        <br><small class="text-muted">Room {{ booking.room.room_number }} | {{ booking.room.get_room_type_display }}</small>
-                    </div>
-                    <div class="text-right">
-                        <small class="text-muted">Check-out:</small>
-                        <br><strong>{{ booking.check_out|date:"d M Y" }}</strong>
-                    </div>
-                </div>
+<!-- Recent Bookings -->
+<div class="dash-card">
+    <div class="dash-card-header">
+        <h3 class="dash-card-title"><i class="fas fa-list"></i> Recent Bookings</h3>
+        <a href="{% url 'bookings:staff_list' %}" class="dash-btn dash-btn-outline dash-btn-xs">View All</a>
+    </div>
+    <div class="dash-card-body no-pad" style="overflow-x:auto;">
+        <table class="dash-table">
+            <thead><tr><th>Reference</th><th>Guest</th><th>Amount</th><th>Status</th></tr></thead>
+            <tbody>
+                {% for b in stats.recent_bookings|slice:":10" %}
+                <tr>
+                    <td><a href="{% url 'bookings:staff_detail' b.reference_id %}" style="font-family:monospace;color:var(--primary);font-weight:600;font-size:0.75rem;">{{ b.reference_id }}</a></td>
+                    <td>{{ b.guest.get_full_name|truncatechars:18 }}</td>
+                    <td><strong>{{ b.total_amount|tanzanian_shillings }}</strong></td>
+                    <td><span class="dash-badge dash-badge-{{ b.get_status_badge_class }}">{{ b.get_status_display }}</span></td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="4"><div class="empty-state"><i class="fas fa-calendar-times"></i><p>No bookings</p></div></td></tr>
                 {% endfor %}
-            </div>
-            {% else %}
-            <div class="p-4 text-center text-muted">
-                <i class="fas fa-door-closed"></i> No guests currently checked in
-            </div>
-            {% endif %}
-        </div>
-    </div>
-    
-    <!-- Upcoming Check-ins -->
-    <div class="card">
-        <div class="card-header d-flex justify-between align-center">
-            <h5 class="mb-0">
-                <i class="fas fa-calendar-alt text-warm"></i> 
-                Upcoming Check-ins (Tomorrow)
-                <span class="badge badge-warm ml-2">{{ stats.upcoming_checkins_count }}</span>
-            </h5>
-        </div>
-        <div class="card-body p-0">
-            {% if stats.upcoming_checkins %}
-            <div style="max-height: 400px; overflow-y: auto;">
-                {% for booking in stats.upcoming_checkins %}
-                <div class="d-flex justify-between align-center p-3" style="border-bottom: 1px solid var(--gray-100);">
-                    <div>
-                        <strong>{{ booking.guest.get_full_name }}</strong>
-                        <br><small class="text-muted">Room {{ booking.room.room_number }}</small>
-                    </div>
-                    <div>
-                        <span class="badge badge-{{ booking.get_status_badge_class }}">
-                            {{ booking.get_status_display }}
-                        </span>
-                    </div>
-                </div>
-                {% endfor %}
-            </div>
-            {% else %}
-            <div class="p-4 text-center text-muted">
-                <i class="fas fa-calendar-check"></i> No upcoming check-ins
-            </div>
-            {% endif %}
-        </div>
+            </tbody>
+        </table>
     </div>
 </div>
 
-<!-- Recent Bookings & Revenue -->
-<div class="grid grid-2 mb-4" style="gap: 1.5rem;">
-    <!-- Recent Bookings -->
-    <div class="card">
-        <div class="card-header d-flex justify-between align-center">
-            <h5 class="mb-0">
-                <i class="fas fa-list text-primary"></i> Recent Bookings
-            </h5>
-            <a href="{% url 'bookings:staff_list' %}" class="btn btn-sm btn-outline-primary">View All</a>
-        </div>
-        <div class="card-body p-0">
-            {% if stats.recent_bookings %}
-            <div class="table-responsive">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>Reference</th>
-                            <th>Guest</th>
-                            <th>Amount</th>
-                            <th>Status</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for booking in stats.recent_bookings %}
-                        <tr>
-                            <td>
-                                <a href="{% url 'bookings:staff_detail' booking.reference_id %}" 
-                                   style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--primary);">
-                                    {{ booking.reference_id }}
-                                </a>
-                            </td>
-                            <td>{{ booking.guest.get_full_name|truncatechars:20 }}</td>
-                            <!-- FIXED: Proper td tag with currency filter -->
-                            <td><strong>{{ booking.total_amount|tanzanian_shillings }}</strong></td>
-                            <td>
-                                <span class="badge badge-sm badge-{{ booking.get_status_badge_class }}">
-                                    {{ booking.get_status_display }}
-                                </span>
-                            </td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-            {% else %}
-            <div class="p-4 text-center text-muted">
-                <i class="fas fa-calendar-times"></i> No recent bookings
-            </div>
-            {% endif %}
-        </div>
-    </div>
-    
-    <!-- Revenue Overview -->
-    <div class="card">
-        <div class="card-header">
-            <h5 class="mb-0">
-                <i class="fas fa-chart-line text-success"></i> Revenue Overview
-            </h5>
-        </div>
-        <div class="card-body">
-            <div class="mb-3">
-                <label class="text-muted" style="font-size: 0.75rem;">Total Revenue</label>
-                <!-- Revenue already formatted with commas from backend -->
-                <div style="font-size: 2rem; font-weight: 700; color: var(--primary);">
-                    {{ stats.total_revenue }}
-                </div>
-            </div>
-            
-            <hr>
-            
-            <div class="d-flex justify-between mb-3">
-                <div>
-                    <small class="text-muted">This Month</small>
-                    <br><strong>{{ stats.monthly_revenue }}</strong>
-                </div>
-                <div class="text-right">
-                    <small class="text-muted">Last Month</small>
-                    <br><strong>{{ stats.last_month_revenue }}</strong>
-                </div>
-            </div>
-            
-            {% if stats.revenue_change_percent > 0 %}
-            <div class="p-2 text-center" style="background: var(--success-light); border-radius: var(--radius-md);">
-                <span class="text-success font-semibold">
-                    <i class="fas fa-arrow-up"></i> {{ stats.revenue_change_percent }}% increase
-                </span>
-            </div>
-            {% elif stats.revenue_change_percent < 0 %}
-            <div class="p-2 text-center" style="background: var(--danger-light); border-radius: var(--radius-md);">
-                <span class="text-danger font-semibold">
-                    <i class="fas fa-arrow-down"></i> {{ stats.revenue_change_percent }}% decrease
-                </span>
-            </div>
-            {% endif %}
-        </div>
-    </div>
-</div>
-
-<!-- Quick Search -->
-<div class="card">
-    <div class="card-body">
-        <form method="GET" action="{% url 'dashboard:quick_search' %}" class="d-flex gap-2 align-center">
-            <div class="flex-1">
-                <div class="input-group">
-                    <input type="text" 
-                           name="q" 
-                           class="form-control" 
-                           placeholder="Quick search guest by phone or reference ID..."
-                           required>
-                    <button type="submit" class="btn btn-primary">
-                        <i class="fas fa-search"></i> Search
-                    </button>
-                </div>
-            </div>
-        </form>
-    </div>
-</div>
-{% endblock %}
-
-{% block extra_js %}
-<script>
-    // Real-time dashboard updates
-    function updateDashboardStats() {
-        fetch('/staff/api/realtime-stats/', {
-            headers: {
-                'X-Requested-With': 'XMLHttpRequest'
-            }
-        })
-        .then(response => {
-            if (!response.ok) throw new Error('Network error');
-            return response.json();
-        })
-        .then(data => {
-            updateStatValue('available-rooms', data.available_rooms);
-            updateStatValue('occupied-rooms', data.occupied_rooms);
-            updateStatValue('checked-in-today', data.checked_in_today);
-            // Format currency with commas for real-time updates
-            updateStatValue('today-revenue', 'TZS ' + Number(data.today_revenue).toLocaleString('en-US'));
-            updateStatValue('pending-bookings', data.pending_bookings);
-        })
-        .catch(error => {
-            console.error('Error fetching stats:', error);
-        });
-    }
-    
-    function updateStatValue(id, value) {
-        const element = document.getElementById(id);
-        if (element) {
-            element.style.transform = 'scale(1.1)';
-            element.style.transition = 'transform 0.3s ease';
-            element.textContent = value;
-            
-            setTimeout(() => {
-                element.style.transform = 'scale(1)';
-            }, 300);
-        }
-    }
-    
-    // Update every 30 seconds
-    setInterval(updateDashboardStats, 30000);
-</script>
 {% endblock %}

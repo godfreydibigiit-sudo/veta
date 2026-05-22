@@ -65,3 +65,39 @@ MAX_ADVANCE_BOOKING_DAYS = 365
 # Session keys
 SESSION_CART_KEY = 'booking_cart'
 SESSION_SEARCH_KEY = 'last_search_params'
+
+# User roles
+USER_ROLES = [
+    ('guest', 'Guest'),
+    ('staff', 'Staff'),
+    ('manager', 'Hotel Manager'),
+    ('admin', 'System Admin'),
+]
+
+# Staff role hierarchy (for permission inheritance)
+ROLE_HIERARCHY = {
+    'guest': 0,
+    'staff': 1,
+    'manager': 2,
+    'admin': 3,
+}
+
+# Default staff permissions
+DEFAULT_STAFF_PERMISSIONS = {
+    'can_manage_rooms': False,
+    'can_manage_bookings': True,
+    'can_process_payments': False,
+    'can_check_in_out': True,
+    'can_manage_staff': False,
+    'can_view_reports': False,
+}
+
+# Default manager permissions
+DEFAULT_MANAGER_PERMISSIONS = {
+    'can_manage_rooms': True,
+    'can_manage_bookings': True,
+    'can_process_payments': True,
+    'can_check_in_out': True,
+    'can_manage_staff': True,
+    'can_view_reports': True,
+}

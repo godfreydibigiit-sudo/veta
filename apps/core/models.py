@@ -40,3 +40,40 @@ class SoftDeleteModel(models.Model):
         self.is_active = True
         self.deleted_at = None
         self.save()
+
+
+class AuditLog(models.Model):
+    """
+    Audit log to track all financial and sensitive operations.
+    Prevents fraud by maintaining immutable records.
+    """
+    ACTION_CHOICES = [
+        ('payment_received', 'Payment Received'),
+        ('payment_refunded', 'Payment Refunded'),
+        ('booking_approved', 'Booking Approved'),
+        ('booking_cancelled', 'Booking Cancelled'),
+        ('check_in', 'Guest Check-in'),
+        ('check_out', 'Guest Check-out'),
+        ('room_status_changed', 'Room Status Changed'),
+        ('staff_created', 'Staff Created'),
+        ('staff_deactivated', 'Staff Deactivated'),
+        ('price_changed', 'Room Price Changed'),
+    ]
+    
+    user = models.ForeignKey('users.User', on_delete=models.PROTECT, related_name='audit_logs')
+    action = models.CharField(max_length=30, choices=ACTION_CHOICES)
+    description = models.TextField()
+    booking = models.ForeignKey('bookings.Booking', on_delete=models.SET_NULL, null=True, blank=True)
+    room = models.ForeignKey('rooms.Room', on_delete=models.SET_NULL, null=True, blank=True)
+    amount = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    ip_address = models.GenericIPAddressField(null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    
+    class Meta:
+        db_table = 'audit_logs'
+        ordering = ['-created_at']
+        verbose_name = 'Audit Log'
+        verbose_name_plural = 'Audit Logs'
+    
+    def __str__(self):
+        return f"{self.get_action_display()} by {self.user.get_full_name()} at {self.created_at}"        

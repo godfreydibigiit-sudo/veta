@@ -1,0 +1,973 @@
+/* ============================================
+   VETA HOTEL - Premium Admin Design
+   Professional + Mobile Responsive
+   ============================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+:root {
+    --veta-primary: #0d9488;
+    --veta-primary-dark: #0f766e;
+    --veta-primary-light: #14b8a6;
+    --veta-primary-bg: #f0fdfa;
+    --veta-warm: #f59e0b;
+    --veta-warm-dark: #d97706;
+    --veta-warm-light: #fef3c7;
+    --veta-success: #10b981;
+    --veta-success-light: #d1fae5;
+    --veta-danger: #ef4444;
+    --veta-danger-light: #fee2e2;
+    --veta-info: #3b82f6;
+    --veta-info-light: #dbeafe;
+    --veta-gray-50: #f9fafb;
+    --veta-gray-100: #f3f4f6;
+    --veta-gray-200: #e5e7eb;
+    --veta-gray-500: #6b7280;
+    --veta-gray-700: #374151;
+    --veta-gray-900: #111827;
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 16px;
+    --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+    --shadow-md: 0 4px 6px rgba(0,0,0,0.07);
+    --shadow-lg: 0 10px 25px rgba(0,0,0,0.1);
+    --transition: 0.2s ease;
+}
+
+/* ============================================
+   GLOBAL FONT
+   ============================================ */
+body, h1, h2, h3, h4, h5, h6,
+.navbar, .sidebar, .content-header,
+.btn, .form-control, .card-title,
+.table, .badge, .small-box {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+}
+
+/* ============================================
+   LOGIN PAGE - Premium Design
+   ============================================ */
+.login-page {
+    background: linear-gradient(135deg, #0d9488 0%, #0f766e 40%, #115e59 100%) !important;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.login-page::before {
+    content: '';
+    position: absolute;
+    top: -50%; right: -50%;
+    width: 200%; height: 200%;
+    background: radial-gradient(circle, rgba(255,255,255,0.05) 1px, transparent 1px);
+    background-size: 30px 30px;
+    animation: patternMove 20s linear infinite;
+}
+
+@keyframes patternMove {
+    0% { transform: translate(0, 0); }
+    100% { transform: translate(30px, 30px); }
+}
+
+.login-box {
+    width: 420px !important;
+    border-radius: var(--radius-lg) !important;
+    box-shadow: 0 25px 80px rgba(0,0,0,0.25) !important;
+    overflow: hidden;
+    position: relative;
+    z-index: 1;
+    background: #ffffff !important;
+}
+
+.login-box .card {
+    border: none !important;
+    border-radius: var(--radius-lg) !important;
+}
+
+.login-box .card-body {
+    padding: 2.5rem 2rem !important;
+}
+
+.login-logo {
+    margin-bottom: 0.5rem !important;
+    padding-top: 1.5rem;
+}
+
+.login-logo a {
+    color: var(--veta-primary) !important;
+    font-size: 1.75rem !important;
+    font-weight: 800 !important;
+    letter-spacing: -0.02em;
+}
+
+.login-logo b {
+    font-weight: 800;
+}
+
+.login-box-msg {
+    font-size: 0.875rem !important;
+    color: var(--veta-gray-500) !important;
+    margin-bottom: 1.5rem !important;
+    font-weight: 400;
+}
+
+/* Login Form Inputs */
+.login-box .form-control {
+    border-radius: var(--radius-sm) !important;
+    border: 2px solid var(--veta-gray-200) !important;
+    padding: 0.75rem 1rem !important;
+    font-size: 0.9375rem !important;
+    transition: all var(--transition) !important;
+}
+
+.login-box .form-control:focus {
+    border-color: var(--veta-primary) !important;
+    box-shadow: 0 0 0 3px rgba(13,148,136,0.1) !important;
+}
+
+.login-box .input-group-text {
+    border-radius: var(--radius-sm) 0 0 var(--radius-sm) !important;
+    border: 2px solid var(--veta-gray-200) !important;
+    background: var(--veta-gray-50) !important;
+}
+
+/* Login Button */
+.login-box .btn-primary {
+    background: linear-gradient(135deg, var(--veta-primary), var(--veta-primary-dark)) !important;
+    border: none !important;
+    border-radius: var(--radius-sm) !important;
+    padding: 0.75rem !important;
+    font-size: 1rem !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.02em;
+    transition: all var(--transition) !important;
+    box-shadow: 0 4px 15px rgba(13,148,136,0.3) !important;
+}
+
+.login-box .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 25px rgba(13,148,136,0.4) !important;
+}
+
+/* ============================================
+   MAIN HEADER / NAVBAR
+   ============================================ */
+.main-header {
+    background: #ffffff !important;
+    border-bottom: 1px solid var(--veta-gray-200) !important;
+    box-shadow: var(--shadow-sm) !important;
+}
+
+.main-header .navbar-nav .nav-link {
+    color: var(--veta-gray-700) !important;
+    font-weight: 500;
+    padding: 0.5rem 0.875rem;
+    border-radius: var(--radius-sm);
+    transition: all var(--transition);
+}
+
+.main-header .navbar-nav .nav-link:hover {
+    background: var(--veta-gray-100) !important;
+    color: var(--veta-primary) !important;
+}
+
+.navbar-search-block .form-control {
+    border-radius: var(--radius-sm) !important;
+    border: 2px solid var(--veta-gray-200) !important;
+}
+
+/* Brand */
+.brand-link {
+    background: linear-gradient(180deg, #0d9488 0%, #0f766e 100%) !important;
+    padding: 1rem 1.25rem !important;
+}
+
+.brand-link .brand-image {
+    float: none !important;
+    margin: 0 !important;
+}
+
+.brand-text {
+    font-weight: 700 !important;
+    font-size: 1.125rem !important;
+    letter-spacing: -0.01em;
+}
+
+/* ============================================
+   SIDEBAR - Premium Dark Teal
+   ============================================ */
+.main-sidebar {
+    background: linear-gradient(180deg, #0f766e 0%, #115e59 50%, #0d9488 100%) !important;
+}
+
+.sidebar-dark-teal .nav-sidebar .nav-link {
+    color: rgba(255,255,255,0.75) !important;
+    border-radius: var(--radius-sm);
+    margin: 2px 8px;
+    padding: 0.625rem 1rem;
+    transition: all var(--transition);
+    font-weight: 500;
+}
+
+.sidebar-dark-teal .nav-sidebar .nav-link:hover {
+    background: rgba(255,255,255,0.12) !important;
+    color: #ffffff !important;
+}
+
+.sidebar-dark-teal .nav-sidebar .nav-link.active {
+    background: rgba(255,255,255,0.18) !important;
+    color: #ffffff !important;
+    font-weight: 600;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+
+.sidebar-dark-teal .nav-sidebar .nav-link.active i {
+    color: var(--veta-warm) !important;
+}
+
+.sidebar-dark-teal .nav-sidebar .nav-header {
+    color: rgba(255,255,255,0.45) !important;
+    font-size: 0.625rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-weight: 700;
+    padding: 1rem 1.25rem 0.375rem;
+}
+
+.sidebar-dark-teal .nav-sidebar .nav-treeview .nav-link {
+    padding-left: 2.5rem !important;
+    font-size: 0.8125rem;
+}
+
+.sidebar-dark-teal .nav-sidebar .nav-treeview .nav-link.active {
+    background: rgba(255,255,255,0.1) !important;
+}
+
+/* User Panel in Sidebar */
+.user-panel {
+    border-bottom: 1px solid rgba(255,255,255,0.1) !important;
+    padding: 1rem 1.25rem !important;
+}
+
+.user-panel .image img {
+    width: 2.25rem !important;
+    height: 2.25rem !important;
+    border-radius: 50% !important;
+    border: 2px solid rgba(255,255,255,0.2);
+}
+
+.user-panel .info a {
+    color: rgba(255,255,255,0.9) !important;
+    font-weight: 500;
+}
+
+/* ============================================
+   CONTENT AREA
+   ============================================ */
+.content-wrapper {
+    background: var(--veta-gray-50) !important;
+}
+
+.content-header {
+    padding: 1.25rem 1.5rem !important;
+}
+
+.content-header h1 {
+    font-size: 1.5rem !important;
+    font-weight: 700 !important;
+    color: var(--veta-gray-900) !important;
+}
+
+.breadcrumb {
+    background: transparent !important;
+    padding: 0 !important;
+}
+
+.breadcrumb-item a {
+    color: var(--veta-primary) !important;
+    font-weight: 500;
+}
+
+/* ============================================
+   CARDS - Modern Design
+   ============================================ */
+.card {
+    border-radius: var(--radius-md) !important;
+    border: 1px solid var(--veta-gray-200) !important;
+    box-shadow: var(--shadow-sm) !important;
+    transition: all var(--transition) !important;
+    overflow: hidden;
+}
+
+.card:hover {
+    box-shadow: var(--shadow-md) !important;
+}
+
+.card-header {
+    background: #ffffff !important;
+    border-bottom: 1px solid var(--veta-gray-100) !important;
+    padding: 1rem 1.25rem !important;
+    font-weight: 600;
+}
+
+.card-body {
+    padding: 1.25rem !important;
+}
+
+/* Card Outlines */
+.card-primary.card-outline {
+    border-top: 3px solid var(--veta-primary) !important;
+}
+
+.card-success.card-outline {
+    border-top: 3px solid var(--veta-success) !important;
+}
+
+.card-warning.card-outline {
+    border-top: 3px solid var(--veta-warm) !important;
+}
+
+.card-danger.card-outline {
+    border-top: 3px solid var(--veta-danger) !important;
+}
+
+.card-info.card-outline {
+    border-top: 3px solid var(--veta-info) !important;
+}
+
+/* ============================================
+   STATS BOXES (Dashboard Widgets)
+   ============================================ */
+.small-box {
+    border-radius: var(--radius-md) !important;
+    overflow: hidden;
+    box-shadow: var(--shadow-sm) !important;
+    transition: all var(--transition) !important;
+}
+
+.small-box:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-lg) !important;
+}
+
+.small-box .icon {
+    opacity: 0.15 !important;
+    font-size: 4rem !important;
+    top: 0.5rem !important;
+    right: 1rem !important;
+}
+
+.small-box .inner {
+    padding: 1.25rem !important;
+}
+
+.small-box .inner h3 {
+    font-size: 2rem !important;
+    font-weight: 700 !important;
+}
+
+.small-box .inner p {
+    font-size: 0.875rem !important;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+}
+
+.small-box .small-box-footer {
+    background: rgba(0,0,0,0.08) !important;
+    padding: 0.5rem 1.25rem !important;
+    font-weight: 500;
+}
+
+/* Custom background colors */
+.bg-teal { background: var(--veta-primary) !important; }
+.bg-teal-dark { background: var(--veta-primary-dark) !important; }
+.bg-warm { background: var(--veta-warm) !important; }
+
+/* ============================================
+   TABLES - Clean Design
+   ============================================ */
+.table {
+    margin-bottom: 0 !important;
+}
+
+.table thead th {
+    background: var(--veta-gray-50) !important;
+    color: var(--veta-gray-500) !important;
+    font-weight: 600 !important;
+    font-size: 0.6875rem !important;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    border-bottom: 2px solid var(--veta-gray-200) !important;
+    padding: 0.75rem 1rem !important;
+}
+
+.table tbody td {
+    padding: 0.75rem 1rem !important;
+    vertical-align: middle !important;
+    border-bottom: 1px solid var(--veta-gray-100) !important;
+    color: var(--veta-gray-700);
+    font-size: 0.875rem;
+}
+
+.table tbody tr {
+    transition: background var(--transition);
+}
+
+.table tbody tr:hover {
+    background: var(--veta-primary-bg) !important;
+}
+
+/* ============================================
+   FORMS - Clean Inputs
+   ============================================ */
+.form-control {
+    border-radius: var(--radius-sm) !important;
+    border: 2px solid var(--veta-gray-200) !important;
+    padding: 0.625rem 0.875rem !important;
+    font-size: 0.875rem !important;
+    transition: all var(--transition) !important;
+}
+
+.form-control:focus {
+    border-color: var(--veta-primary) !important;
+    box-shadow: 0 0 0 3px rgba(13,148,136,0.1) !important;
+    outline: none !important;
+}
+
+.form-control::placeholder {
+    color: var(--veta-gray-400) !important;
+}
+
+select.form-control {
+    cursor: pointer;
+}
+
+textarea.form-control {
+    resize: vertical;
+}
+
+/* Select2 */
+.select2-container--default .select2-selection--single {
+    border-radius: var(--radius-sm) !important;
+    border: 2px solid var(--veta-gray-200) !important;
+    height: auto !important;
+    padding: 0.5rem 0.875rem !important;
+}
+
+.select2-container--default .select2-selection--single:focus {
+    border-color: var(--veta-primary) !important;
+}
+
+.select2-dropdown {
+    border-radius: var(--radius-sm) !important;
+    border: 1px solid var(--veta-gray-200) !important;
+    box-shadow: var(--shadow-lg) !important;
+}
+
+/* ============================================
+   BUTTONS
+   ============================================ */
+.btn {
+    border-radius: var(--radius-sm) !important;
+    font-weight: 500 !important;
+    padding: 0.5rem 1rem !important;
+    font-size: 0.875rem !important;
+    transition: all var(--transition) !important;
+    letter-spacing: 0.01em;
+}
+
+.btn:hover {
+    transform: translateY(-1px);
+}
+
+.btn:active {
+    transform: translateY(0);
+}
+
+.btn-primary {
+    background: var(--veta-primary) !important;
+    border-color: var(--veta-primary) !important;
+}
+
+.btn-primary:hover {
+    background: var(--veta-primary-dark) !important;
+    border-color: var(--veta-primary-dark) !important;
+    box-shadow: 0 4px 15px rgba(13,148,136,0.3) !important;
+}
+
+.btn-success {
+    background: var(--veta-success) !important;
+    border-color: var(--veta-success) !important;
+}
+
+.btn-warning {
+    background: var(--veta-warm) !important;
+    border-color: var(--veta-warm) !important;
+    color: #ffffff !important;
+}
+
+.btn-danger {
+    background: var(--veta-danger) !important;
+    border-color: var(--veta-danger) !important;
+}
+
+.btn-info {
+    background: var(--veta-info) !important;
+    border-color: var(--veta-info) !important;
+}
+
+.btn-sm {
+    padding: 0.375rem 0.75rem !important;
+    font-size: 0.75rem !important;
+}
+
+/* ============================================
+   BADGES
+   ============================================ */
+.badge {
+    font-weight: 500 !important;
+    padding: 0.25rem 0.625rem !important;
+    border-radius: 20px !important;
+    font-size: 0.75rem !important;
+}
+
+.badge-success {
+    background: var(--veta-success-light) !important;
+    color: #065f46 !important;
+}
+
+.badge-warning {
+    background: var(--veta-warm-light) !important;
+    color: #92400e !important;
+}
+
+.badge-danger {
+    background: var(--veta-danger-light) !important;
+    color: #991b1b !important;
+}
+
+.badge-info {
+    background: var(--veta-info-light) !important;
+    color: #1e40af !important;
+}
+
+.badge-primary {
+    background: var(--veta-primary-bg) !important;
+    color: var(--veta-primary-dark) !important;
+}
+
+/* ============================================
+   PAGINATION
+   ============================================ */
+.pagination .page-link {
+    border-radius: var(--radius-sm) !important;
+    margin: 0 2px;
+    color: var(--veta-gray-700) !important;
+    border: 1px solid var(--veta-gray-200) !important;
+    font-weight: 500;
+    transition: all var(--transition);
+}
+
+.pagination .page-link:hover {
+    background: var(--veta-primary-bg) !important;
+    color: var(--veta-primary) !important;
+    border-color: var(--veta-primary) !important;
+}
+
+.pagination .page-item.active .page-link {
+    background: var(--veta-primary) !important;
+    border-color: var(--veta-primary) !important;
+    color: #ffffff !important;
+}
+
+/* ============================================
+   ALERTS
+   ============================================ */
+.alert {
+    border-radius: var(--radius-md) !important;
+    border: none !important;
+    padding: 1rem 1.25rem !important;
+}
+
+.alert-success {
+    background: var(--veta-success-light) !important;
+    color: #065f46 !important;
+}
+
+.alert-danger {
+    background: var(--veta-danger-light) !important;
+    color: #991b1b !important;
+}
+
+.alert-warning {
+    background: var(--veta-warm-light) !important;
+    color: #92400e !important;
+}
+
+.alert-info {
+    background: var(--veta-info-light) !important;
+    color: #1e40af !important;
+}
+
+/* ============================================
+   MODALS
+   ============================================ */
+.modal-content {
+    border-radius: var(--radius-md) !important;
+    border: none !important;
+    box-shadow: var(--shadow-xl) !important;
+}
+
+.modal-header {
+    background: var(--veta-gray-50) !important;
+    border-bottom: 1px solid var(--veta-gray-200) !important;
+    border-radius: var(--radius-md) var(--radius-md) 0 0 !important;
+}
+
+/* ============================================
+   TIMELINE (Admin Log)
+   ============================================ */
+.timeline {
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.timeline > div > .timeline-item {
+    border-radius: var(--radius-sm) !important;
+    box-shadow: var(--shadow-sm) !important;
+}
+
+/* ============================================
+   MOBILE RESPONSIVE - Tablet
+   ============================================ */
+@media (max-width: 992px) {
+    .content-header h1 {
+        font-size: 1.25rem !important;
+    }
+    
+    .card-body {
+        padding: 1rem !important;
+    }
+    
+    .small-box .inner h3 {
+        font-size: 1.5rem !important;
+    }
+}
+
+@media (max-width: 768px) {
+    /* Login */
+    .login-box {
+        width: 92% !important;
+        max-width: 400px !important;
+        margin: 1rem auto !important;
+    }
+    
+    .login-box .card-body {
+        padding: 1.5rem !important;
+    }
+    
+    /* Content */
+    .content-wrapper {
+        padding: 0.75rem !important;
+    }
+    
+    .content-header {
+        padding: 1rem !important;
+    }
+    
+    .content-header h1 {
+        font-size: 1.125rem !important;
+    }
+    
+    /* Tables - scrollable */
+    .table-responsive {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        border-radius: var(--radius-md);
+    }
+    
+    .table thead th {
+        font-size: 0.625rem !important;
+        padding: 0.5rem 0.75rem !important;
+    }
+    
+    .table tbody td {
+        font-size: 0.75rem !important;
+        padding: 0.5rem 0.75rem !important;
+    }
+    
+    /* Buttons full width on mobile */
+    .btn-group {
+        flex-wrap: wrap;
+        gap: 4px;
+    }
+    
+    .btn-group .btn {
+        flex: 1 1 auto;
+        min-width: 60px;
+    }
+    
+    /* Form groups */
+    .form-group {
+        margin-bottom: 0.75rem;
+    }
+    
+    .form-control {
+        font-size: 0.8125rem !important;
+        padding: 0.5rem 0.75rem !important;
+    }
+    
+    /* Cards */
+    .card-body {
+        padding: 0.875rem !important;
+    }
+    
+    /* Hide sidebar on mobile (Jazzmin handles this) */
+    body.sidebar-open {
+        overflow: hidden;
+    }
+    
+    /* Navbar */
+    .main-header .navbar-nav {
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+}
+
+@media (max-width: 480px) {
+    /* Login */
+    .login-box {
+        width: 95% !important;
+        margin: 0.5rem auto !important;
+    }
+    
+    .login-logo a {
+        font-size: 1.375rem !important;
+    }
+    
+    .login-box .card-body {
+        padding: 1.25rem !important;
+    }
+    
+    /* Content */
+    .content-header {
+        padding: 0.75rem !important;
+    }
+    
+    .content-header h1 {
+        font-size: 1rem !important;
+    }
+    
+    /* Breadcrumb */
+    .breadcrumb {
+        font-size: 0.6875rem;
+    }
+    
+    /* Columns full width */
+    .col-md-3, .col-md-4, .col-md-6, .col-md-8, .col-md-9,
+    .col-lg-3, .col-lg-4, .col-lg-6, .col-lg-8, .col-lg-9 {
+        flex: 0 0 100% !important;
+        max-width: 100% !important;
+    }
+    
+    /* Smaller buttons */
+    .btn {
+        font-size: 0.75rem !important;
+        padding: 0.375rem 0.75rem !important;
+        width: 100% !important;
+        justify-content: center;
+        margin-bottom: 4px;
+    }
+    
+    /* Action buttons row */
+    .btn-group {
+        flex-direction: column;
+        width: 100%;
+    }
+    
+    .btn-group .btn {
+        width: 100% !important;
+        margin-bottom: 4px;
+        border-radius: var(--radius-sm) !important;
+    }
+    
+    /* Navigation tabs */
+    .nav-tabs .nav-link {
+        font-size: 0.75rem !important;
+        padding: 0.5rem 0.75rem !important;
+    }
+    
+    /* Small boxes */
+    .small-box .inner h3 {
+        font-size: 1.25rem !important;
+    }
+    
+    .small-box .inner p {
+        font-size: 0.75rem !important;
+    }
+    
+    /* Fieldsets */
+    fieldset {
+        padding: 0.75rem !important;
+    }
+    
+    /* Pagination */
+    .pagination {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    
+    .pagination .page-link {
+        font-size: 0.75rem;
+        padding: 0.375rem 0.5rem;
+    }
+}
+
+/* ============================================
+   DARK MODE SUPPORT (Optional)
+   ============================================ */
+@media (prefers-color-scheme: dark) {
+    /* Dark mode styles - activate if Jazzmin dark mode is enabled */
+    body.dark-mode .content-wrapper {
+        background: #1a1a2e !important;
+    }
+    
+    body.dark-mode .card {
+        background: #16213e !important;
+        border-color: #0f3460 !important;
+    }
+}
+
+/* ============================================
+   PRINT STYLES
+   ============================================ */
+@media print {
+    .main-header,
+    .main-sidebar,
+    .main-footer,
+    .btn,
+    .pagination,
+    .btn-group {
+        display: none !important;
+    }
+    
+    .content-wrapper {
+        margin-left: 0 !important;
+        padding: 0 !important;
+    }
+    
+    .card {
+        box-shadow: none !important;
+        border: 1px solid #ddd !important;
+    }
+    
+    body {
+        font-size: 11pt;
+    }
+}
+
+/* ============================================
+   ANIMATIONS
+   ============================================ */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.card, .small-box {
+    animation: fadeInUp 0.4s ease forwards;
+}
+
+/* ============================================
+   CUSTOM SCROLLBAR
+   ============================================ */
+::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+    background: rgba(255,255,255,0.2);
+}
+
+/* ============================================
+   LOADING SKELETON
+   ============================================ */
+.loading-skeleton {
+    background: linear-gradient(90deg, #e5e7eb 25%, #f3f4f6 50%, #e5e7eb 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+    border-radius: var(--radius-sm);
+}
+
+@keyframes shimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+
+/* ============================================
+   TOOLTIP ENHANCEMENTS
+   ============================================ */
+.tooltip .tooltip-inner {
+    background: var(--veta-gray-900) !important;
+    border-radius: var(--radius-sm) !important;
+    padding: 0.5rem 0.75rem !important;
+    font-size: 0.75rem !important;
+}
+
+/* ============================================
+   FOCUS OUTLINE ACCESSIBILITY
+   ============================================ */
+*:focus-visible {
+    outline: 2px solid var(--veta-primary) !important;
+    outline-offset: 2px !important;
+}
+
+/* ============================================
+   DROPDOWN MENUS
+   ============================================ */
+.dropdown-menu {
+    border-radius: var(--radius-md) !important;
+    border: 1px solid var(--veta-gray-200) !important;
+    box-shadow: var(--shadow-lg) !important;
+    padding: 0.5rem 0 !important;
+    animation: fadeInUp 0.2s ease;
+}
+
+.dropdown-item {
+    padding: 0.5rem 1.25rem !important;
+    font-size: 0.875rem !important;
+    transition: all var(--transition);
+}
+
+.dropdown-item:hover {
+    background: var(--veta-primary-bg) !important;
+    color: var(--veta-primary) !important;
+}
+
+.dropdown-divider {
+    border-color: var(--veta-gray-100) !important;
+}

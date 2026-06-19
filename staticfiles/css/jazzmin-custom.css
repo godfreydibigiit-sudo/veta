@@ -1,0 +1,442 @@
+/* ============================================
+   VETA HOTEL - Jazzmin Admin Custom Styles
+   Professional Teal + Warm Theme
+   Mobile Responsive
+   ============================================ */
+
+:root {
+    --veta-primary: #0d9488;
+    --veta-primary-dark: #0f766e;
+    --veta-primary-light: #14b8a6;
+    --veta-warm: #f59e0b;
+    --veta-warm-dark: #d97706;
+    --veta-success: #10b981;
+    --veta-danger: #ef4444;
+    --veta-info: #3b82f6;
+}
+
+/* ============================================
+   LOGIN PAGE
+   ============================================ */
+.login-page {
+    background: linear-gradient(135deg, var(--veta-primary) 0%, var(--veta-primary-dark) 100%) !important;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.login-box {
+    border-radius: 16px !important;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15) !important;
+    overflow: hidden;
+}
+
+.login-logo {
+    padding: 20px 0;
+}
+
+.login-logo b {
+    color: var(--veta-primary) !important;
+    font-size: 1.5rem;
+}
+
+.login-box-msg {
+    font-size: 0.9375rem;
+    color: #6b7280;
+}
+
+/* Login button */
+.btn-primary {
+    background: var(--veta-primary) !important;
+    border-color: var(--veta-primary) !important;
+}
+
+.btn-primary:hover {
+    background: var(--veta-primary-dark) !important;
+    border-color: var(--veta-primary-dark) !important;
+}
+
+/* ============================================
+   NAVBAR
+   ============================================ */
+.navbar-white {
+    background: #ffffff !important;
+    border-bottom: 1px solid #e5e7eb !important;
+}
+
+.brand-link {
+    background: linear-gradient(135deg, var(--veta-primary), var(--veta-primary-dark)) !important;
+    color: #ffffff !important;
+}
+
+.brand-link .brand-image {
+    margin-left: 0 !important;
+}
+
+.navbar-nav .nav-link {
+    color: #4b5563 !important;
+}
+
+.navbar-nav .nav-link:hover {
+    color: var(--veta-primary) !important;
+}
+
+/* ============================================
+   SIDEBAR
+   ============================================ */
+.sidebar-dark-teal {
+    background: linear-gradient(180deg, #0f766e 0%, #115e59 100%) !important;
+}
+
+.sidebar-dark-teal .nav-sidebar .nav-link {
+    color: rgba(255, 255, 255, 0.8) !important;
+}
+
+.sidebar-dark-teal .nav-sidebar .nav-link:hover {
+    background: rgba(255, 255, 255, 0.1) !important;
+    color: #ffffff !important;
+}
+
+.sidebar-dark-teal .nav-sidebar .nav-link.active {
+    background: rgba(255, 255, 255, 0.15) !important;
+    color: #ffffff !important;
+    border-left: 3px solid var(--veta-warm) !important;
+}
+
+.sidebar-dark-teal .nav-sidebar .nav-header {
+    color: rgba(255, 255, 255, 0.5) !important;
+    font-size: 0.6875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+}
+
+/* ============================================
+   CONTENT AREA
+   ============================================ */
+.content-wrapper {
+    background: #f9fafb !important;
+}
+
+.content-header h1 {
+    font-size: 1.375rem;
+    font-weight: 700;
+    color: #1f2937;
+}
+
+/* ============================================
+   CARDS
+   ============================================ */
+.card {
+    border-radius: 12px !important;
+    border: 1px solid #e5e7eb !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04) !important;
+}
+
+.card-header {
+    background: #f9fafb !important;
+    border-bottom: 1px solid #e5e7eb !important;
+}
+
+.card-primary.card-outline {
+    border-top: 3px solid var(--veta-primary) !important;
+}
+
+.card-success.card-outline {
+    border-top: 3px solid var(--veta-success) !important;
+}
+
+.card-warning.card-outline {
+    border-top: 3px solid var(--veta-warm) !important;
+}
+
+.card-danger.card-outline {
+    border-top: 3px solid var(--veta-danger) !important;
+}
+
+/* ============================================
+   TABLES
+   ============================================ */
+.table thead th {
+    background: #f9fafb !important;
+    font-weight: 600;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    color: #6b7280;
+    border-bottom: 2px solid #e5e7eb;
+}
+
+.table tbody tr:hover {
+    background: #f0fdfa !important;
+}
+
+/* ============================================
+   BUTTONS
+   ============================================ */
+.btn-success {
+    background: var(--veta-success) !important;
+    border-color: var(--veta-success) !important;
+}
+
+.btn-warning {
+    background: var(--veta-warm) !important;
+    border-color: var(--veta-warm) !important;
+    color: #ffffff !important;
+}
+
+.btn-danger {
+    background: var(--veta-danger) !important;
+    border-color: var(--veta-danger) !important;
+}
+
+.btn-info {
+    background: var(--veta-info) !important;
+    border-color: var(--veta-info) !important;
+}
+
+/* ============================================
+   BADGES
+   ============================================ */
+.badge-success {
+    background: #d1fae5 !important;
+    color: #065f46 !important;
+}
+
+.badge-warning {
+    background: #fef3c7 !important;
+    color: #92400e !important;
+}
+
+.badge-danger {
+    background: #fee2e2 !important;
+    color: #991b1b !important;
+}
+
+.badge-info {
+    background: #dbeafe !important;
+    color: #1e40af !important;
+}
+
+/* ============================================
+   FORMS
+   ============================================ */
+.form-control:focus {
+    border-color: var(--veta-primary) !important;
+    box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.1) !important;
+}
+
+.select2-container--default .select2-selection--single:focus,
+.select2-container--default .select2-selection--multiple:focus {
+    border-color: var(--veta-primary) !important;
+}
+
+/* ============================================
+   DASHBOARD WIDGETS
+   ============================================ */
+.small-box {
+    border-radius: 12px !important;
+    overflow: hidden;
+}
+
+.bg-info {
+    background: var(--veta-primary) !important;
+}
+
+.bg-success {
+    background: var(--veta-success) !important;
+}
+
+.bg-warning {
+    background: var(--veta-warm) !important;
+}
+
+.bg-danger {
+    background: var(--veta-danger) !important;
+}
+
+/* ============================================
+   PAGINATION
+   ============================================ */
+.pagination .page-link {
+    color: var(--veta-primary) !important;
+}
+
+.pagination .page-item.active .page-link {
+    background: var(--veta-primary) !important;
+    border-color: var(--veta-primary) !important;
+    color: #ffffff !important;
+}
+
+/* ============================================
+   MOBILE RESPONSIVE
+   ============================================ */
+@media (max-width: 768px) {
+    /* Login page */
+    .login-box {
+        width: 90% !important;
+        margin: 20px auto !important;
+    }
+    
+    .login-box .card-body {
+        padding: 1.25rem !important;
+    }
+    
+    /* Content */
+    .content-wrapper {
+        padding: 10px !important;
+    }
+    
+    .content-header {
+        padding: 12px 0 !important;
+    }
+    
+    .content-header h1 {
+        font-size: 1.125rem !important;
+    }
+    
+    /* Tables - card layout on mobile */
+    .table-responsive {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    /* Buttons full width */
+    .btn-group {
+        flex-wrap: wrap;
+    }
+    
+    .btn-group .btn {
+        flex: 1;
+        min-width: 80px;
+    }
+    
+    /* Form groups */
+    .form-group {
+        margin-bottom: 0.75rem;
+    }
+    
+    .form-control {
+        font-size: 0.875rem;
+        padding: 0.5rem 0.75rem;
+    }
+    
+    /* Card body padding */
+    .card-body {
+        padding: 1rem !important;
+    }
+    
+    /* Hide some elements on mobile */
+    .navbar-nav .nav-item .navbar-search-block {
+        display: none;
+    }
+    
+    /* Sidebar adjustments */
+    .sidebar {
+        width: 100% !important;
+    }
+    
+    /* Breadcrumb */
+    .breadcrumb {
+        font-size: 0.75rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .login-box {
+        width: 95% !important;
+        margin: 10px auto !important;
+    }
+    
+    .login-logo b {
+        font-size: 1.25rem !important;
+    }
+    
+    /* Smaller headings */
+    .content-header h1 {
+        font-size: 1rem !important;
+    }
+    
+    /* Full width cards */
+    .col-md-3, .col-md-4, .col-md-6, .col-md-8, .col-md-9 {
+        flex: 0 0 100% !important;
+        max-width: 100% !important;
+    }
+    
+    /* Smaller buttons */
+    .btn {
+        font-size: 0.75rem !important;
+        padding: 0.375rem 0.75rem !important;
+    }
+    
+    /* Table text smaller */
+    .table td, .table th {
+        font-size: 0.75rem !important;
+        padding: 0.5rem !important;
+    }
+    
+    /* Navigation tabs */
+    .nav-tabs .nav-link {
+        font-size: 0.75rem;
+        padding: 0.5rem 0.75rem;
+    }
+    
+    /* Fieldsets */
+    fieldset {
+        padding: 0.75rem !important;
+    }
+}
+
+/* ============================================
+   PRINT STYLES
+   ============================================ */
+@media print {
+    .main-sidebar,
+    .main-header,
+    .btn,
+    .pagination {
+        display: none !important;
+    }
+    
+    .content-wrapper {
+        margin-left: 0 !important;
+    }
+}
+
+/* ============================================
+   ANIMATIONS
+   ============================================ */
+.card {
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.card:hover {
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08) !important;
+}
+
+/* Smooth sidebar toggle */
+.sidebar {
+    transition: margin-left 0.3s ease, width 0.3s ease;
+}
+
+/* ============================================
+   CUSTOM SCROLLBAR
+   ============================================ */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #d1d5db;
+    border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #9ca3af;
+}

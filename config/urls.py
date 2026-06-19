@@ -34,6 +34,7 @@ urlpatterns = [
     
     # Staff Dashboard & Management
     path('staff/', include('apps.dashboard.urls')),
+    
 ]
 
 # Serve media files in development

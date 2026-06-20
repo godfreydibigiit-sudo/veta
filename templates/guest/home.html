@@ -5,23 +5,130 @@
 {% block title %}VETA Hotel - Welcome{% endblock %}
 
 {% block content %}
-<!-- Hero Section -->
-<section class="hero " style="text-align: center !important;">
-    <div class="container">
-        <div class="hero-content">
-            <h1>Welcome to VETA Hotel</h1>
-            <p class="mb-4">Experience luxury and comfort at the best prices. Book your perfect stay with us today.</p>
-            <div class="d-flex gap-2">
-                <a href="{% url 'rooms:list' %}" class="btn btn-warm btn-lg">
-                    <i class="fas fa-bed"></i> Browse Rooms
-                </a>
-                {% if not user.is_authenticated %}
-                <a href="{% url 'users:register' %}" class="btn btn-light btn-lg">
-                    <i class="fas fa-user-plus"></i> Register Now
-                </a>
-                {% endif %}
+<!-- Hero Section with Slideshow - Clear Background Images -->
+<section class="hero-slideshow">
+    <!-- Slides -->
+    <div class="hero-slide active" style="background-image: url('https://images.unsplash.com/photo-1566073771259-6a8506099945?w=1920&q=80');">
+        <div class="hero-overlay"></div>
+    </div>
+    <div class="hero-slide" style="background-image: url('https://images.unsplash.com/photo-1582719508461-905c673771fd?w=1920&q=80');">
+        <div class="hero-overlay"></div>
+    </div>
+    <div class="hero-slide" style="background-image: url('https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=1920&q=80');">
+        <div class="hero-overlay"></div>
+    </div>
+    <div class="hero-slide" style="background-image: url('https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=1920&q=80');">
+        <div class="hero-overlay"></div>
+    </div>
+    
+    <!-- Content -->
+    <div class="hero-slideshow-content">
+        <div class="container">
+            <div class="hero-content-wrapper">
+                <!-- Animated Badge -->
+                <div class="hero-badge animated fadeInDown">
+                    <span class="pulse-dot"></span>
+                    <span>★ Tanzania's Finest Hospitality ★</span>
+                    <span class="pulse-dot"></span>
+                </div>
+                
+                <!-- Main Heading -->
+                <h1 class="hero-title animated fadeInUp delay-1">
+                    Welcome to <span class="hero-highlight">VETA Hotel</span>
+                </h1>
+                
+                <!-- Subtitle -->
+                <p class="hero-subtitle animated fadeInUp delay-2">
+                    Experience unparalleled luxury and comfort at the best prices.
+                    Book your perfect stay with us today.
+                </p>
+                
+                <!-- Quick Search Form -->
+                <!-- <div class="hero-search-wrapper animated fadeInUp delay-3">
+                    <form action="{% url 'rooms:list' %}" method="GET" class="hero-search-form">
+                        <div class="hero-search-field">
+                            <i class="fas fa-calendar-alt"></i>
+                            <input type="date" name="check_in" required placeholder="Check-in">
+                        </div>
+                        <div class="hero-search-field">
+                            <i class="fas fa-calendar-check"></i>
+                            <input type="date" name="check_out" required placeholder="Check-out">
+                        </div>
+                        <button type="submit" class="hero-search-btn">
+                            <i class="fas fa-search"></i>
+                            <span>Check Availability</span>
+                        </button>
+                    </form>
+                </div> -->
+                
+                <!-- Action Buttons -->
+                <div class="hero-actions animated fadeInUp delay-4">
+                    <a href="{% url 'rooms:list' %}" class="btn btn-warm btn-lg hero-btn-primary">
+                        <i class="fas fa-bed"></i> Browse Rooms
+                        <span class="btn-shine"></span>
+                    </a>
+                    {% if not user.is_authenticated %}
+                    <a href="{% url 'users:register' %}" class="btn btn-outline-light btn-lg hero-btn-secondary">
+                        <i class="fas fa-user-plus"></i> Register Now
+                    </a>
+                    {% endif %}
+                </div>
+                
+                <!-- Trust Badges -->
+                <div class="hero-trust animated fadeInUp delay-5">
+                    <div class="trust-item">
+                        <div class="trust-icon-circle">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <span>Secure Booking</span>
+                    </div>
+                    <div class="trust-divider"></div>
+                    <div class="trust-item">
+                        <div class="trust-icon-circle">
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <span>4.8 Rating</span>
+                    </div>
+                    <div class="trust-divider"></div>
+                    <div class="trust-item">
+                        <div class="trust-icon-circle">
+                            <i class="fas fa-tag"></i>
+                        </div>
+                        <span>Best Price</span>
+                    </div>
+                    <div class="trust-divider"></div>
+                    <div class="trust-item">
+                        <div class="trust-icon-circle">
+                            <i class="fas fa-headset"></i>
+                        </div>
+                        <span>24/7 Support</span>
+                    </div>
+                </div>
             </div>
         </div>
+    </div>
+    
+    <!-- Slide Navigation Dots -->
+    <div class="hero-slide-dots">
+        <span class="dot active" onclick="goToSlide(0)"></span>
+        <span class="dot" onclick="goToSlide(1)"></span>
+        <span class="dot" onclick="goToSlide(2)"></span>
+        <span class="dot" onclick="goToSlide(3)"></span>
+    </div>
+    
+    <!-- Slide Arrows -->
+    <button class="hero-slide-arrow hero-prev" onclick="changeSlide(-1)" aria-label="Previous slide">
+        <i class="fas fa-chevron-left"></i>
+    </button>
+    <button class="hero-slide-arrow hero-next" onclick="changeSlide(1)" aria-label="Next slide">
+        <i class="fas fa-chevron-right"></i>
+    </button>
+    
+    <!-- Bottom Wave -->
+    <div class="hero-wave">
+        <svg viewBox="0 0 1440 100" preserveAspectRatio="none">
+            <path d="M0,40 C360,100 720,0 1080,60 C1260,85 1380,70 1440,50 L1440,100 L0,100 Z" fill="#f9fafb"></path>
+        </svg>
     </div>
 </section>
 
@@ -123,32 +230,1215 @@
 </section>
 
 <!-- Features Section -->
-<section class="py-5">
+<!-- Why Choose VETA Hotel Section -->
+<section class="why-choose-section">
     <div class="container">
-        <div class="text-center mb-5">
-            <h2>Why Choose VETA Hotel?</h2>
-            <p class="text-muted">We provide the best hospitality experience</p>
+        <!-- Section Header -->
+        <div class="section-header-modern">
+            <span class="section-tag">Our Advantages</span>
+            <h2 class="section-title">Why Choose <span class="text-highlight">VETA Hotel</span>?</h2>
+            <p class="section-description">Discover what makes us the preferred choice for travelers worldwide</p>
         </div>
         
-        <div class="grid grid-3">
-            <div class="card card-teal p-4 text-center">
-                <i class="fas fa-shield-alt" style="font-size: 2.5rem; color: var(--primary); margin-bottom: 1rem;"></i>
-                <h4>Secure Booking</h4>
-                <p class="text-muted">Your bookings are safe and secure with our professional system</p>
+        <!-- Features Grid -->
+        <div class="features-grid-modern">
+            <!-- Feature 1: Secure Booking -->
+            <div class="feature-card-modern">
+                <div class="feature-icon-wrap">
+                    <div class="feature-icon-circle">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <div class="feature-icon-bg"></div>
+                </div>
+                <div class="feature-content">
+                    <h3>Secure Booking</h3>
+                    <p>Your personal data and bookings are protected with enterprise-grade SSL encryption. Book with complete peace of mind.</p>
+                </div>
+                <div class="feature-hover-effect"></div>
             </div>
             
-            <div class="card card-teal p-4 text-center">
-                <i class="fas fa-tag" style="font-size: 2.5rem; color: var(--primary); margin-bottom: 1rem;"></i>
-                <h4>Best Prices</h4>
-                <p class="text-muted">Guaranteed best rates for all our rooms</p>
+            <!-- Feature 2: Best Price Guarantee -->
+            <div class="feature-card-modern">
+                <div class="feature-icon-wrap">
+                    <div class="feature-icon-circle">
+                        <i class="fas fa-tags"></i>
+                    </div>
+                    <div class="feature-icon-bg"></div>
+                </div>
+                <div class="feature-content">
+                    <h3>Best Price Guarantee</h3>
+                    <p>Found a lower price? We'll match it instantly. Enjoy the most competitive rates for every room, every season.</p>
+                </div>
+                <div class="feature-hover-effect"></div>
             </div>
             
-            <div class="card card-teal p-4 text-center">
-                <i class="fas fa-headset" style="font-size: 2.5rem; color: var(--primary); margin-bottom: 1rem;"></i>
-                <h4>24/7 Support</h4>
-                <p class="text-muted">Our staff is always available to assist you</p>
+            <!-- Feature 3: 24/7 Support -->
+            <div class="feature-card-modern">
+                <div class="feature-icon-wrap">
+                    <div class="feature-icon-circle">
+                        <i class="fas fa-headset"></i>
+                    </div>
+                    <div class="feature-icon-bg"></div>
+                </div>
+                <div class="feature-content">
+                    <h3>24/7 Customer Support</h3>
+                    <p>Our dedicated hospitality team is available round the clock to assist you with any questions or special requests.</p>
+                </div>
+                <div class="feature-hover-effect"></div>
+            </div>
+            
+            <!-- Feature 4: Instant Confirmation -->
+            <div class="feature-card-modern">
+                <div class="feature-icon-wrap">
+                    <div class="feature-icon-circle">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                    <div class="feature-icon-bg"></div>
+                </div>
+                <div class="feature-content">
+                    <h3>Instant Confirmation</h3>
+                    <p>Receive your booking reference immediately after reservation. No waiting, no uncertainty — just instant peace of mind.</p>
+                </div>
+                <div class="feature-hover-effect"></div>
+            </div>
+            
+            <!-- Feature 5: Free Cancellation -->
+            <div class="feature-card-modern">
+                <div class="feature-icon-wrap">
+                    <div class="feature-icon-circle">
+                        <i class="fas fa-undo-alt"></i>
+                    </div>
+                    <div class="feature-icon-bg"></div>
+                </div>
+                <div class="feature-content">
+                    <h3>Flexible Cancellation</h3>
+                    <p>Plans change? No problem. Cancel up to 24 hours before check-in with no hidden fees or penalties.</p>
+                </div>
+                <div class="feature-hover-effect"></div>
+            </div>
+            
+            <!-- Feature 6: Premium Rooms -->
+            <div class="feature-card-modern">
+                <div class="feature-icon-wrap">
+                    <div class="feature-icon-circle">
+                        <i class="fas fa-crown"></i>
+                    </div>
+                    <div class="feature-icon-bg"></div>
+                </div>
+                <div class="feature-content">
+                    <h3>Premium Rooms</h3>
+                    <p>Every room is designed for comfort with modern amenities, premium bedding, and stunning views of Tanzania.</p>
+                </div>
+                <div class="feature-hover-effect"></div>
+            </div>
+        </div>
+        
+        <!-- Trust Stats Row -->
+        <div class="trust-stats-row">
+            <div class="trust-stat-item">
+                <div class="trust-stat-number">10,000+</div>
+                <div class="trust-stat-label">Happy Guests</div>
+            </div>
+            <div class="trust-stat-divider"></div>
+            <div class="trust-stat-item">
+                <div class="trust-stat-number">4.8</div>
+                <div class="trust-stat-label">Guest Rating</div>
+                <div class="trust-stars">★★★★★</div>
+            </div>
+            <div class="trust-stat-divider"></div>
+            <div class="trust-stat-item">
+                <div class="trust-stat-number">100%</div>
+                <div class="trust-stat-label">Secure Payments</div>
+            </div>
+            <div class="trust-stat-divider"></div>
+            <div class="trust-stat-item">
+                <div class="trust-stat-number">24/7</div>
+                <div class="trust-stat-label">Support Available</div>
             </div>
         </div>
     </div>
 </section>
+
+<style>
+    /* ============================================
+       HERO SLIDESHOW - Clear Background Images
+       ============================================ */
+    
+    .hero-slideshow {
+        position: relative;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        background: #0f766e; /* Fallback color */
+    }
+    
+    /* Slides */
+    .hero-slide {
+        position: absolute;
+        inset: 0;
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        opacity: 0;
+        transition: opacity 1.2s ease-in-out;
+        z-index: 0;
+    }
+    
+    .hero-slide.active {
+        opacity: 1;
+    }
+    
+    /* Subtle zoom effect on active slide */
+    .hero-slide.active {
+        animation: heroZoom 10s ease-in-out infinite alternate;
+    }
+    
+    @keyframes heroZoom {
+        0% { transform: scale(1); }
+        100% { transform: scale(1.05); }
+    }
+    
+    /* === LIGHTER OVERLAY - Background clearly visible === */
+    .hero-overlay {
+        position: absolute;
+        inset: 0;
+        /* Bottom is darker for text readability, top is lighter to see the image */
+        background: linear-gradient(
+            180deg,
+            rgba(0, 0, 0, 0.15) 0%,      /* Very light at top - image visible */
+            rgba(0, 0, 0, 0.25) 40%,     /* Slightly darker */
+            rgba(13, 148, 136, 0.55) 70%, /* Teal tint in middle */
+            rgba(15, 118, 110, 0.75) 100% /* Darker at bottom for text */
+        );
+        z-index: 1;
+    }
+    
+    /* Content Wrapper */
+    .hero-slideshow-content {
+        position: relative;
+        z-index: 2;
+        width: 100%;
+        padding: 80px 0 60px;
+    }
+    
+    .hero-content-wrapper {
+        max-width: 750px;
+        margin: 0 auto;
+        text-align: center;
+        color: #ffffff;
+    }
+    
+    /* Badge - Semi-transparent */
+    .hero-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        background: rgba(255, 255, 255, 0.15);
+        backdrop-filter: blur(15px);
+        -webkit-backdrop-filter: blur(15px);
+        border: 1px solid rgba(255, 255, 255, 0.25);
+        padding: 8px 22px;
+        border-radius: 50px;
+        font-size: 0.8125rem;
+        font-weight: 500;
+        letter-spacing: 0.05em;
+        margin-bottom: 1.5rem;
+        text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+    }
+    
+    .pulse-dot {
+        width: 7px;
+        height: 7px;
+        background: #f59e0b;
+        border-radius: 50%;
+        animation: pulse 2s infinite;
+    }
+    
+    @keyframes pulse {
+        0%, 100% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.6); }
+        50% { box-shadow: 0 0 0 8px rgba(245, 158, 11, 0); }
+    }
+    
+    /* Title - Text shadow for readability */
+    .hero-title {
+        font-size: 3.5rem;
+        font-weight: 800;
+        line-height: 1.2;
+        margin-bottom: 1rem;
+        letter-spacing: -0.02em;
+        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    }
+    
+    .hero-highlight {
+        background: linear-gradient(90deg, #fef3c7, #f59e0b);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        text-shadow: none;
+    }
+    
+    /* Subtitle */
+    .hero-subtitle {
+        font-size: 1.125rem;
+        line-height: 1.7;
+        opacity: 0.95;
+        max-width: 550px;
+        margin: 0 auto 2rem;
+        text-shadow: 0 1px 5px rgba(0, 0, 0, 0.3);
+        font-weight: 400;
+    }
+    
+    /* Search Form - White card pops against background */
+    .hero-search-wrapper {
+        max-width: 600px;
+        margin: 0 auto 1.5rem;
+    }
+    
+    .hero-search-form {
+        display: flex;
+        background: #ffffff;
+        border-radius: 16px;
+        padding: 6px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        gap: 4px;
+    }
+    
+    .hero-search-field {
+        flex: 1;
+        position: relative;
+        display: flex;
+        align-items: center;
+    }
+    
+    .hero-search-field i {
+        position: absolute;
+        left: 14px;
+        color: #9ca3af;
+        font-size: 0.875rem;
+        z-index: 1;
+        pointer-events: none;
+    }
+    
+    .hero-search-field input {
+        width: 100%;
+        padding: 14px 14px 14px 40px;
+        border: 2px solid transparent;
+        border-radius: 12px;
+        font-size: 0.875rem;
+        font-family: 'Inter', sans-serif;
+        color: #374151;
+        background: #f9fafb;
+        transition: all 0.2s ease;
+    }
+    
+    .hero-search-field input:focus {
+        outline: none;
+        border-color: #0d9488;
+        background: #ffffff;
+        box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.1);
+    }
+    
+    .hero-search-btn {
+        padding: 14px 24px;
+        background: #f59e0b;
+        color: #ffffff;
+        border: none;
+        border-radius: 12px;
+        font-size: 0.9375rem;
+        font-weight: 600;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        white-space: nowrap;
+        transition: all 0.3s ease;
+        font-family: 'Inter', sans-serif;
+        text-shadow: none;
+    }
+    
+    .hero-search-btn:hover {
+        background: #d97706;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(245, 158, 11, 0.4);
+    }
+    
+    /* Action Buttons */
+    .hero-actions {
+        display: flex;
+        gap: 12px;
+        justify-content: center;
+        flex-wrap: wrap;
+        margin-bottom: 2.5rem;
+    }
+    
+    .hero-btn-primary {
+        position: relative;
+        overflow: hidden;
+        padding: 14px 28px;
+        font-size: 1rem;
+        font-weight: 600;
+        border-radius: 12px;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        text-shadow: none;
+    }
+    
+    .hero-btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 30px rgba(245, 158, 11, 0.5);
+    }
+    
+    .btn-shine {
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: linear-gradient(45deg, transparent, rgba(255,255,255,0.15), transparent);
+        transform: rotate(45deg);
+        animation: shine 3s infinite;
+    }
+    
+    @keyframes shine {
+        0% { left: -50%; }
+        100% { left: 150%; }
+    }
+    
+    .hero-btn-secondary {
+        background: rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        color: #ffffff;
+        border: 2px solid rgba(255, 255, 255, 0.5);
+        padding: 14px 28px;
+        font-size: 1rem;
+        font-weight: 600;
+        border-radius: 12px;
+        transition: all 0.3s ease;
+        text-shadow: 0 1px 3px rgba(0,0,0,0.2);
+    }
+    
+    .hero-btn-secondary:hover {
+        background: rgba(255, 255, 255, 0.3);
+        border-color: #ffffff;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+    }
+    
+    /* Trust Badges */
+    .hero-trust {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 1.5rem;
+        flex-wrap: wrap;
+    }
+    
+    .trust-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 0.8125rem;
+        color: rgba(255, 255, 255, 0.9);
+        font-weight: 500;
+        text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+    }
+    
+    .trust-icon-circle {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(5px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+    }
+    
+    .trust-icon-circle i {
+        color: #f59e0b;
+        font-size: 0.75rem;
+    }
+    
+    .trust-divider {
+        width: 1px;
+        height: 20px;
+        background: rgba(255, 255, 255, 0.3);
+    }
+    
+    /* Slide Navigation Dots */
+    .hero-slide-dots {
+        position: absolute;
+        bottom: 100px;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        gap: 10px;
+        z-index: 3;
+    }
+    
+    .hero-slide-dots .dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.5);
+        cursor: pointer;
+        transition: all 0.3s ease;
+        border: 2px solid transparent;
+    }
+    
+    .hero-slide-dots .dot.active {
+        background: #f59e0b;
+        border-color: #ffffff;
+        box-shadow: 0 0 0 4px rgba(245, 158, 11, 0.3);
+        transform: scale(1.2);
+    }
+    
+    .hero-slide-dots .dot:hover {
+        background: rgba(255, 255, 255, 0.9);
+    }
+    
+    /* Slide Arrows */
+    .hero-slide-arrow {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        z-index: 3;
+        background: rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        color: #ffffff;
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+    }
+    
+    .hero-slide-arrow:hover {
+        background: rgba(255, 255, 255, 0.4);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    }
+    
+    .hero-prev { left: 24px; }
+    .hero-next { right: 24px; }
+    
+    /* Bottom Wave */
+    .hero-wave {
+        position: absolute;
+        bottom: -1px;
+        left: 0;
+        width: 100%;
+        z-index: 2;
+        pointer-events: none;
+    }
+    
+    .hero-wave svg {
+        width: 100%;
+        height: 60px;
+        display: block;
+    }
+    
+    /* ============================================
+       ANIMATIONS
+       ============================================ */
+    .animated {
+        animation-duration: 0.8s;
+        animation-fill-mode: both;
+    }
+    
+    .fadeInDown { animation-name: fadeInDown; }
+    .fadeInUp { animation-name: fadeInUp; }
+    
+    .delay-1 { animation-delay: 0.2s; }
+    .delay-2 { animation-delay: 0.4s; }
+    .delay-3 { animation-delay: 0.6s; }
+    .delay-4 { animation-delay: 0.8s; }
+    .delay-5 { animation-delay: 1s; }
+    
+    @keyframes fadeInDown {
+        from { opacity: 0; transform: translateY(-20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    
+    @keyframes fadeInUp {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    
+    /* ============================================
+       RESPONSIVE - Tablet
+       ============================================ */
+    @media (max-width: 992px) {
+        .hero-title {
+            font-size: 2.5rem;
+        }
+        
+        .hero-overlay {
+            /* Slightly darker on tablet for readability */
+            background: linear-gradient(
+                180deg,
+                rgba(0, 0, 0, 0.2) 0%,
+                rgba(0, 0, 0, 0.3) 40%,
+                rgba(13, 148, 136, 0.6) 70%,
+                rgba(15, 118, 110, 0.8) 100%
+            );
+        }
+        
+        .hero-search-form {
+            flex-wrap: wrap;
+        }
+        
+        .hero-search-field {
+            flex: 1 1 45%;
+        }
+        
+        .hero-search-btn {
+            flex: 1 1 100%;
+            justify-content: center;
+            margin-top: 4px;
+        }
+        
+        .hero-slide-arrow {
+            width: 40px;
+            height: 40px;
+            font-size: 0.875rem;
+        }
+    }
+    
+    /* ============================================
+       RESPONSIVE - Mobile
+       ============================================ */
+    @media (max-width: 768px) {
+        .hero-slideshow {
+            min-height: 90vh;
+        }
+        
+        .hero-slideshow-content {
+            padding: 70px 0 50px;
+        }
+        
+        .hero-overlay {
+            /* Darker on mobile for better text readability */
+            background: linear-gradient(
+                180deg,
+                rgba(0, 0, 0, 0.25) 0%,
+                rgba(0, 0, 0, 0.35) 40%,
+                rgba(13, 148, 136, 0.65) 70%,
+                rgba(15, 118, 110, 0.85) 100%
+            );
+        }
+        
+        .hero-title {
+            font-size: 2rem;
+        }
+        
+        .hero-subtitle {
+            font-size: 0.9375rem;
+        }
+        
+        .hero-badge {
+            font-size: 0.6875rem;
+            padding: 6px 14px;
+        }
+        
+        .hero-search-form {
+            flex-direction: column;
+        }
+        
+        .hero-search-field {
+            flex: 1 1 100%;
+        }
+        
+        .hero-search-field input {
+            padding: 12px 12px 12px 38px;
+            font-size: 0.8125rem;
+        }
+        
+        .hero-search-btn {
+            width: 100%;
+            justify-content: center;
+            padding: 12px;
+            font-size: 0.875rem;
+        }
+        
+        .hero-actions {
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .hero-actions .btn {
+            width: 100%;
+            max-width: 320px;
+        }
+        
+        .hero-trust {
+            gap: 0.75rem;
+        }
+        
+        .trust-divider {
+            display: none;
+        }
+        
+        .trust-item {
+            font-size: 0.6875rem;
+        }
+        
+        .hero-slide-dots {
+            bottom: 80px;
+        }
+        
+        .hero-slide-arrow {
+            display: none;
+        }
+        
+        .hero-slide-dots .dot {
+            width: 8px;
+            height: 8px;
+        }
+    }
+    
+    /* ============================================
+       RESPONSIVE - Small Mobile
+       ============================================ */
+    @media (max-width: 480px) {
+        .hero-title {
+            font-size: 1.625rem;
+        }
+        
+        .hero-subtitle {
+            font-size: 0.8125rem;
+        }
+        
+        .hero-overlay {
+            /* Darkest on small mobile for best readability */
+            background: linear-gradient(
+                180deg,
+                rgba(0, 0, 0, 0.3) 0%,
+                rgba(0, 0, 0, 0.4) 40%,
+                rgba(13, 148, 136, 0.7) 70%,
+                rgba(15, 118, 110, 0.9) 100%
+            );
+        }
+        
+        .hero-trust {
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .hero-slide-dots {
+            bottom: 70px;
+        }
+        
+        .hero-wave svg {
+            height: 40px;
+        }
+    }
+
+    .why-choose-section {
+        padding: 80px 0;
+        background: #ffffff;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    /* Subtle background pattern */
+    .why-choose-section::before {
+        content: '';
+        position: absolute;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background: 
+            radial-gradient(circle at 10% 20%, rgba(13,148,136,0.03) 0%, transparent 50%),
+            radial-gradient(circle at 90% 80%, rgba(245,158,11,0.03) 0%, transparent 50%);
+        pointer-events: none;
+    }
+    
+    /* ============================================
+       SECTION HEADER
+       ============================================ */
+    .section-header-modern {
+        text-align: center;
+        margin-bottom: 60px;
+        position: relative;
+    }
+    
+    .section-tag {
+        display: inline-block;
+        font-size: 0.75rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+        color: #0d9488;
+        background: #f0fdfa;
+        padding: 8px 20px;
+        border-radius: 50px;
+        margin-bottom: 16px;
+        border: 1px solid rgba(13,148,136,0.2);
+    }
+    
+    .section-title {
+        font-size: 2.5rem;
+        font-weight: 800;
+        color: #1f2937;
+        margin-bottom: 12px;
+        letter-spacing: -0.02em;
+        line-height: 1.2;
+    }
+    
+    .text-highlight {
+        color: #0d9488;
+        position: relative;
+    }
+    
+    .text-highlight::after {
+        content: '';
+        position: absolute;
+        bottom: 4px;
+        left: 0;
+        right: 0;
+        height: 8px;
+        background: rgba(245,158,11,0.3);
+        border-radius: 4px;
+        z-index: -1;
+    }
+    
+    .section-description {
+        font-size: 1.0625rem;
+        color: #6b7280;
+        max-width: 550px;
+        margin: 0 auto;
+        line-height: 1.6;
+    }
+    
+    /* ============================================
+       FEATURES GRID
+       ============================================ */
+    .features-grid-modern {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 24px;
+        margin-bottom: 60px;
+        position: relative;
+        z-index: 1;
+    }
+    
+    /* Feature Card */
+    .feature-card-modern {
+        background: #ffffff;
+        border: 1px solid #e5e7eb;
+        border-radius: 20px;
+        padding: 40px 28px 28px;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        cursor: default;
+    }
+    
+    .feature-card-modern:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08);
+        border-color: #0d9488;
+    }
+    
+    .feature-hover-effect {
+        position: absolute;
+        top: 0; left: 0; right: 0; height: 4px;
+        background: linear-gradient(90deg, #0d9488, #f59e0b);
+        transform: scaleX(0);
+        transition: transform 0.4s ease;
+    }
+    
+    .feature-card-modern:hover .feature-hover-effect {
+        transform: scaleX(1);
+    }
+    
+    /* Feature Icon */
+    .feature-icon-wrap {
+        position: relative;
+        width: 80px;
+        height: 80px;
+        margin: 0 auto 20px;
+    }
+    
+    .feature-icon-circle {
+        width: 80px;
+        height: 80px;
+        border-radius: 20px;
+        background: linear-gradient(135deg, #f0fdfa 0%, #e6fffa 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        z-index: 2;
+        transition: all 0.4s ease;
+    }
+    
+    .feature-card-modern:hover .feature-icon-circle {
+        background: linear-gradient(135deg, #0d9488 0%, #0f766e 100%);
+        border-radius: 50%;
+        transform: rotate(-10deg) scale(1.1);
+    }
+    
+    .feature-icon-circle i {
+        font-size: 2rem;
+        color: #0d9488;
+        transition: all 0.4s ease;
+    }
+    
+    .feature-card-modern:hover .feature-icon-circle i {
+        color: #ffffff;
+    }
+    
+    .feature-icon-bg {
+        position: absolute;
+        top: -10px;
+        left: -10px;
+        right: -10px;
+        bottom: -10px;
+        background: radial-gradient(circle, rgba(13,148,136,0.08) 0%, transparent 70%);
+        border-radius: 50%;
+        z-index: 1;
+        opacity: 0;
+        transition: all 0.4s ease;
+    }
+    
+    .feature-card-modern:hover .feature-icon-bg {
+        opacity: 1;
+        transform: scale(1.5);
+    }
+    
+    /* Feature Content */
+    .feature-content h3 {
+        font-size: 1.125rem;
+        font-weight: 700;
+        color: #1f2937;
+        margin-bottom: 10px;
+    }
+    
+    .feature-content p {
+        font-size: 0.875rem;
+        color: #6b7280;
+        line-height: 1.7;
+        margin: 0;
+    }
+    
+    /* ============================================
+       TRUST STATS ROW
+       ============================================ */
+    .trust-stats-row {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 40px;
+        padding: 40px;
+        background: #f9fafb;
+        border-radius: 20px;
+        border: 1px solid #e5e7eb;
+        flex-wrap: wrap;
+    }
+    
+    .trust-stat-item {
+        text-align: center;
+        min-width: 120px;
+    }
+    
+    .trust-stat-number {
+        font-size: 2rem;
+        font-weight: 800;
+        color: #0d9488;
+        line-height: 1;
+        margin-bottom: 6px;
+        letter-spacing: -0.02em;
+    }
+    
+    .trust-stat-label {
+        font-size: 0.8125rem;
+        color: #6b7280;
+        font-weight: 500;
+    }
+    
+    .trust-stars {
+        color: #f59e0b;
+        font-size: 0.75rem;
+        margin-top: 4px;
+        letter-spacing: 2px;
+    }
+    
+    .trust-stat-divider {
+        width: 1px;
+        height: 50px;
+        background: #e5e7eb;
+    }
+    
+    /* ============================================
+       RESPONSIVE - Tablet
+       ============================================ */
+    @media (max-width: 992px) {
+        .why-choose-section {
+            padding: 60px 0;
+        }
+        
+        .section-title {
+            font-size: 2rem;
+        }
+        
+        .features-grid-modern {
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+        
+        .feature-card-modern {
+            padding: 30px 20px 24px;
+        }
+        
+        .trust-stats-row {
+            gap: 24px;
+            padding: 32px 20px;
+        }
+        
+        .trust-stat-divider:nth-child(6) {
+            display: none;
+        }
+    }
+    
+    /* ============================================
+       RESPONSIVE - Mobile
+       ============================================ */
+    @media (max-width: 768px) {
+        .why-choose-section {
+            padding: 48px 0;
+        }
+        
+        .section-header-modern {
+            margin-bottom: 40px;
+        }
+        
+        .section-title {
+            font-size: 1.75rem;
+        }
+        
+        .section-description {
+            font-size: 0.9375rem;
+        }
+        
+        .features-grid-modern {
+            grid-template-columns: 1fr;
+            gap: 16px;
+        }
+        
+        .feature-card-modern {
+            padding: 28px 20px 22px;
+            text-align: left;
+            display: flex;
+            gap: 16px;
+            align-items: flex-start;
+        }
+        
+        .feature-icon-wrap {
+            width: 56px;
+            height: 56px;
+            margin: 0;
+            flex-shrink: 0;
+        }
+        
+        .feature-icon-circle {
+            width: 56px;
+            height: 56px;
+            border-radius: 16px;
+        }
+        
+        .feature-icon-circle i {
+            font-size: 1.5rem;
+        }
+        
+        .feature-content h3 {
+            font-size: 1rem;
+            margin-bottom: 4px;
+        }
+        
+        .feature-content p {
+            font-size: 0.8125rem;
+        }
+        
+        .trust-stats-row {
+            gap: 16px;
+            padding: 24px 16px;
+        }
+        
+        .trust-stat-item {
+            min-width: 100px;
+        }
+        
+        .trust-stat-number {
+            font-size: 1.5rem;
+        }
+        
+        .trust-stat-label {
+            font-size: 0.75rem;
+        }
+        
+        .trust-stat-divider {
+            display: none;
+        }
+    }
+    
+    /* ============================================
+       RESPONSIVE - Small Mobile
+       ============================================ */
+    @media (max-width: 480px) {
+        .why-choose-section {
+            padding: 40px 0;
+        }
+        
+        .section-header-modern {
+            margin-bottom: 32px;
+        }
+        
+        .section-tag {
+            font-size: 0.6875rem;
+            padding: 6px 16px;
+        }
+        
+        .section-title {
+            font-size: 1.5rem;
+        }
+        
+        .section-description {
+            font-size: 0.875rem;
+        }
+        
+        .feature-card-modern {
+            padding: 20px 16px 18px;
+            gap: 12px;
+        }
+        
+        .feature-icon-wrap {
+            width: 48px;
+            height: 48px;
+        }
+        
+        .feature-icon-circle {
+            width: 48px;
+            height: 48px;
+            border-radius: 14px;
+        }
+        
+        .feature-icon-circle i {
+            font-size: 1.25rem;
+        }
+        
+        .trust-stats-row {
+            grid-template-columns: repeat(2, 1fr);
+            display: grid;
+            gap: 16px;
+            padding: 20px 16px;
+        }
+        
+        .trust-stat-item {
+            min-width: auto;
+        }
+    }
+</style>
+
+<script>
+    // ============================================
+    // HERO SLIDESHOW CONTROLLER
+    // ============================================
+    (function() {
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.hero-slide');
+        const dots = document.querySelectorAll('.hero-slide-dots .dot');
+        const totalSlides = slides.length;
+        let slideInterval;
+        
+        function setMinDates() {
+            const today = new Date().toISOString().split('T')[0];
+            const tomorrow = new Date();
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            const tomorrowStr = tomorrow.toISOString().split('T')[0];
+            
+            const checkIn = document.querySelector('.hero-search-field input[name="check_in"]');
+            const checkOut = document.querySelector('.hero-search-field input[name="check_out"]');
+            
+            if (checkIn) {
+                checkIn.setAttribute('min', today);
+                checkIn.value = today;
+            }
+            if (checkOut) {
+                checkOut.setAttribute('min', tomorrowStr);
+                checkOut.value = tomorrowStr;
+            }
+            
+            checkIn?.addEventListener('change', function() {
+                const newCheckIn = new Date(this.value);
+                newCheckIn.setDate(newCheckIn.getDate() + 1);
+                const minCheckout = newCheckIn.toISOString().split('T')[0];
+                checkOut.setAttribute('min', minCheckout);
+                if (checkOut.value <= this.value) {
+                    checkOut.value = minCheckout;
+                }
+            });
+        }
+        
+        function showSlide(index) {
+            slides.forEach(slide => slide.classList.remove('active'));
+            dots.forEach(dot => dot.classList.remove('active'));
+            
+            currentSlide = ((index % totalSlides) + totalSlides) % totalSlides;
+            slides[currentSlide].classList.add('active');
+            dots[currentSlide].classList.add('active');
+        }
+        
+        function changeSlide(direction) {
+            showSlide(currentSlide + direction);
+            resetInterval();
+        }
+        
+        function goToSlide(index) {
+            showSlide(index);
+            resetInterval();
+        }
+        
+        function resetInterval() {
+            clearInterval(slideInterval);
+            slideInterval = setInterval(() => changeSlide(1), 5000);
+        }
+        
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'ArrowLeft') changeSlide(-1);
+            if (e.key === 'ArrowRight') changeSlide(1);
+        });
+        
+        let touchStartX = 0;
+        document.querySelector('.hero-slideshow').addEventListener('touchstart', function(e) {
+            touchStartX = e.changedTouches[0].screenX;
+        });
+        
+        document.querySelector('.hero-slideshow').addEventListener('touchend', function(e) {
+            const diff = touchStartX - e.changedTouches[0].screenX;
+            if (Math.abs(diff) > 50) {
+                diff > 0 ? changeSlide(1) : changeSlide(-1);
+            }
+        });
+        
+        window.changeSlide = changeSlide;
+        window.goToSlide = goToSlide;
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            showSlide(0);
+            slideInterval = setInterval(() => changeSlide(1), 5000);
+            setMinDates();
+        });
+    })();
+</script>
 {% endblock %}

@@ -1,8 +1,10 @@
+# 
+
 """
 Custom template filters for currency formatting.
 """
 from django import template
-from django.template.defaultfilters import stringfilter
+from decimal import Decimal, ROUND_HALF_UP
 
 register = template.Library()
 
@@ -11,17 +13,26 @@ register = template.Library()
 def tanzanian_shillings(value):
     """
     Format a number as Tanzanian Shillings with commas.
+    Uses Decimal for precise handling.
+    
     Examples:
-        25000 -> TZS 25,000
+        45000 -> TZS 45,000
         150000 -> TZS 150,000
-        0 -> TZS 0
     """
     try:
-        value = int(float(value))
+        # Convert to Decimal for precision
+        if isinstance(value, (int, float)):
+            value = Decimal(str(value))
+        elif isinstance(value, str):
+            value = Decimal(value)
+        
+        # Round to 0 decimal places properly
+        value = value.quantize(Decimal('1'), rounding=ROUND_HALF_UP)
+        
         # Format with commas
-        formatted = f"{value:,}"
+        formatted = f"{int(value):,}"
         return f"TZS {formatted}"
-    except (ValueError, TypeError):
+    except (ValueError, TypeError, Exception):
         return "TZS 0"
 
 
@@ -29,14 +40,16 @@ def tanzanian_shillings(value):
 def comma_format(value):
     """
     Format a number with commas only (without currency symbol).
-    Examples:
-        25000 -> 25,000
-        150000 -> 150,000
     """
     try:
-        value = int(float(value))
-        return f"{value:,}"
-    except (ValueError, TypeError):
+        if isinstance(value, (int, float)):
+            value = Decimal(str(value))
+        elif isinstance(value, str):
+            value = Decimal(value)
+        
+        value = value.quantize(Decimal('1'), rounding=ROUND_HALF_UP)
+        return f"{int(value):,}"
+    except (ValueError, TypeError, Exception):
         return "0"
 
 
@@ -44,12 +57,14 @@ def comma_format(value):
 def short_price(value):
     """
     Format price in shortened form for large numbers.
-    Examples:
-        25000 -> TZS 25,000
-        1500000 -> TZS 1,500,000
     """
     try:
-        value = int(float(value))
-        return f"TZS {value:,}"
-    except (ValueError, TypeError):
+        if isinstance(value, (int, float)):
+            value = Decimal(str(value))
+        elif isinstance(value, str):
+            value = Decimal(value)
+        
+        value = value.quantize(Decimal('1'), rounding=ROUND_HALF_UP)
+        return f"TZS {int(value):,}"
+    except (ValueError, TypeError, Exception):
         return "TZS 0"

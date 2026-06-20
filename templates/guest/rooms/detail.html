@@ -34,8 +34,8 @@
                 <div class="header-meta">
                     <span class="meta-item"><i class="fas fa-building"></i> Floor {{ room.floor }}</span>
                     <span class="meta-item"><i class="fas fa-user"></i> {{ room.capacity }} Guest(s)</span>
-                    <span class="meta-item"><i class="fas fa-moon"></i> Check-in: 2PM</span>
-                    <span class="meta-item"><i class="fas fa-sun"></i> Check-out: 11AM</span>
+                    <span class="meta-item"><i class="fas fa-moon"></i> Check-in: Anytime</span>
+                    <span class="meta-item"><i class="fas fa-sun"></i> Check-out: 10AM</span>
                 </div>
             </div>
         </div>
@@ -79,11 +79,11 @@
                     <div class="price-card-left">
                         <span class="price-per-night-label">Price per night</span>
                         <div class="price-amount-main">{{ room.price_per_night|tanzanian_shillings }}</div>
-                        <span class="price-taxes"><i class="fas fa-check-circle"></i> Taxes & fees included</span>
+                        
                     </div>
-                    <div class="price-card-right">
+                    <!-- <div class="price-card-right">
                         <div class="price-guarantee"><i class="fas fa-shield-alt"></i> Best Price Guarantee</div>
-                    </div>
+                    </div> -->
                 </div>
                 
                 <!-- Quick Info -->
@@ -108,7 +108,7 @@
                 
                 <!-- Features -->
                 <div class="features-section-modern">
-                    <h3 class="section-heading"><i class="fas fa-star text-warm"></i> Room Amenities</h3>
+                    <h3 class="section-heading"> Room Amenities</h3>
                     <div class="amenities-grid">
                         <div class="amenity-item"><i class="fas fa-wifi"></i><span>Free High-Speed WiFi</span></div>
                         <div class="amenity-item"><i class="fas fa-tv"></i><span>Flat Screen TV</span></div>
@@ -124,7 +124,7 @@
                 <!-- Description -->
                 {% if room.description %}
                 <div class="description-section-modern">
-                    <h3 class="section-heading"><i class="fas fa-info-circle text-warm"></i> About This Room</h3>
+                    <h3 class="section-heading"> About This Room</h3>
                     <div class="description-content-modern">
                         <p>{{ room.description }}</p>
                     </div>
@@ -138,7 +138,7 @@
         <!-- AUTHENTICATED GUEST -->
         <div class="cta-content">
             <div class="cta-text">
-                <h4><i class="fas fa-check-circle text-success"></i> Ready to book this room?</h4>
+                <h4> Ready to book this room?</h4>
                 <p>Select your dates and confirm your reservation instantly.</p>
             </div>
             <a href="{% url 'bookings:create' room.pk %}{% if request.GET.check_in %}?check_in={{ request.GET.check_in }}{% if request.GET.check_out %}&check_out={{ request.GET.check_out }}{% endif %}{% elif request.GET.check_out %}?check_out={{ request.GET.check_out }}{% endif %}" 
